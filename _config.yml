@@ -4,8 +4,8 @@ baseurl: ""
 url: "https://draftzz.github.io"
 theme: minima
 author:
-  name: Bruno Antonio Moreira
-  email: brunomoreira2712@gmail.com
+   Bruno Antonio Moreira
+   brunomoreira2712@gmail.com
 
 plugins:
   - jekyll-feed

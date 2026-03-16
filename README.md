@@ -1,14 +1,14 @@
-# 🔐 CyberSec Portfolio - Bruno Moreira
+#  CyberSec Portfolio - Bruno Moreira
 
 CTF writeups, cybersecurity research, and documentation of my journey in offensive and defensive security.
 
-## 🌐 Live Site
+##  Live Site
 **[draftzz.github.io](https://draftzz.github.io)**
 
-## 👤 About Me
+##  About Me
 Cybersecurity CSMS Coordinator at Scania (largest factory in Brazil), responsible for TARA (Threat Assessment & Remediation Analysis) in compliance with ISO/SAE 21434 and UN R155. Actively practicing offensive and defensive security through CTF challenges.
 
-## 📝 Writeups
+##  Writeups
 
 | Challenge | Platform | Category | Key Technique |
 |-----------|----------|----------|---------------|
@@ -17,14 +17,14 @@ Cybersecurity CSMS Coordinator at Scania (largest factory in Brazil), responsibl
 | [Jailbreak](writeups/jailbreak.md) | Hack The Box | Web | XXE Injection |
 | [Web Time](writeups/web-time.md) | Hack The Box | Web | OS Command Injection |
 
-## 🛠️ Skills & Tools
+##  Skills & Tools
 - **Automotive Cybersecurity:** TARA, CSMS, ISO/SAE 21434, UN R155
 - **Offensive Security:** Nmap, Wireshark, Burp Suite, Metasploit, Hydra
 - **Web Exploitation:** XXE, Command Injection, OWASP Top 10
 - **Programming:** Python, Bash
 - **Frameworks:** MITRE ATT&CK, Cyber Kill Chain
 
-## 📫 Contact
+##  Contact
 - **LinkedIn:** [Bruno Moreira](https://linkedin.com/in/brunomoreira)
 - **Email:** brunomoreira2712@gmail.com
 

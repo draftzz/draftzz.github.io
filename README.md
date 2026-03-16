@@ -25,7 +25,7 @@ Cybersecurity CSMS Coordinator at Scania (largest factory in Brazil), responsibl
 - **Frameworks:** MITRE ATT&CK, Cyber Kill Chain
 
 ##  Contact
-- **LinkedIn:** [Bruno Moreira](https://linkedin.com/in/brunomoreira)
+- **LinkedIn:** [Bruno Moreira](https://www.linkedin.com/in/bruno-moreira-6250901b4/)
 - **Email:** brunomoreira2712@gmail.com
 
 ---

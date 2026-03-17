@@ -42,6 +42,6 @@ This portfolio documents my journey through CTF challenges with detailed writeup
 
 ## Contact
 
-- **LinkedIn:** [Bruno Moreira](https://linkedin.com/in/brunomoreira)
+- **LinkedIn:** [Bruno Moreira](https://www.linkedin.com/in/bruno-moreira-6250901b4/)
 - **GitHub:** [draftzz](https://github.com/draftzz)
 - **Email:** brunomoreira2712@gmail.com

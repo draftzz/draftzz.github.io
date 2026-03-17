@@ -26,7 +26,7 @@ This portfolio documents my journey through CTF challenges with detailed writeup
 | [W1seGuy](writeups/w1seguy) | TryHackMe | Crypto | Easy | XOR, Known-Plaintext Attack, Python Sockets |
 | [Jailbreak](writeups/jailbreak) | Hack The Box | Web | Very Easy | XXE Injection, Local File Inclusion |
 | [Web Time](writeups/web-time) | Hack The Box | Web | Very Easy | OS Command Injection, Shell Escape |
-
+| [TPM Backdoor](writeups/tpm-backdoor) | Hack The Box | Hardware / Crypto | Easy | VHDL Analysis, Hardware Backdoor, TPM Exploitation |
 ---
 
 ## Skills & Tools

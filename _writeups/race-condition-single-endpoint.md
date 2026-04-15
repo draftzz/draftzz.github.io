@@ -1,3 +1,11 @@
+---
+title: "Single-Endpoint Race Conditions"
+platform: "PortSwigger"
+category: "Race Conditions"
+difficulty: "Practitioner"
+date: 2026-04-15
+techniques: ["Hidden Multi-Step", "Email Change Race", "Account Takeover"]
+---
 # Lab: Single-Endpoint Race Conditions
 
 ## Platform

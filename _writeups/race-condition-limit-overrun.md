@@ -145,12 +145,7 @@ Thread 2: CHECK (coupon valid?) → YES → APPLY discount → UPDATE (mark used
 
 ---
 
-## Errors & Lessons Learned
 
-1. **Proxy killed internet** — Configured Firefox proxy to 127.0.0.1:8080 before Burp was running. Fix: always start Burp first, then configure the proxy.
-2. **Expected results in Repeater, not browser** — After sending parallel requests, results must be verified in the browser (cart page), not in Repeater tabs.
-
----
 
 ## Remediation
 

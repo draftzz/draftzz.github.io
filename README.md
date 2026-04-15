@@ -16,11 +16,15 @@ Cybersecurity CSMS Coordinator at Scania (largest factory in Brazil), responsibl
 | [W1seGuy](writeups/w1seguy.md) | TryHackMe | Crypto | XOR Known-Plaintext Attack |
 | [Jailbreak](writeups/jailbreak.md) | Hack The Box | Web | XXE Injection |
 | [Web Time](writeups/web-time.md) | Hack The Box | Web | OS Command Injection |
+| [TPM Backdoor](writeups/tpm-backdoor.md) | Hack The Box | Hardware / Crypto | VHDL Analysis, TPM Exploitation |
+| [Limit Overrun Race Condition](writeups/race-condition-limit-overrun.md) | PortSwigger | Race Conditions | TOCTOU, Coupon Abuse |
+| [Bypassing Rate Limits via Race Condition](writeups/race-condition-bypassing-rate-limits.md) | PortSwigger | Race Conditions | TOCTOU, Brute-Force |
+| [Multi-Endpoint Race Condition](writeups/race-condition-multi-endpoint.md) | PortSwigger | Race Conditions | Multi-Endpoint TOCTOU |
 
 ##  Skills & Tools
 - **Automotive Cybersecurity:** TARA, CSMS, ISO/SAE 21434, UN R155
 - **Offensive Security:** Nmap, Wireshark, Burp Suite, Metasploit, Hydra
-- **Web Exploitation:** XXE, Command Injection, OWASP Top 10
+- **Web Exploitation:** XXE, Command Injection, Race Conditions (TOCTOU), OWASP Top 10
 - **Programming:** Python, Bash
 - **Frameworks:** MITRE ATT&CK, Cyber Kill Chain
 

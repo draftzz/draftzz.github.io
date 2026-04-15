@@ -1,4 +1,11 @@
-# Lab: Bypassing Rate Limits via Race Conditions
+---
+title: "Bypassing Rate Limits via Race Conditions"
+platform: "PortSwigger"
+category: "Race Conditions"
+difficulty: "Apprentice"
+date: 2026-02-15
+techniques: ["TOCTOU", "Brute-Force", "Single-Packet Attack"]
+---
 
 ## Platform
 PortSwigger Web Security Academy

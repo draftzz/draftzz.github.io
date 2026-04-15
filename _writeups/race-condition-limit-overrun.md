@@ -1,4 +1,11 @@
-# Lab: Limit Overrun Race Conditions
+---
+title: "Limit Overrun Race Condition"
+platform: "PortSwigger"
+category: "Race Conditions"
+difficulty: "Apprentice"
+date: 2026-02-10
+techniques: ["TOCTOU", "Coupon Abuse", "Single-Packet Attack"]
+---
 
 ## Platform
 PortSwigger Web Security Academy

@@ -1,0 +1,116 @@
+{% include head.html %}
+<body>
+  {% include nav.html %}
+
+  <header class="hero">
+    <div class="hero__inner">
+      <div class="hero__terminal">
+        <span class="hero__prompt">root@kali:~#</span>
+        <span class="hero__cmd">whoami</span>
+      </div>
+      <h1 class="hero__name">Bruno Antonio Moreira</h1>
+      <p class="hero__role">
+        <span class="tag tag--accent">CSMS Coordinator</span>
+        <span class="tag">@ Scania</span>
+        <span class="tag">CTF Player</span>
+      </p>
+      <p class="hero__bio">
+        Cybersecurity Coordinator running TARA (Threat Assessment & Remediation Analysis)
+        for the largest Scania factory in Brazil — compliant with <code>ISO/SAE 21434</code>
+        and <code>UN R155</code>. Off-hours: web exploitation, race conditions, and pwning
+        boxes on Hack The Box, TryHackMe, and PortSwigger Academy.
+      </p>
+
+      {% assign writeups = site.writeups | sort: 'date' | reverse %}
+      {% assign platforms = writeups | map: 'platform' | uniq %}
+      {% assign categories = writeups | map: 'category' | uniq %}
+
+      <div class="stats">
+        <div class="stat"><span class="stat__num">{{ writeups | size }}</span><span class="stat__label">writeups</span></div>
+        <div class="stat"><span class="stat__num">{{ platforms | size }}</span><span class="stat__label">platforms</span></div>
+        <div class="stat"><span class="stat__num">{{ categories | size }}</span><span class="stat__label">categories</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section id="writeups" class="section">
+      <header class="section__header">
+        <h2 class="section__title"><span class="section__hash">#</span> writeups</h2>
+        <input type="search" id="search" class="search" placeholder="grep -i ..." aria-label="Search writeups">
+      </header>
+
+      <div class="filters" role="group" aria-label="Filter by category">
+        <button class="filter is-active" data-filter="all">all</button>
+        {% for cat in categories %}
+          <button class="filter" data-filter="{{ cat | slugify }}">{{ cat }}</button>
+        {% endfor %}
+      </div>
+
+      <div class="cards" id="cards">
+        {% for w in writeups %}
+          <a class="card"
+             href="{{ w.url | relative_url }}"
+             data-category="{{ w.category | slugify }}"
+             data-platform="{{ w.platform | slugify }}"
+             data-search="{{ w.title | downcase }} {{ w.platform | downcase }} {{ w.category | downcase }} {{ w.techniques | join: ' ' | downcase }}">
+            <div class="card__top">
+              <span class="badge badge--platform badge--{{ w.platform | slugify }}">{{ w.platform }}</span>
+              <span class="badge badge--diff badge--diff-{{ w.difficulty | slugify }}">{{ w.difficulty }}</span>
+            </div>
+            <h3 class="card__title">{{ w.title }}</h3>
+            <p class="card__category"><span class="card__hash">›</span> {{ w.category }}</p>
+            {% if w.techniques %}
+            <ul class="card__tags">
+              {% for t in w.techniques limit:4 %}
+                <li class="tag tag--small">{{ t }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="card__cta">read writeup →</div>
+          </a>
+        {% endfor %}
+      </div>
+
+      <p id="no-results" class="no-results" hidden>
+        <span class="hero__prompt">$</span> grep: no matches found
+      </p>
+    </section>
+
+    <section id="about" class="section">
+      <h2 class="section__title"><span class="section__hash">#</span> skills & tools</h2>
+      <div class="skills">
+        <div class="skill-group">
+          <h4>Automotive Cybersec</h4>
+          <p>TARA · CSMS · ISO/SAE 21434 · UN R155</p>
+        </div>
+        <div class="skill-group">
+          <h4>Offensive Security</h4>
+          <p>Nmap · Burp Suite · Metasploit · Hydra · Hashcat · Wireshark · Netcat</p>
+        </div>
+        <div class="skill-group">
+          <h4>Web Exploitation</h4>
+          <p>XXE · OS Command Injection · Race Conditions (TOCTOU) · OWASP Top 10</p>
+        </div>
+        <div class="skill-group">
+          <h4>Programming</h4>
+          <p>Python (sockets, automation, crypto) · Bash scripting</p>
+        </div>
+        <div class="skill-group">
+          <h4>Frameworks</h4>
+          <p>MITRE ATT&CK · Cyber Kill Chain · OWASP Top 10</p>
+        </div>
+        <div class="skill-group">
+          <h4>Platforms</h4>
+          <p>Hack The Box · TryHackMe Premium · PortSwigger Web Security Academy</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  {% include footer.html %}
+  <script src="{{ '/assets/js/filter.js' | relative_url }}"></script>
+</body>
+</html>

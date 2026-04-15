@@ -1,6 +1,10 @@
 ---
-layout: default
-title: "Web Time - Hack The Box"
+title: "Web Time"
+platform: "Hack The Box"
+category: "Web"
+difficulty: "Very Easy"
+date: 2025-08-20
+techniques: ["OS Command Injection", "Shell Escape"]
 ---
 
 [← Back to all writeups](/)

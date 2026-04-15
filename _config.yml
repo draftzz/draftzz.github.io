@@ -1,11 +1,17 @@
-title: Bruno Moreira | CyberSec Portfolio
-description: CTF Writeups, Cybersecurity Research & Automotive Security
+title: draftzz // CyberSec Portfolio
+tagline: CTF Writeups · Web Exploitation · Automotive Security
+description: >-
+  Bruno Moreira — CSMS Coordinator @ Scania. CTF writeups, web exploitation,
+  race conditions, automotive cybersecurity (ISO/SAE 21434, UN R155).
+author: Bruno Antonio Moreira
+email: brunomoreira2712@gmail.com
+github_username: draftzz
+linkedin: bruno-moreira-6250901b4
+
 baseurl: ""
 url: "https://draftzz.github.io"
-theme: minima
-author:
-   Bruno Antonio Moreira
-   brunomoreira2712@gmail.com
+
+# === Custom theme (no `theme:` key — using local _layouts/_includes) ===
 
 plugins:
   - jekyll-feed
@@ -13,5 +19,28 @@ plugins:
 
 markdown: kramdown
 highlighter: rouge
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
 
-permalink: /writeups/:title/
+# Treat /writeups/ as a real Jekyll collection
+collections:
+  writeups:
+    output: true
+    permalink: /writeups/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: writeups
+    values:
+      layout: writeup
+
+# Don't process these
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md
+  - .sass-cache

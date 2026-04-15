@@ -186,6 +186,23 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 .writeup__body th { background: var(--bg-elev); color: var(--accent); font-family: var(--mono); }
 .writeup__body blockquote { border-left: 3px solid var(--accent); padding: .5rem 1rem; color: var(--muted); margin: 1rem 0; background: var(--bg-card); border-radius: 0 8px 8px 0; }
 .writeup__footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+.writeup__sub { display: flex; gap: 1.25rem; flex-wrap: wrap; margin: .5rem 0 .75rem; font-family: var(--mono); font-size: .82rem; color: var(--muted); }
+.writeup__sub .hero__prompt { color: var(--accent); margin-right: .35rem; }
+.writeup__tags a { text-decoration: none; }
+.writeup__tags a:hover .tag, .writeup__tags a.tag:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+/* Copy code button */
+.copy-btn {
+  position: absolute; top: .5rem; right: .5rem;
+  background: var(--bg-card); color: var(--muted);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: .25rem .6rem; font-family: var(--mono); font-size: .72rem;
+  cursor: pointer; opacity: 0; transition: all .15s;
+}
+.writeup__body pre:hover .copy-btn,
+.writeup__body div.highlight:hover .copy-btn { opacity: 1; }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+.copy-btn.is-copied { color: var(--accent); border-color: var(--accent); background: rgba(0,255,159,.1); }
 
 /* === FOOTER === */
 .footer { border-top: 1px solid var(--border); margin-top: 4rem; padding: 2.5rem 1.25rem; background: var(--bg-2); }

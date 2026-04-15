@@ -1,0 +1,15 @@
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__col">
+      <div class="footer__title"># contact</div>
+      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">github.com/{{ site.github_username }}</a>
+      <a href="https://www.linkedin.com/in/{{ site.linkedin }}/" target="_blank" rel="noopener">linkedin/in/{{ site.linkedin }}</a>
+    </div>
+    <div class="footer__col footer__col--right">
+      <div class="footer__title"># status</div>
+      <span class="footer__status"><span class="dot dot--green"></span> active · pwning machines</span>
+      <span class="footer__year">© {{ 'now' | date: "%Y" }} Bruno Antonio Moreira</span>
+    </div>
+  </div>
+</footer>

@@ -1,6 +1,10 @@
 ---
-layout: default
-title: "TPM Backdoor - Hack The Box"
+title: "TPM Backdoor"
+platform: "Hack The Box"
+category: "Hardware"
+difficulty: "Easy"
+date: 2025-09-10
+techniques: ["VHDL Analysis", "Hardware Backdoor", "TPM Exploitation"]
 ---
 
 [← Back to all writeups](/)

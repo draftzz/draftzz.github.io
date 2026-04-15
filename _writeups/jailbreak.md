@@ -1,6 +1,10 @@
 ---
-layout: default
-title: "Jailbreak - Hack The Box"
+title: "Jailbreak"
+platform: "Hack The Box"
+category: "Web"
+difficulty: "Very Easy"
+date: 2025-08-15
+techniques: ["XXE Injection", "Local File Inclusion", "XML Parsing"]
 ---
 
 [← Back to all writeups](/)

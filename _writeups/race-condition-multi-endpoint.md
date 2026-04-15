@@ -1,4 +1,11 @@
-# Lab: Multi-Endpoint Race Conditions
+---
+title: "Multi-Endpoint Race Conditions"
+platform: "PortSwigger"
+category: "Race Conditions"
+difficulty: "Practitioner"
+date: 2026-03-05
+techniques: ["Multi-Endpoint TOCTOU", "Cart Manipulation", "Race Condition"]
+---
 
 ## Platform
 PortSwigger Web Security Academy

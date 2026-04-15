@@ -1,6 +1,10 @@
 ---
-layout: default
-title: "The Game - TryHackMe"
+title: "The Game"
+platform: "TryHackMe"
+category: "Reverse Engineering"
+difficulty: "Easy"
+date: 2025-07-12
+techniques: ["Static Analysis", "strings", "grep"]
 ---
 
 [← Back to all writeups](/)

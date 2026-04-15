@@ -1,6 +1,10 @@
 ---
-layout: default
-title: "W1seGuy - TryHackMe"
+title: "W1seGuy"
+platform: "TryHackMe"
+category: "Crypto"
+difficulty: "Easy"
+date: 2025-07-25
+techniques: ["XOR", "Known-Plaintext Attack", "Python Sockets"]
 ---
 
 [← Back to all writeups](/)

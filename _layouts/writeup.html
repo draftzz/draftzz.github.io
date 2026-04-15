@@ -1,0 +1,44 @@
+{% include head.html %}
+<body>
+  {% include nav.html %}
+
+  <main class="container container--narrow">
+    <article class="writeup">
+      <a href="{{ '/' | relative_url }}#writeups" class="back">← all writeups</a>
+
+      <header class="writeup__header">
+        <div class="writeup__meta">
+          {% if page.platform %}<span class="badge badge--platform badge--{{ page.platform | slugify }}">{{ page.platform }}</span>{% endif %}
+          {% if page.category %}<span class="badge">{{ page.category }}</span>{% endif %}
+          {% if page.difficulty %}<span class="badge badge--diff badge--diff-{{ page.difficulty | slugify }}">{{ page.difficulty }}</span>{% endif %}
+        </div>
+        <h1 class="writeup__title">{{ page.title }}</h1>
+        <div class="writeup__sub">
+          {% if page.date %}<span><span class="hero__prompt">$</span> date {{ page.date | date: "%Y-%m-%d" }}</span>{% endif %}
+          {% assign words = content | strip_html | number_of_words %}
+          {% assign rt = words | divided_by: 220 | plus: 1 %}
+          <span><span class="hero__prompt">$</span> wc -w {{ words }} ({{ rt }} min read)</span>
+        </div>
+        {% if page.techniques %}
+        <ul class="card__tags writeup__tags">
+          {% for t in page.techniques %}
+            <li><a href="{{ '/tags/' | relative_url }}#{{ t | slugify }}" class="tag tag--small">{{ t }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </header>
+
+      <div class="writeup__body">
+        {{ content }}
+      </div>
+
+      <footer class="writeup__footer">
+        <a href="{{ '/' | relative_url }}#writeups" class="back">← all writeups</a>
+      </footer>
+    </article>
+  </main>
+
+  {% include footer.html %}
+  <script src="{{ '/assets/js/copy-code.js' | relative_url }}"></script>
+</body>
+</html>

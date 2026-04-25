@@ -58,7 +58,7 @@ Browse writeups by technique used.
       {% if w.techniques contains trimmed %}
         <li>
           <a href="{{ w.url | relative_url }}">{{ w.title }}</a>
-          <span class="meta">— {{ w.platform }} · {{ w.category }} · {{ w.difficulty }}</span>
+          <span class="meta">· {{ w.platform }} · {{ w.category }} · {{ w.difficulty }}</span>
         </li>
       {% endif %}
     {% endfor %}

@@ -1,13 +1,13 @@
 # draftzz // CyberSec Portfolio
 
-Personal cybersecurity portfolio of **Bruno Antonio Moreira** — CSMS Coordinator @ Scania.
+Personal cybersecurity portfolio of **Bruno Antonio Moreira**. CSMS Coordinator @ Scania.
 CTF writeups, web exploitation, race conditions, and automotive security research.
 
 🌐 **Live site:** https://draftzz.github.io
 
 ## Stack
 
-- Jekyll (custom theme — dark / terminal aesthetic)
+- Jekyll (custom theme, dark / terminal aesthetic)
 - GitHub Pages
 - Plugins: `jekyll-feed`, `jekyll-seo-tag`, `jekyll-sitemap`
 - Writeups as a Jekyll collection (`_writeups/`)
@@ -32,8 +32,8 @@ translation_key: machine-name    # same slug as the file (no extension)
 ---
 ```
 
-2. Write the content below the frontmatter (no need for an H1 — the title is rendered automatically).
-3. Commit and push — GitHub Pages rebuilds automatically.
+2. Write the content below the frontmatter (no need for an H1, the title is rendered automatically).
+3. Commit and push. GitHub Pages rebuilds automatically.
 
 ## Adding a Portuguese translation
 
@@ -65,7 +65,7 @@ Translation conventions:
 | Field | Required | Notes |
 |-------|----------|-------|
 | `title` | yes | Translated per language |
-| `platform` | yes | One of `Hack The Box`, `TryHackMe`, `PortSwigger` (or add a new platform — slugified to a CSS class) |
+| `platform` | yes | One of `Hack The Box`, `TryHackMe`, `PortSwigger` (or add a new platform, slugified to a CSS class) |
 | `category` | yes | Free-form but reused across files (drives filter pills) |
 | `difficulty` | yes | Slugified (`Very Easy` → `very-easy`) for the badge color |
 | `date` | yes | `YYYY-MM-DD`. Used for sorting and the "new" badge (< 30 days) |
@@ -77,7 +77,7 @@ Translation conventions:
 
 ## Bug bounty reports
 
-Drop reports under `_bugbounty/` — they use the same writeup layout. Recommended frontmatter:
+Drop reports under `_bugbounty/`, they use the same writeup layout. Recommended frontmatter:
 
 ```yaml
 ---
@@ -95,7 +95,7 @@ status: "disclosed"              # disclosed | private | triaged
 ---
 ```
 
-(Disclosure-related fields like `program`, `severity`, `status` are not yet rendered by the layout — extend `_layouts/writeup.html` when you start filling the collection.)
+(Disclosure-related fields like `program`, `severity`, `status` are not yet rendered by the layout, extend `_layouts/writeup.html` when you start filling the collection.)
 
 ## Local development
 

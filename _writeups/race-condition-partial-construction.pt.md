@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Expert"
 date: 2026-04-15
 techniques: ["Partial Construction", "Token Bypass", "PHP Type Juggling"]
-description: "Race de construção parcial no registro — `token[]=` casa com NULL via type juggling do PHP enquanto o token ainda é gerado, burlando a verificação de email."
+description: "Race de construção parcial no registro - `token[]=` casa com NULL via type juggling do PHP enquanto o token ainda é gerado, burlando a verificação de email."
 lang: pt-br
 translation_key: race-condition-partial-construction
 permalink: /writeups/race-condition-partial-construction/pt/
@@ -27,7 +27,7 @@ Explorar uma race condition no mecanismo de registro de usuário pra burlar a ve
 
 ## Contexto
 
-O lab tem um sistema de registro de usuário que requer verificação de email via link de confirmação com um token. Existe uma race condition na construção parcial do registro do usuário — entre o momento em que o usuário é criado no banco e o token de confirmação é gerado, o campo do token está temporariamente em null. Ao enviar uma requisição de confirmação com array vazio (`token[]=`) durante essa janela, a comparação loose do PHP casa o array vazio contra o valor null, burlando a verificação completamente.
+O lab tem um sistema de registro de usuário que requer verificação de email via link de confirmação com um token. Existe uma race condition na construção parcial do registro do usuário, entre o momento em que o usuário é criado no banco e o token de confirmação é gerado, o campo do token está temporariamente em null. Ao enviar uma requisição de confirmação com array vazio (`token[]=`) durante essa janela, a comparação loose do PHP casa o array vazio contra o valor null, burlando a verificação completamente.
 
 ---
 
@@ -65,12 +65,12 @@ O endpoint de confirmação aceita um parâmetro token via query string e o subm
 
 | Requisição | Resposta |
 |---|---|
-| `POST /confirm?token=1` | 400 — "Incorrect token: 1" |
-| `POST /confirm` (sem token) | 400 — "Missing parameter: token" |
-| `POST /confirm?token=` (vazio) | 403 — "Forbidden" (patcheado!) |
-| `POST /confirm?token[]=` (array vazio) | 400 — "Incorrect token: Array" |
+| `POST /confirm?token=1` | 400, "Incorrect token: 1" |
+| `POST /confirm` (sem token) | 400, "Missing parameter: token" |
+| `POST /confirm?token=` (vazio) | 403, "Forbidden" (patcheado!) |
+| `POST /confirm?token[]=` (array vazio) | 400, "Incorrect token: Array" |
 
-A resposta **403 Forbidden** no token vazio indica que os devs patchearam o bypass óbvio. Porém, `token[]=` (array) retorna "Incorrect token: Array" — o servidor aceita e processa. Esse é o vetor de ataque.
+A resposta **403 Forbidden** no token vazio indica que os devs patchearam o bypass óbvio. Porém, `token[]=` (array) retorna "Incorrect token: Array", o servidor aceita e processa. Esse é o vetor de ataque.
 
 ### Análise da Janela de Race
 O processo de registro internamente segue estes passos:
@@ -98,7 +98,7 @@ POST /register (user0):
 
 1. **Analisei o JavaScript** em `/resources/static/users.js` pra entender o fluxo de confirmação
 2. **Testei variações** do parâmetro token pra descobrir que `token[]=` (array vazio) é processado pelo servidor
-3. **Identifiquei a janela de construção parcial** — entre criação do usuário e geração do token, o campo é null
+3. **Identifiquei a janela de construção parcial**, entre criação do usuário e geração do token, o campo é null
 4. **Enviei POST /register pro Turbo Intruder** pra ataques paralelos automatizados
 5. **Configurei o script do Turbo Intruder** pra mandar 20 tentativas de registro, cada uma com 50 confirmações em paralelo:
 
@@ -128,11 +128,11 @@ def handleResponse(req, interesting):
         table.add(req)
 ```
 
-6. **Lancei o ataque** — 20 tentativas × 51 requisições = 1.020 no total
-7. **Análise dos resultados** — respostas com Content-Length diferente (2744 vs 2827) indicaram confirmações bem-sucedidas
-8. **Logado** como `user1` com senha `teste` — email confirmado `user1@ginandjuice.shop`
-9. **Acessei o painel Admin** — disponível por causa do email `@ginandjuice.shop`
-10. **Deletei o usuário carlos** — lab solved
+6. **Lancei o ataque**, 20 tentativas × 51 requisições = 1.020 no total
+7. **Análise dos resultados**, respostas com Content-Length diferente (2744 vs 2827) indicaram confirmações bem-sucedidas
+8. **Logado** como `user1` com senha `teste`, email confirmado `user1@ginandjuice.shop`
+9. **Acessei o painel Admin**, disponível por causa do email `@ginandjuice.shop`
+10. **Deletei o usuário carlos**, lab solved
 
 ### Resultado
 - **Contas confirmadas via race condition:** 11 de 20 (user1, user3, user4, user5, user6, user7, user9, user12, user13, user14, user17)
@@ -203,7 +203,7 @@ def handleResponse(req, interesting):
 
 Para prevenir race conditions de construção parcial:
 
-- **Gerar token antes do INSERT:** Criar o token de confirmação primeiro, depois inserir o registro completo do usuário com o token já populado — sem janela null
+- **Gerar token antes do INSERT:** Criar o token de confirmação primeiro, depois inserir o registro completo do usuário com o token já populado, sem janela null
 - **Usar comparação estrita:** Em PHP, usar `===` em vez de `==` pra prevenir type juggling (`[] === null` é `false`)
 - **Validar tipo do token:** Rejeitar valores não-string no servidor antes da comparação
 - **Criação atômica do registro:** Usar transação de banco que cria usuário e token numa operação atômica única
@@ -213,4 +213,4 @@ Para prevenir race conditions de construção parcial:
 
 ## Reflexão
 
-Esse lab Expert combina duas classes de vulnerabilidade: race conditions e type juggling do PHP. A janela de race entre criação do usuário (token = null) e geração do token é extremamente pequena, exigindo 50 confirmações paralelas por tentativa pra acertar de forma confiável. O insight chave foi descobrir que `token[]=` burla o patch dos devs em tokens vazios — enquanto eles bloquearam `token=` com 403, não consideraram a comparação loose do PHP tratando array vazio como igual a null. A taxa de sucesso de 55% (11/20 tentativas) mostra que com requisições paralelas suficientes, mesmo janelas minúsculas viram exploráveis de forma confiável. Esse é o ataque de race condition mais sofisticado da série, combinando exploração de timing com fraquezas específicas do sistema de tipos da linguagem.
+Esse lab Expert combina duas classes de vulnerabilidade: race conditions e type juggling do PHP. A janela de race entre criação do usuário (token = null) e geração do token é extremamente pequena, exigindo 50 confirmações paralelas por tentativa pra acertar de forma confiável. O insight chave foi descobrir que `token[]=` burla o patch dos devs em tokens vazios, enquanto eles bloquearam `token=` com 403, não consideraram a comparação loose do PHP tratando array vazio como igual a null. A taxa de sucesso de 55% (11/20 tentativas) mostra que com requisições paralelas suficientes, mesmo janelas minúsculas viram exploráveis de forma confiável. Esse é o ataque de race condition mais sofisticado da série, combinando exploração de timing com fraquezas específicas do sistema de tipos da linguagem.

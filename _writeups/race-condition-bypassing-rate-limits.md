@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Apprentice"
 date: 2026-02-15
 techniques: ["TOCTOU", "Brute-Force", "Single-Packet Attack"]
-description: "Single-packet HTTP/2 race condition bypassing login rate limits — 30 password attempts slip through the TOCTOU check before any counter increments."
+description: "Single-packet HTTP/2 race condition bypassing login rate limits, 30 password attempts slip through the TOCTOU check before any counter increments."
 lang: en
 translation_key: race-condition-bypassing-rate-limits
 ---
@@ -63,7 +63,7 @@ csrf=LixGlQiW7qZcFjspcfcHC0xeI6U5EbJs&username=carlos&password=%s
 
 ### Observations
 - Sending login attempts sequentially triggers rate limiting after a few failed attempts
-- The rate limit check and increment are not atomic — classic TOCTOU vulnerability
+- The rate limit check and increment are not atomic, classic TOCTOU vulnerability
 - HTTP/2 single-packet attack can deliver all attempts before the counter increments
 
 ---
@@ -85,9 +85,9 @@ Request 28 (password=7777777): CHECK rate limit → OK → process login → SUC
 
 ### Attack Steps
 
-1. **Capture login request** — logged in as `wiener:peter` to capture `POST /login` in Burp HTTP History
-2. **Send to Turbo Intruder** — right-click the POST /login → Extensions → Turbo Intruder → Send to Turbo Intruder
-3. **Modify request** — changed `username=wiener` to `username=carlos` and `password=peter` to `password=%s`
+1. **Capture login request**, logged in as `wiener:peter` to capture `POST /login` in Burp HTTP History
+2. **Send to Turbo Intruder**, right-click the POST /login → Extensions → Turbo Intruder → Send to Turbo Intruder
+3. **Modify request**, changed `username=wiener` to `username=carlos` and `password=peter` to `password=%s`
 4. **Configure Turbo Intruder script** for single-packet attack:
 
 ```python
@@ -107,14 +107,14 @@ def handleResponse(req, interesting):
     table.add(req)
 ```
 
-5. **First attempt failed** — all responses returned 400 "Invalid CSRF token" because the session cookie and CSRF token from the initial capture had expired
-6. **Second attempt** — refreshed the login page to get a new session cookie and CSRF token, updated the Turbo Intruder request, and re-ran the attack
-7. **Analyzed results** — sorted by Status column:
+5. **First attempt failed**, all responses returned 400 "Invalid CSRF token" because the session cookie and CSRF token from the initial capture had expired
+6. **Second attempt**, refreshed the login page to get a new session cookie and CSRF token, updated the Turbo Intruder request, and re-ran the attack
+7. **Analyzed results**, sorted by Status column:
    - 1 request returned **302** (redirect to /my-account) with payload `7777777`
    - Multiple requests returned **200** (failed login)
    - Multiple requests returned **400** (rate limit / CSRF errors)
-8. **Cleared browser cookies** — the attack had invalidated the browser session
-9. **Logged in as carlos** — used credentials `carlos:7777777`
+8. **Cleared browser cookies**, the attack had invalidated the browser session
+9. **Logged in as carlos**, used credentials `carlos:7777777`
 10. **Accessed admin panel** and deleted user carlos
 
 ### Result
@@ -145,7 +145,7 @@ def handleResponse(req, interesting):
 | Rate Limit Bypass via Race Condition | Sending all attempts simultaneously so they pass the rate check before the counter increments |
 | Single-Packet Attack | HTTP/2 technique to deliver 30 requests in one TCP packet, eliminating network jitter |
 | Turbo Intruder Gate Mechanism | `gate='race1'` holds all requests until `openGate('race1')` releases them simultaneously |
-| CSRF Token Freshness | CSRF tokens are tied to sessions — expired sessions invalidate tokens, requiring fresh capture |
+| CSRF Token Freshness | CSRF tokens are tied to sessions, expired sessions invalidate tokens, requiring fresh capture |
 
 ---
 
@@ -177,9 +177,9 @@ def handleResponse(req, interesting):
 
 ## Errors & Lessons Learned
 
-1. **CSRF token expired** — First attack attempt returned "Invalid CSRF token" on all requests because the session from the initial capture had expired. Fix: always get a fresh session cookie and CSRF token immediately before launching the Turbo Intruder attack.
-2. **Browser session invalidated** — After the attack, the browser couldn't login because cookies were stale. Fix: clear cookies (click padlock → Clear cookies and site data) before attempting browser login.
-3. **Rate limit vs Race condition** — Sequential brute force gets blocked by rate limiting, but sending all attempts in parallel bypasses it because the counter hasn't incremented yet when the requests are processed.
+1. **CSRF token expired**. First attack attempt returned "Invalid CSRF token" on all requests because the session from the initial capture had expired. Fix: always get a fresh session cookie and CSRF token immediately before launching the Turbo Intruder attack.
+2. **Browser session invalidated**. After the attack, the browser couldn't login because cookies were stale. Fix: clear cookies (click padlock → Clear cookies and site data) before attempting browser login.
+3. **Rate limit vs Race condition**. Sequential brute force gets blocked by rate limiting, but sending all attempts in parallel bypasses it because the counter hasn't incremented yet when the requests are processed.
 
 ---
 
@@ -195,4 +195,4 @@ To prevent this race condition in rate limiting:
 
 ## Reflection
 
-This lab demonstrates how race conditions can bypass security controls, not just business logic. Rate limiting is a critical defense against brute force attacks, but when the check-and-increment isn't atomic, an attacker can send all attempts simultaneously and bypass it entirely. The Turbo Intruder with Engine.BURP2 made this trivial — all 30 passwords were tested in a single packet, and the correct one was identified by its unique 302 status code. The CSRF token issue was a realistic complication that would also occur in real-world testing — always ensure fresh tokens before launching parallel attacks.
+This lab demonstrates how race conditions can bypass security controls, not just business logic. Rate limiting is a critical defense against brute force attacks, but when the check-and-increment isn't atomic, an attacker can send all attempts simultaneously and bypass it entirely. The Turbo Intruder with Engine.BURP2 made this trivial, all 30 passwords were tested in a single packet, and the correct one was identified by its unique 302 status code. The CSRF token issue was a realistic complication that would also occur in real-world testing, always ensure fresh tokens before launching parallel attacks.

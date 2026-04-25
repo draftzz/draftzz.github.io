@@ -5,7 +5,7 @@ category: "Reverse Engineering"
 difficulty: "Easy"
 date: 2025-07-12
 techniques: ["Static Analysis", "strings", "grep"]
-description: "Static analysis of a Tetris PE32 binary — extracting a plaintext flag with `strings` and `grep`, no obfuscation in sight."
+description: "Static analysis of a Tetris PE32 binary, extracting a plaintext flag with `strings` and `grep`, no obfuscation in sight."
 lang: en
 translation_key: the-game
 ---
@@ -38,14 +38,14 @@ strings Tetrix.exe | grep -iE "THM\{|CTF\{|flag\{"
 # THM{I_CAN_READ_IT_ALL}
 ```
 
-The flag was stored as a plaintext string inside the binary — no obfuscation, no encryption.
+The flag was stored as a plaintext string inside the binary, no obfuscation, no encryption.
 
 ## Key Takeaways
 
-- **`strings`** is always the first tool for binary analysis — extract human-readable text from any file
+- **`strings`** is always the first tool for binary analysis, extract human-readable text from any file
 - **`grep -iE`** enables case-insensitive search with extended regex (OR patterns)
 - **`file`** identifies the real type of a file regardless of extension
-- Never use `cat` on binary files — it outputs garbage because it tries to interpret bytes as text
+- Never use `cat` on binary files, it outputs garbage because it tries to interpret bytes as text
 
 ## MITRE ATT&CK
 

@@ -5,7 +5,7 @@ category: "Web"
 difficulty: "Very Easy"
 date: 2025-08-20
 techniques: ["OS Command Injection", "Shell Escape"]
-description: "OS command injection via `exec()` em PHP — escapando aspas simples num template `date '+...'` para encadear `cat /flag`."
+description: "OS command injection via `exec()` em PHP, escapando aspas simples num template `date '+...'` para encadear `cat /flag`."
 lang: pt-br
 translation_key: web-time
 permalink: /writeups/web-time/pt/
@@ -31,7 +31,7 @@ Uma aplicação web que mostra a hora e a data atuais. Dois botões passam um pa
 $format = isset($_GET['format']) ? $_GET['format'] : '%H:%M:%S';
 $time = new TimeModel($format);
 ```
-Sem sanitização — input do usuário vai direto pro model.
+Sem sanitização, input do usuário vai direto pro model.
 
 ### TimeModel.php (VULNERÁVEL)
 ```php
@@ -94,9 +94,9 @@ Quebrando em partes:
 
 ## Principais Aprendizados
 
-- **Leia o código-fonte primeiro** quando estiver disponível — ele revela a vulnerabilidade exata
-- **Entenda o contexto do shell** antes de injetar — aspas simples requerem escape
-- **`exec()` com input do usuário = command injection** — sempre
+- **Leia o código-fonte primeiro** quando estiver disponível, ele revela a vulnerabilidade exata
+- **Entenda o contexto do shell** antes de injetar, aspas simples requerem escape
+- **`exec()` com input do usuário = command injection**, sempre
 - **URL encoding é essencial** para caracteres especiais: `%27`=`'`, `%20`=espaço, `%26`=`&`
 - **Use `curl` em vez do navegador** para payloads com caracteres especiais
 - Prevenção: usar `escapeshellarg()`, whitelisting do input, ou funções nativas da linguagem em vez de `exec()`

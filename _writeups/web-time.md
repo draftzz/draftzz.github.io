@@ -5,7 +5,7 @@ category: "Web"
 difficulty: "Very Easy"
 date: 2025-08-20
 techniques: ["OS Command Injection", "Shell Escape"]
-description: "OS command injection via PHP `exec()` — escaping single quotes in a `date '+...'` template to chain `cat /flag`."
+description: "OS command injection via PHP `exec()`, escaping single quotes in a `date '+...'` template to chain `cat /flag`."
 lang: en
 translation_key: web-time
 ---
@@ -30,7 +30,7 @@ A web application that displays the current time and date. Two buttons pass a `f
 $format = isset($_GET['format']) ? $_GET['format'] : '%H:%M:%S';
 $time = new TimeModel($format);
 ```
-No sanitization — user input goes directly to the model.
+No sanitization, user input goes directly to the model.
 
 ### TimeModel.php (VULNERABLE)
 ```php
@@ -93,9 +93,9 @@ Breaking it down:
 
 ## Key Takeaways
 
-- **Read the source code first** when provided — it reveals the exact vulnerability
-- **Understand the shell context** before injecting — single quotes require escaping
-- **`exec()` with user input = command injection** — always
+- **Read the source code first** when provided, it reveals the exact vulnerability
+- **Understand the shell context** before injecting, single quotes require escaping
+- **`exec()` with user input = command injection**, always
 - **URL encoding is essential** for special characters: `%27`=`'`, `%20`=space, `%26`=`&`
 - **Use `curl` instead of browser** for payloads with special characters
 - Prevention: use `escapeshellarg()`, input whitelisting, or native language functions instead of `exec()`

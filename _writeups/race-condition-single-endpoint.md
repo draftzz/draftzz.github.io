@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-04-15
 techniques: ["Hidden Multi-Step", "Email Change Race", "Account Takeover"]
-description: "Single-endpoint race on email change — two parallel requests make the victim's confirmation token get sent to the attacker's inbox, leading to account takeover."
+description: "Single-endpoint race on email change, two parallel requests make the victim's confirmation token get sent to the attacker's inbox, leading to account takeover."
 lang: en
 translation_key: race-condition-single-endpoint
 ---
@@ -26,7 +26,7 @@ Exploit a race condition in the email change functionality to gain access to `ca
 
 ## Context
 
-The lab has an email change feature that sends a confirmation link to the new email address. Internally, the server processes this in multiple hidden steps: it generates a confirmation token, associates it with the target email, and sends the confirmation email. A race condition exists within this single endpoint — by sending two email change requests simultaneously (one to a controlled email, one to the victim's email), the confirmation token can be associated with the victim's email but sent to the attacker's email.
+The lab has an email change feature that sends a confirmation link to the new email address. Internally, the server processes this in multiple hidden steps: it generates a confirmation token, associates it with the target email, and sends the confirmation email. A race condition exists within this single endpoint, by sending two email change requests simultaneously (one to a controlled email, one to the victim's email), the confirmation token can be associated with the victim's email but sent to the attacker's email.
 
 ---
 
@@ -87,17 +87,17 @@ Race condition with two parallel requests:
 
 1. **Logged in** as `wiener:peter` and navigated to My Account
 2. **Changed email** to attacker address to capture the `POST /my-account/change-email` request
-3. **Verified email flow** — checked Email client and confirmed confirmation link was received
+3. **Verified email flow**, checked Email client and confirmed confirmation link was received
 4. **Sent request to Repeater** and duplicated the tab
 5. **Configured two requests:**
    - Tab 1: `email=wiener@exploit-0a6a00380326974481fa294f013400f8.exploit-server.net` (attacker email)
    - Tab 2: `email=carlos@ginandjuice.shop` (target email)
 6. **Created tab group** with both tabs
-7. **Sent group in parallel** (single-packet attack) — repeated approximately 30 times
-8. **Checked Email client** after each batch — eventually received a confirmation email mentioning `carlos@ginandjuice.shop`
-9. **Clicked confirmation link** — email changed to `carlos@ginandjuice.shop`
-10. **Accessed Admin panel** — now available with admin email
-11. **Deleted user carlos** — lab solved
+7. **Sent group in parallel** (single-packet attack), repeated approximately 30 times
+8. **Checked Email client** after each batch, eventually received a confirmation email mentioning `carlos@ginandjuice.shop`
+9. **Clicked confirmation link**, email changed to `carlos@ginandjuice.shop`
+10. **Accessed Admin panel**, now available with admin email
+11. **Deleted user carlos**, lab solved
 
 ### Result
 - **Account takeover achieved** via email change race condition
@@ -128,7 +128,7 @@ Race condition with two parallel requests:
 | Hidden Multi-Step Sequence | Single endpoint that internally processes multiple steps (token generation, email association, email sending) with race windows between them |
 | Single-Endpoint Race Condition | Unlike multi-endpoint attacks, this exploits internal sub-states within one request handler |
 | Account Takeover via Email Change | Race condition causes confirmation token for victim email to be sent to attacker's email |
-| Persistence Required | This attack has a small race window — approximately 30 attempts were needed to hit the right timing |
+| Persistence Required | This attack has a small race window, approximately 30 attempts were needed to hit the right timing |
 
 ---
 
@@ -174,4 +174,4 @@ To prevent single-endpoint race conditions in email change:
 
 ## Reflection
 
-This lab demonstrates the most subtle class of race condition — hidden multi-step sequences within a single endpoint. Unlike limit overruns or multi-endpoint attacks, there's no obvious sign that the endpoint is vulnerable. The internal steps (generate token → associate email → send confirmation) happen invisibly, and the race window between them is extremely small. The attack required ~30 attempts to succeed, which highlights that single-endpoint race conditions need persistence. In a real bug bounty context, this would be a High to Critical finding because it enables account takeover — one of the most impactful vulnerability classes.
+This lab demonstrates the most subtle class of race condition, hidden multi-step sequences within a single endpoint. Unlike limit overruns or multi-endpoint attacks, there's no obvious sign that the endpoint is vulnerable. The internal steps (generate token → associate email → send confirmation) happen invisibly, and the race window between them is extremely small. The attack required ~30 attempts to succeed, which highlights that single-endpoint race conditions need persistence. In a real bug bounty context, this would be a High to Critical finding because it enables account takeover, one of the most impactful vulnerability classes.

@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-04-15
 techniques: ["File Upload Race", "PHP Web Shell", "RCE"]
-description: "File upload race — the window between `move_uploaded_file()` and validation lets a PHP web shell execute before deletion, escalating to RCE."
+description: "File upload race, the window between `move_uploaded_file()` and validation lets a PHP web shell execute before deletion, escalating to RCE."
 lang: en
 translation_key: race-condition-file-upload
 ---
@@ -45,7 +45,7 @@ The lab has an avatar upload function that performs server-side validation on up
 | `/my-account` | GET | Account page with upload form |
 
 ### Upload Validation Behavior
-Uploading a `.php` file returns **403 Forbidden** with the message "Sorry, only JPG & PNG files are allowed." However, the server temporarily saves the file before validating and deleting it — creating a race window.
+Uploading a `.php` file returns **403 Forbidden** with the message "Sorry, only JPG & PNG files are allowed." However, the server temporarily saves the file before validating and deleting it, creating a race window.
 
 ### Vulnerable Server Code
 ```php
@@ -83,13 +83,13 @@ POST /my-account/avatar (exploit.php):
 echo '<?php echo file_get_contents("/home/carlos/secret"); ?>' > /tmp/exploit.php
 ```
 
-2. **Uploaded exploit.php** as avatar via browser — received 403 "only JPG & PNG files are allowed" as expected
+2. **Uploaded exploit.php** as avatar via browser, received 403 "only JPG & PNG files are allowed" as expected
 
 3. **Captured POST /my-account/avatar** in Burp HTTP History
 
-4. **Sent to Turbo Intruder** — right-click → Extensions → Turbo Intruder → Send to Turbo Intruder
+4. **Sent to Turbo Intruder**, right-click → Extensions → Turbo Intruder → Send to Turbo Intruder
 
-5. **Configured Turbo Intruder script** — 1 upload + 50 GET requests per attempt, 20 attempts:
+5. **Configured Turbo Intruder script**, 1 upload + 50 GET requests per attempt, 20 attempts:
 
 ```python
 def queueRequests(target, wordlists):
@@ -114,18 +114,18 @@ def handleResponse(req, interesting):
         table.add(req)
 ```
 
-6. **Launched attack** — 20 attempts × 51 requests = 1,020 total requests
+6. **Launched attack**, 20 attempts × 51 requests = 1,020 total requests
 
-7. **Analyzed results** — multiple GET requests returned 200 with Content-Length 32, containing the secret
+7. **Analyzed results**, multiple GET requests returned 200 with Content-Length 32, containing the secret
 
 8. **Extracted secret:** `8Yn0bj3aISfGVTKF3yNa8o5QY7ndxF6v`
 
-9. **Submitted solution** — lab solved
+9. **Submitted solution**, lab solved
 
 ### Result
 - **RCE achieved** via file upload race condition
 - **Secret exfiltrated:** `8Yn0bj3aISfGVTKF3yNa8o5QY7ndxF6v`
-- **Multiple successful hits** — the race window was wide enough for many GET requests to succeed
+- **Multiple successful hits**, the race window was wide enough for many GET requests to succeed
 
 ---
 
@@ -148,7 +148,7 @@ def handleResponse(req, interesting):
 | Concept | Description |
 |---|---|
 | File Upload Race Condition | Exploiting the window between file save and file validation/deletion |
-| Upload-then-Validate Anti-Pattern | Server saves file before checking type — any file exists on disk temporarily |
+| Upload-then-Validate Anti-Pattern | Server saves file before checking type, any file exists on disk temporarily |
 | PHP Web Shell | Simple PHP script that executes server-side code: `<?php echo file_get_contents(...); ?>` |
 | Parallel GET Flooding | Sending 50 GET requests per upload attempt maximizes the chance of hitting the race window |
 | RCE via Race Condition | Combining file upload bypass with race condition achieves Remote Code Execution |
@@ -187,7 +187,7 @@ echo '<?php echo file_get_contents("/home/carlos/secret"); ?>' > /tmp/exploit.ph
 
 To prevent file upload race conditions:
 
-- **Validate before saving:** Check file type, extension, and content BEFORE writing to disk — never save then validate
+- **Validate before saving:** Check file type, extension, and content BEFORE writing to disk, never save then validate
 - **Use temporary directory:** Upload to a non-web-accessible temp directory, validate there, then move to the public directory only if valid
 - **Randomize filenames:** Generate random filenames on upload so attackers can't predict the URL to access during the race window
 - **Atomic move:** Use a two-step process where the file is only accessible after validation completes (e.g., rename from `.tmp` to final extension)
@@ -197,4 +197,4 @@ To prevent file upload race conditions:
 
 ## Reflection
 
-This lab demonstrates how race conditions can escalate file upload restrictions into full Remote Code Execution. The server's "upload-then-validate" pattern is a common anti-pattern — it creates a window where any file type exists on disk and is accessible via the web server. The attack is straightforward once you understand the pattern: flood GET requests in parallel with the upload, and at least one will hit the file before deletion. In a real bug bounty context, this would be a Critical severity finding (RCE) and would likely pay maximum bounty. This lab also shows the intersection of race conditions with other vulnerability classes — the file upload restriction is robust when tested sequentially, but completely bypassed through concurrent access.
+This lab demonstrates how race conditions can escalate file upload restrictions into full Remote Code Execution. The server's "upload-then-validate" pattern is a common anti-pattern, it creates a window where any file type exists on disk and is accessible via the web server. The attack is straightforward once you understand the pattern: flood GET requests in parallel with the upload, and at least one will hit the file before deletion. In a real bug bounty context, this would be a Critical severity finding (RCE) and would likely pay maximum bounty. This lab also shows the intersection of race conditions with other vulnerability classes, the file upload restriction is robust when tested sequentially, but completely bypassed through concurrent access.

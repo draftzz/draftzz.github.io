@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Expert"
 date: 2026-04-15
 techniques: ["Partial Construction", "Token Bypass", "PHP Type Juggling"]
-description: "Partial construction race in registration — `token[]=` matches NULL via PHP type juggling while the token is still being generated, bypassing email verification."
+description: "Partial construction race in registration - `token[]=` matches NULL via PHP type juggling while the token is still being generated, bypassing email verification."
 lang: en
 translation_key: race-condition-partial-construction
 ---
@@ -26,7 +26,7 @@ Exploit a race condition in the user registration mechanism to bypass email veri
 
 ## Context
 
-The lab has a user registration system that requires email verification via a confirmation link with a token. A race condition exists in the partial construction of the user record — between when the user is created in the database and when the confirmation token is generated, the token field is temporarily null. By sending a confirmation request with an empty array token (`token[]=`) during this window, PHP's loose comparison matches the empty array against the null value, bypassing verification entirely.
+The lab has a user registration system that requires email verification via a confirmation link with a token. A race condition exists in the partial construction of the user record, between when the user is created in the database and when the confirmation token is generated, the token field is temporarily null. By sending a confirmation request with an empty array token (`token[]=`) during this window, PHP's loose comparison matches the empty array against the null value, bypassing verification entirely.
 
 ---
 
@@ -64,12 +64,12 @@ The confirmation endpoint accepts a token parameter via query string and submits
 
 | Request | Response |
 |---|---|
-| `POST /confirm?token=1` | 400 — "Incorrect token: 1" |
-| `POST /confirm` (no token) | 400 — "Missing parameter: token" |
-| `POST /confirm?token=` (empty) | 403 — "Forbidden" (patched!) |
-| `POST /confirm?token[]=` (empty array) | 400 — "Incorrect token: Array" |
+| `POST /confirm?token=1` | 400, "Incorrect token: 1" |
+| `POST /confirm` (no token) | 400, "Missing parameter: token" |
+| `POST /confirm?token=` (empty) | 403, "Forbidden" (patched!) |
+| `POST /confirm?token[]=` (empty array) | 400, "Incorrect token: Array" |
 
-The **403 Forbidden** response on empty token indicates developers patched the obvious bypass. However, `token[]=` (array) returns "Incorrect token: Array" — meaning the server accepts and processes it. This is the attack vector.
+The **403 Forbidden** response on empty token indicates developers patched the obvious bypass. However, `token[]=` (array) returns "Incorrect token: Array", meaning the server accepts and processes it. This is the attack vector.
 
 ### Race Window Analysis
 The registration process internally follows these steps:
@@ -97,7 +97,7 @@ POST /register (user0):
 
 1. **Analyzed JavaScript** at `/resources/static/users.js` to understand the confirmation flow
 2. **Tested token parameter** variations to discover that `token[]=` (empty array) is processed by the server
-3. **Identified partial construction window** — between user creation and token generation, the token is null
+3. **Identified partial construction window**, between user creation and token generation, the token is null
 4. **Sent POST /register to Turbo Intruder** for automated parallel attacks
 5. **Configured Turbo Intruder script** to send 20 registration attempts, each with 50 parallel confirmation requests:
 
@@ -127,11 +127,11 @@ def handleResponse(req, interesting):
         table.add(req)
 ```
 
-6. **Launched attack** — 20 attempts × 51 requests = 1,020 total requests
-7. **Analyzed results** — responses with different Content-Length (2744 vs 2827) indicated successful confirmations
-8. **Logged in** as `user1` with password `teste` — confirmed email `user1@ginandjuice.shop`
-9. **Accessed Admin panel** — available due to `@ginandjuice.shop` email
-10. **Deleted user carlos** — lab solved
+6. **Launched attack**, 20 attempts × 51 requests = 1,020 total requests
+7. **Analyzed results**, responses with different Content-Length (2744 vs 2827) indicated successful confirmations
+8. **Logged in** as `user1` with password `teste`, confirmed email `user1@ginandjuice.shop`
+9. **Accessed Admin panel**, available due to `@ginandjuice.shop` email
+10. **Deleted user carlos**, lab solved
 
 ### Result
 - **Accounts confirmed via race condition:** 11 out of 20 (user1, user3, user4, user5, user6, user7, user9, user12, user13, user14, user17)
@@ -202,7 +202,7 @@ def handleResponse(req, interesting):
 
 To prevent partial construction race conditions:
 
-- **Generate token before INSERT:** Create the confirmation token first, then insert the complete user record with the token already populated — no null window
+- **Generate token before INSERT:** Create the confirmation token first, then insert the complete user record with the token already populated, no null window
 - **Use strict comparison:** In PHP, use `===` instead of `==` to prevent type juggling (`[] === null` is `false`)
 - **Validate token type:** Reject non-string token values server-side before comparison
 - **Atomic record creation:** Use a database transaction that creates the user and token in a single atomic operation
@@ -212,4 +212,4 @@ To prevent partial construction race conditions:
 
 ## Reflection
 
-This Expert-level lab combines two vulnerability classes: race conditions and PHP type juggling. The race window between user creation (token = null) and token generation is extremely small, requiring 50 parallel confirmation requests per attempt to reliably hit it. The key insight was discovering that `token[]=` bypasses the developer's patch on empty tokens — while they blocked `token=` with a 403, they didn't account for PHP's loose comparison treating an empty array as equal to null. The 55% success rate (11/20 attempts) shows that with enough parallel requests, even tiny race windows become reliably exploitable. This is the most sophisticated race condition attack in the series, combining timing exploitation with language-specific type system weaknesses.
+This Expert-level lab combines two vulnerability classes: race conditions and PHP type juggling. The race window between user creation (token = null) and token generation is extremely small, requiring 50 parallel confirmation requests per attempt to reliably hit it. The key insight was discovering that `token[]=` bypasses the developer's patch on empty tokens, while they blocked `token=` with a 403, they didn't account for PHP's loose comparison treating an empty array as equal to null. The 55% success rate (11/20 attempts) shows that with enough parallel requests, even tiny race windows become reliably exploitable. This is the most sophisticated race condition attack in the series, combining timing exploitation with language-specific type system weaknesses.

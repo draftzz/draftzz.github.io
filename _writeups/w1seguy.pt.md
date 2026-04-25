@@ -5,7 +5,7 @@ category: "Crypto"
 difficulty: "Easy"
 date: 2025-07-25
 techniques: ["XOR", "Known-Plaintext Attack", "Python Sockets"]
-description: "Ataque de texto plano conhecido em chave XOR de 5 bytes ASCII — recupere 4 bytes pelo prefixo `THM{` e brute-force no último via socket."
+description: "Ataque de texto plano conhecido em chave XOR de 5 bytes ASCII, recupere 4 bytes pelo prefixo `THM{` e brute-force no último via socket."
 lang: pt-br
 translation_key: w1seguy
 permalink: /writeups/w1seguy/pt/
@@ -30,7 +30,7 @@ Um servidor na porta 1337 envia uma flag criptografada com XOR e pede a chave de
 O código-fonte revela:
 - **Chave de 5 caracteres** composta apenas por letras ASCII (52 possibilidades por posição)
 - **Criptografia XOR** que é reversível: `A XOR B = C` significa `C XOR A = B`
-- **Texto plano conhecido**: flags sempre começam com `THM{` — 4 bytes conhecidos = 4 dos 5 caracteres da chave recuperados instantaneamente
+- **Texto plano conhecido**: flags sempre começam com `THM{`, 4 bytes conhecidos = 4 dos 5 caracteres da chave recuperados instantaneamente
 
 ## Exploração
 
@@ -100,9 +100,9 @@ s.close()
 
 ## Principais Aprendizados
 
-- **XOR é reversível** — saber texto plano + cifrado = recuperação da chave
+- **XOR é reversível**, saber texto plano + cifrado = recuperação da chave
 - **Ataque de texto plano conhecido** reduz brute force de 380M para 52 tentativas
-- **Chaves curtas são fatais** — 5 caracteres é trivialmente quebrável
+- **Chaves curtas são fatais**, 5 caracteres é trivialmente quebrável
 - **Automatize com sockets** quando o servidor gera dados novos a cada conexão
 - Os nomes das flags confirmam as técnicas: "p1alntExtAtt4ck" e "BrUt3_ForC1nG_XOR"
 

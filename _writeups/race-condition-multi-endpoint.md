@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-03-05
 techniques: ["Multi-Endpoint TOCTOU", "Cart Manipulation", "Race Condition"]
-description: "Multi-endpoint race condition between `/cart` and `/cart/checkout` — adding a $1,337 jacket after the balance check has passed."
+description: "Multi-endpoint race condition between `/cart` and `/cart/checkout`, adding a $1,337 jacket after the balance check has passed."
 lang: en
 translation_key: race-condition-multi-endpoint
 ---
@@ -104,13 +104,13 @@ Race condition attack:
 4. **Modified POST /cart** body to add the Leather Jacket: `productId=1&redir=PRODUCT&quantity=1`
 5. **Created tab group** with requests in parallel attack configuration:
    - Tab 1: POST /cart (add Leather Jacket, productId=1)
-   - Tab 2: POST /cart (add Leather Jacket, productId=1) — duplicate for higher success rate
-   - Tab 3: POST /cart (add Leather Jacket, productId=1) — duplicate for higher success rate
+   - Tab 2: POST /cart (add Leather Jacket, productId=1), duplicate for higher success rate
+   - Tab 3: POST /cart (add Leather Jacket, productId=1), duplicate for higher success rate
    - Tab 4: POST /cart/checkout (finalize purchase)
 6. **Added gift card** ($10) to cart via browser before each attempt
 7. **Sent group in parallel** (single-packet attack)
-8. **Repeated multiple attempts** — failed attempts purchased gift cards, which were redeemed to recover credit
-9. **Successfully exploited** — the checkout validated the balance against the cheap gift card, but the parallel POST /cart requests added the Leather Jacket before order confirmation
+8. **Repeated multiple attempts**, failed attempts purchased gift cards, which were redeemed to recover credit
+9. **Successfully exploited**, the checkout validated the balance against the cheap gift card, but the parallel POST /cart requests added the Leather Jacket before order confirmation
 
 ### Result
 - **Item purchased:** Lightweight "l33t" Leather Jacket ($1,337.00)
@@ -138,7 +138,7 @@ Race condition attack:
 |---|---|
 | Multi-Endpoint Race Condition | Exploiting race windows between two different endpoints that share state |
 | Connection Warming | Sending a preliminary request to reduce latency on the first real request |
-| Retry Strategy | Failed attempts can still be useful — gift cards purchased can be redeemed to fund retries |
+| Retry Strategy | Failed attempts can still be useful, gift cards purchased can be redeemed to fund retries |
 | Request Duplication | Duplicating the cart modification request increases chances of hitting the race window |
 | Negative Balance | Successful exploitation resulted in negative credit, demonstrating the severity of the financial impact |
 
@@ -174,10 +174,10 @@ Race condition attack:
 
 ## Errors & Lessons Learned
 
-1. **HTTP protocol mismatch** — Creating a manual GET / tab for connection warming caused "Cannot send group" error because it defaulted to HTTP/1.1 while other tabs were HTTP/2. Fix: ensure all tabs in a group use the same protocol version, or skip connection warming.
-2. **Burp "Stream failed to close" error** — HTTP/2 bug in Burp Community Edition. Fix: refresh the page or retry; usually works on second attempt.
-3. **Multiple attempts needed** — Unlike limit-overrun (Lab 1), multi-endpoint race conditions have a smaller race window. Duplicating the POST /cart request and retrying multiple times was necessary.
-4. **Gift card recovery strategy** — Failed attempts that buy gift cards aren't wasted — redeem the cards to recover credit for the next attempt. This makes the attack sustainable.
+1. **HTTP protocol mismatch**. Creating a manual GET / tab for connection warming caused "Cannot send group" error because it defaulted to HTTP/1.1 while other tabs were HTTP/2. Fix: ensure all tabs in a group use the same protocol version, or skip connection warming.
+2. **Burp "Stream failed to close" error**. HTTP/2 bug in Burp Community Edition. Fix: refresh the page or retry; usually works on second attempt.
+3. **Multiple attempts needed**. Unlike limit-overrun (Lab 1), multi-endpoint race conditions have a smaller race window. Duplicating the POST /cart request and retrying multiple times was necessary.
+4. **Gift card recovery strategy**. Failed attempts that buy gift cards aren't wasted, redeem the cards to recover credit for the next attempt. This makes the attack sustainable.
 
 ---
 
@@ -194,4 +194,4 @@ To prevent multi-endpoint race conditions in checkout flows:
 
 ## Reflection
 
-This lab demonstrates a more sophisticated race condition than simple limit overruns. Instead of exploiting a single endpoint, the attack targets the gap between two different endpoints that share state. The checkout endpoint validates the balance based on current cart contents, but doesn't lock the cart — allowing parallel requests to modify it during processing. The key insight is that duplicating the attack request increases success probability, and failed attempts can be recycled through gift card redemption. The negative balance result (-$2,584.00) demonstrates the critical financial impact this class of vulnerability can have in real-world e-commerce applications.
+This lab demonstrates a more sophisticated race condition than simple limit overruns. Instead of exploiting a single endpoint, the attack targets the gap between two different endpoints that share state. The checkout endpoint validates the balance based on current cart contents, but doesn't lock the cart, allowing parallel requests to modify it during processing. The key insight is that duplicating the attack request increases success probability, and failed attempts can be recycled through gift card redemption. The negative balance result (-$2,584.00) demonstrates the critical financial impact this class of vulnerability can have in real-world e-commerce applications.

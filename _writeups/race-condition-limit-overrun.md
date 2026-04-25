@@ -5,7 +5,7 @@ category: "Race Conditions"
 difficulty: "Apprentice"
 date: 2026-02-10
 techniques: ["TOCTOU", "Coupon Abuse", "Single-Packet Attack"]
-description: "Limit overrun race on coupon redemption — applying PROMO20 multiple times in parallel to take a $1,337 leather jacket for $30."
+description: "Limit overrun race on coupon redemption, applying PROMO20 multiple times in parallel to take a $1,337 leather jacket for $30."
 lang: en
 translation_key: race-condition-limit-overrun
 ---
@@ -28,7 +28,7 @@ Purchase a Lightweight "l33t" Leather Jacket by exploiting a race condition in t
 
 The lab simulates an online store with a coupon system. A promotional code `PROMO20` offers a 20% discount, intended for single use per user. The purchasing flow contains a TOCTOU (Time-of-Check-to-Time-of-Use) vulnerability: the server checks if the coupon was already applied, applies the discount, and only then marks it as used. This race window allows concurrent requests to bypass the single-use restriction.
 
-The target item costs $1,337.00 and the user has only $50.00 in store credit — making a legitimate purchase impossible even with one application of the 20% coupon.
+The target item costs $1,337.00 and the user has only $50.00 in store credit, making a legitimate purchase impossible even with one application of the 20% coupon.
 
 ---
 
@@ -61,7 +61,7 @@ csrf=LL7IIA0wttc3VMi1NFe9MUIN1U8npyeN&coupon=PROMO20
 ### Observations
 - Applying the coupon once gives a 20% discount ($267.40 off)
 - Applying it a second time sequentially returns "Coupon already applied"
-- The server validates coupon usage **before** updating the database — classic TOCTOU pattern
+- The server validates coupon usage **before** updating the database, classic TOCTOU pattern
 
 ---
 
@@ -80,17 +80,17 @@ Thread 2: CHECK (coupon valid?) → YES → APPLY discount → UPDATE (mark used
 
 1. **Login** as `wiener:peter` and add the Lightweight "l33t" Leather Jacket ($1,337.00) to cart
 2. **Apply coupon** `PROMO20` normally via the browser to capture the request
-3. **Send to Repeater** — right-click the `POST /cart/coupon` request in HTTP History → Send to Repeater
+3. **Send to Repeater**, right-click the `POST /cart/coupon` request in HTTP History → Send to Repeater
 4. **Remove the applied coupon** in the browser before the attack
-5. **Create tab group** — right-click the Repeater tab → Create tab group → name "race"
-6. **Duplicate tabs** — right-click → Duplicate tab, repeat until 20 tabs total
-7. **Send group in parallel** — click the Send dropdown → "Send group in parallel (single-packet attack)"
+5. **Create tab group**, right-click the Repeater tab → Create tab group → name "race"
+6. **Duplicate tabs**, right-click → Duplicate tab, repeat until 20 tabs total
+7. **Send group in parallel**, click the Send dropdown → "Send group in parallel (single-packet attack)"
 8. **Analyze responses:**
-   - 13 out of 20 requests returned 302 (success — coupon applied)
+   - 13 out of 20 requests returned 302 (success, coupon applied)
    - 7 out of 20 returned "Coupon already applied"
-9. **Check cart** — refreshed the browser, total dropped to $855.68 (first round)
-10. **Repeat** — removed coupon, sent another parallel batch, total dropped to $30.09
-11. **Place order** — purchased the $1,337.00 jacket for $30.09 with $50.00 credit
+9. **Check cart**, refreshed the browser, total dropped to $855.68 (first round)
+10. **Repeat**, removed coupon, sent another parallel batch, total dropped to $30.09
+11. **Place order**, purchased the $1,337.00 jacket for $30.09 with $50.00 credit
 
 ### Result
 - **Original price:** $1,337.00
@@ -155,7 +155,7 @@ Thread 2: CHECK (coupon valid?) → YES → APPLY discount → UPDATE (mark used
 
 To prevent this race condition, the application should implement one of:
 
-- **Atomic conditional update:** `UPDATE coupons SET used = true WHERE code = 'PROMO20' AND used = false` — single operation, no race window
+- **Atomic conditional update:** `UPDATE coupons SET used = true WHERE code = 'PROMO20' AND used = false`, single operation, no race window
 - **Database-level locking:** `SELECT FOR UPDATE` to lock the coupon row during the transaction
 - **Idempotency keys:** Require a unique key per request, reject duplicates server-side
 
@@ -163,4 +163,4 @@ To prevent this race condition, the application should implement one of:
 
 ## Reflection
 
-This lab demonstrates the most common and profitable race condition pattern in bug bounty: limit overrun on coupon/discount redemption. The same vulnerability pattern has paid $1,500 (Reverb.com), $216 (Dropbox), and $200 (Instacart) on HackerOne. The key takeaway is that any endpoint with a CHECK → ACTION → UPDATE flow without proper locking is potentially vulnerable. The Burp Repeater's "Send group in parallel" feature makes exploitation trivial — no Turbo Intruder or custom scripts needed for this class of vulnerability.
+This lab demonstrates the most common and profitable race condition pattern in bug bounty: limit overrun on coupon/discount redemption. The same vulnerability pattern has paid $1,500 (Reverb.com), $216 (Dropbox), and $200 (Instacart) on HackerOne. The key takeaway is that any endpoint with a CHECK → ACTION → UPDATE flow without proper locking is potentially vulnerable. The Burp Repeater's "Send group in parallel" feature makes exploitation trivial, no Turbo Intruder or custom scripts needed for this class of vulnerability.

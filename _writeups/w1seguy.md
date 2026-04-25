@@ -5,7 +5,7 @@ category: "Crypto"
 difficulty: "Easy"
 date: 2025-07-25
 techniques: ["XOR", "Known-Plaintext Attack", "Python Sockets"]
-description: "Known-plaintext XOR attack on a 5-byte ASCII key — recover 4 bytes from the `THM{` prefix and brute-force the last over a socket."
+description: "Known-plaintext XOR attack on a 5-byte ASCII key, recover 4 bytes from the `THM{` prefix and brute-force the last over a socket."
 lang: en
 translation_key: w1seguy
 ---
@@ -29,7 +29,7 @@ A server on port 1337 sends an XOR-encrypted flag and asks for the encryption ke
 The source code reveals:
 - **5-character key** composed of ASCII letters only (52 possible chars per position)
 - **XOR encryption** which is reversible: `A XOR B = C` means `C XOR A = B`
-- **Known plaintext**: flags always start with `THM{` — 4 known bytes = 4 of 5 key characters recovered instantly
+- **Known plaintext**: flags always start with `THM{`, 4 known bytes = 4 of 5 key characters recovered instantly
 
 ## Exploitation
 
@@ -99,9 +99,9 @@ s.close()
 
 ## Key Takeaways
 
-- **XOR is reversible** — knowing plaintext + ciphertext = key recovery
+- **XOR is reversible**, knowing plaintext + ciphertext = key recovery
 - **Known-plaintext attack** reduces brute force from 380M to 52 attempts
-- **Short keys are fatal** — 5 chars is trivially breakable
+- **Short keys are fatal**, 5 chars is trivially breakable
 - **Automate with sockets** when the server generates fresh data each connection
 - The flag names confirm the techniques: "p1alntExtAtt4ck" and "BrUt3_ForC1nG_XOR"
 

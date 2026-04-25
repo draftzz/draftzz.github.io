@@ -5,7 +5,7 @@ category: "Reverse Engineering"
 difficulty: "Easy"
 date: 2025-07-12
 techniques: ["Static Analysis", "strings", "grep"]
-description: "Análise estática de um binário PE32 do Tetris — extraindo uma flag em texto puro com `strings` e `grep`, sem ofuscação alguma."
+description: "Análise estática de um binário PE32 do Tetris, extraindo uma flag em texto puro com `strings` e `grep`, sem ofuscação alguma."
 lang: pt-br
 translation_key: the-game
 permalink: /writeups/the-game/pt/
@@ -39,14 +39,14 @@ strings Tetrix.exe | grep -iE "THM\{|CTF\{|flag\{"
 # THM{I_CAN_READ_IT_ALL}
 ```
 
-A flag estava armazenada como string em texto puro dentro do binário — sem ofuscação, sem criptografia.
+A flag estava armazenada como string em texto puro dentro do binário, sem ofuscação, sem criptografia.
 
 ## Principais Aprendizados
 
-- **`strings`** é sempre a primeira ferramenta para análise de binário — extrai texto legível de qualquer arquivo
+- **`strings`** é sempre a primeira ferramenta para análise de binário, extrai texto legível de qualquer arquivo
 - **`grep -iE`** habilita busca case-insensitive com regex estendida (padrões com OR)
 - **`file`** identifica o tipo real do arquivo independente da extensão
-- Nunca use `cat` em arquivos binários — gera lixo na tela porque tenta interpretar bytes como texto
+- Nunca use `cat` em arquivos binários, gera lixo na tela porque tenta interpretar bytes como texto
 
 ## MITRE ATT&CK
 

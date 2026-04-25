@@ -5,11 +5,10 @@ category: "Crypto"
 difficulty: "Easy"
 date: 2025-07-25
 techniques: ["XOR", "Known-Plaintext Attack", "Python Sockets"]
+description: "Known-plaintext XOR attack on a 5-byte ASCII key — recover 4 bytes from the `THM{` prefix and brute-force the last over a socket."
+lang: en
+translation_key: w1seguy
 ---
-
-[← Back to all writeups](/)
-
-# W1seGuy - TryHackMe
 
 | Info | Detail |
 |------|--------|

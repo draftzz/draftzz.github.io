@@ -5,11 +5,10 @@ category: "Hardware"
 difficulty: "Easy"
 date: 2025-09-10
 techniques: ["VHDL Analysis", "Hardware Backdoor", "TPM Exploitation"]
+description: "Reading VHDL source to find a hardcoded backdoor pattern that bypasses XOR encryption and leaks the TPM's secret key."
+lang: en
+translation_key: tpm-backdoor
 ---
-
-[← Back to all writeups](/)
-
-# TPM Backdoor - Hack The Box
 
 | Info | Detail |
 |------|--------|

@@ -5,11 +5,10 @@ category: "Web"
 difficulty: "Very Easy"
 date: 2025-08-15
 techniques: ["XXE Injection", "Local File Inclusion", "XML Parsing"]
+description: "XXE injection on a Fallout-themed Pip-Boy ROM firmware uploader — reading /flag.txt off the server filesystem via XML external entities."
+lang: en
+translation_key: jailbreak
 ---
-
-[← Back to all writeups](/)
-
-# Jailbreak - Hack The Box CTF Try Out
 
 | Info | Detail |
 |------|--------|

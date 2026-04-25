@@ -5,6 +5,9 @@ category: "Race Conditions"
 difficulty: "Apprentice"
 date: 2026-02-15
 techniques: ["TOCTOU", "Brute-Force", "Single-Packet Attack"]
+description: "Single-packet HTTP/2 race condition bypassing login rate limits — 30 password attempts slip through the TOCTOU check before any counter increments."
+lang: en
+translation_key: race-condition-bypassing-rate-limits
 ---
 
 ## Platform

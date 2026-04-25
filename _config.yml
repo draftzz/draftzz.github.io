@@ -11,11 +11,16 @@ linkedin: bruno-moreira-6250901b4
 baseurl: ""
 url: "https://draftzz.github.io"
 
+# Default language for the site (EN). pt-br versions live at /writeups/<slug>/pt/.
+default_lang: en
+languages: [en, pt-br]
+
 # === Custom theme (no `theme:` key — using local _layouts/_includes) ===
 
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
 
 markdown: kramdown
 highlighter: rouge
@@ -23,12 +28,17 @@ kramdown:
   syntax_highlighter: rouge
   syntax_highlighter_opts:
     css_class: 'highlight'
+  toc_levels: '2..3'
+  auto_ids: true
 
-# Treat /writeups/ as a real Jekyll collection
+# Treat /writeups/ and /bugbounty/ as real Jekyll collections
 collections:
   writeups:
     output: true
     permalink: /writeups/:name/
+  bugbounty:
+    output: true
+    permalink: /bugbounty/:name/
 
 defaults:
   - scope:
@@ -36,6 +46,13 @@ defaults:
       type: writeups
     values:
       layout: writeup
+      lang: en
+  - scope:
+      path: ""
+      type: bugbounty
+    values:
+      layout: writeup
+      lang: en
 
 # Don't process these
 exclude:

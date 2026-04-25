@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ page.lang | default: site.default_lang | default: 'en' }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,10 +21,50 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="{{ site.title }}">
+  <meta property="og:locale" content="{% if page.lang == 'pt-br' %}pt_BR{% else %}en_US{% endif %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% if page.title and page.url != '/' %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
   <meta name="twitter:description" content="{{ page.description | default: site.description }}">
   <meta name="twitter:image" content="{{ '/assets/img/og-image.png' | absolute_url }}">
+
+  {% comment %} hreflang alternates for the same content in another language {% endcomment %}
+  {% if page.translation_key %}
+    {% for w in site.writeups %}
+      {% if w.translation_key == page.translation_key %}
+        <link rel="alternate" hreflang="{{ w.lang | default: 'en' }}" href="{{ w.url | absolute_url }}">
+      {% endif %}
+    {% endfor %}
+    <link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
+  {% endif %}
+
+  {% comment %} JSON-LD Article schema for writeups {% endcomment %}
+  {% if page.layout == 'writeup' %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": {{ page.title | jsonify }},
+    "description": {{ page.description | default: site.description | jsonify }},
+    "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+    "inLanguage": "{{ page.lang | default: 'en' }}",
+    "keywords": {{ page.techniques | default: empty | jsonify }},
+    "author": {
+      "@type": "Person",
+      "name": {{ site.author | jsonify }},
+      "url": "https://github.com/{{ site.github_username }}"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": {{ site.author | jsonify }}
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ page.url | absolute_url }}"
+    },
+    "image": "{{ '/assets/img/og-image.png' | absolute_url }}"
+  }
+  </script>
+  {% endif %}
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

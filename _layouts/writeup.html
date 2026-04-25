@@ -1,10 +1,12 @@
 {% include head.html %}
-<body>
+<body data-page-lang="{{ page.lang | default: 'en' }}">
   {% include nav.html %}
 
-  <main class="container container--narrow">
+  <main class="container container--narrow writeup-main">
     <article class="writeup">
-      <a href="{{ '/' | relative_url }}#writeups" class="back">← all writeups</a>
+      <a href="{{ '/' | relative_url }}#writeups" class="back">
+        {% if page.lang == 'pt-br' %}← todos os writeups{% else %}← all writeups{% endif %}
+      </a>
 
       <header class="writeup__header">
         <div class="writeup__meta">
@@ -13,11 +15,12 @@
           {% if page.difficulty %}<span class="badge badge--diff badge--diff-{{ page.difficulty | slugify }}">{{ page.difficulty }}</span>{% endif %}
         </div>
         <h1 class="writeup__title">{{ page.title }}</h1>
+        {% if page.description %}<p class="writeup__lede">{{ page.description }}</p>{% endif %}
         <div class="writeup__sub">
           {% if page.date %}<span><span class="hero__prompt">$</span> date {{ page.date | date: "%Y-%m-%d" }}</span>{% endif %}
           {% assign words = content | strip_html | number_of_words %}
           {% assign rt = words | divided_by: 220 | plus: 1 %}
-          <span><span class="hero__prompt">$</span> wc -w {{ words }} ({{ rt }} min read)</span>
+          <span><span class="hero__prompt">$</span> wc -w {{ words }} ({{ rt }} {% if page.lang == 'pt-br' %}min de leitura{% else %}min read{% endif %})</span>
         </div>
         {% if page.techniques %}
         <ul class="card__tags writeup__tags">
@@ -26,19 +29,72 @@
           {% endfor %}
         </ul>
         {% endif %}
+
+        {% comment %} Sister translation link if exists {% endcomment %}
+        {% assign sister = nil %}
+        {% if page.translation_key %}
+          {% for w in site.writeups %}
+            {% if w.translation_key == page.translation_key and w.lang != page.lang %}
+              {% assign sister = w %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+        {% if sister %}
+          <a class="writeup__lang-switch" href="{{ sister.url | relative_url }}">
+            {% if page.lang == 'en' %}🇧🇷 ler em português{% else %}🇺🇸 read in english{% endif %}
+          </a>
+        {% endif %}
       </header>
 
-      <div class="writeup__body">
-        {{ content }}
+      <div class="writeup__layout">
+        <aside class="toc" hidden aria-label="{% if page.lang == 'pt-br' %}Sumário{% else %}Table of contents{% endif %}">
+          <div class="toc__title">{% if page.lang == 'pt-br' %}# sumário{% else %}# contents{% endif %}</div>
+          <nav class="toc__nav" id="toc-nav" aria-label="{% if page.lang == 'pt-br' %}Sumário{% else %}Table of contents{% endif %}"></nav>
+        </aside>
+
+        <div class="writeup__body">
+          {{ content }}
+        </div>
       </div>
 
+      {% comment %} Related writeups: same lang, shared techniques, sorted by overlap count {% endcomment %}
+      {% assign related = "" | split: "" %}
+      {% for w in site.writeups %}
+        {% if w.url != page.url and w.lang == page.lang %}
+          {% assign overlap = 0 %}
+          {% for t in w.techniques %}{% if page.techniques contains t %}{% assign overlap = overlap | plus: 1 %}{% endif %}{% endfor %}
+          {% if overlap > 0 %}{% assign related = related | push: w %}{% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if related.size > 0 %}
+      <section class="related">
+        <h3 class="related__title">{% if page.lang == 'pt-br' %}# writeups relacionados{% else %}# related writeups{% endif %}</h3>
+        <div class="related__grid">
+          {% for r in related limit:3 %}
+            <a class="card card--small" href="{{ r.url | relative_url }}">
+              <div class="card__top">
+                <span class="badge badge--platform badge--{{ r.platform | slugify }}">{{ r.platform }}</span>
+                <span class="badge badge--diff badge--diff-{{ r.difficulty | slugify }}">{{ r.difficulty }}</span>
+              </div>
+              <h4 class="card__title">{{ r.title }}</h4>
+              <p class="card__category"><span class="card__hash">›</span> {{ r.category }}</p>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+      {% endif %}
+
       <footer class="writeup__footer">
-        <a href="{{ '/' | relative_url }}#writeups" class="back">← all writeups</a>
+        <a href="{{ '/' | relative_url }}#writeups" class="back">
+          {% if page.lang == 'pt-br' %}← todos os writeups{% else %}← all writeups{% endif %}
+        </a>
       </footer>
     </article>
   </main>
 
   {% include footer.html %}
   <script src="{{ '/assets/js/copy-code.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/toc.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/lang.js' | relative_url }}"></script>
 </body>
 </html>

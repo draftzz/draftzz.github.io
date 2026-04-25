@@ -5,11 +5,10 @@ category: "Web"
 difficulty: "Very Easy"
 date: 2025-08-20
 techniques: ["OS Command Injection", "Shell Escape"]
+description: "OS command injection via PHP `exec()` — escaping single quotes in a `date '+...'` template to chain `cat /flag`."
+lang: en
+translation_key: web-time
 ---
-
-[← Back to all writeups](/)
-
-# Web Time - Hack The Box CTF Try Out
 
 | Info | Detail |
 |------|--------|

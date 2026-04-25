@@ -3,15 +3,23 @@
   const filters = Array.from(document.querySelectorAll('.filter'));
   const search = document.getElementById('search');
   const noResults = document.getElementById('no-results');
-  let activeFilter = 'all';
+
+  const active = { category: 'all', platform: 'all' };
   let query = '';
 
+  function currentLang() {
+    return (window.__draftzzLang && window.__draftzzLang()) || 'en';
+  }
+
   function apply() {
+    const lang = currentLang();
     let visibleCount = 0;
     cards.forEach(card => {
-      const matchesFilter = activeFilter === 'all' || card.dataset.category === activeFilter;
+      const matchesLang = card.dataset.lang === lang;
+      const matchesCategory = active.category === 'all' || card.dataset.category === active.category;
+      const matchesPlatform = active.platform === 'all' || card.dataset.platform === active.platform;
       const matchesQuery = !query || card.dataset.search.includes(query);
-      const show = matchesFilter && matchesQuery;
+      const show = matchesLang && matchesCategory && matchesPlatform && matchesQuery;
       card.hidden = !show;
       if (show) visibleCount++;
     });
@@ -20,9 +28,14 @@
 
   filters.forEach(btn => {
     btn.addEventListener('click', () => {
-      filters.forEach(b => b.classList.remove('is-active'));
+      const type = btn.dataset.filterType || 'category';
+      filters.forEach(b => {
+        if ((b.dataset.filterType || 'category') === type) {
+          b.classList.remove('is-active');
+        }
+      });
       btn.classList.add('is-active');
-      activeFilter = btn.dataset.filter;
+      active[type] = btn.dataset.filter;
       apply();
     });
   });
@@ -33,4 +46,10 @@
       apply();
     });
   }
+
+  document.addEventListener('langchange', apply);
+
+  // Initial pass once lang.js has set preference
+  document.addEventListener('DOMContentLoaded', apply);
+  apply();
 })();

@@ -5,6 +5,9 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-03-05
 techniques: ["Multi-Endpoint TOCTOU", "Cart Manipulation", "Race Condition"]
+description: "Multi-endpoint race condition between `/cart` and `/cart/checkout` — adding a $1,337 jacket after the balance check has passed."
+lang: en
+translation_key: race-condition-multi-endpoint
 ---
 
 ## Platform

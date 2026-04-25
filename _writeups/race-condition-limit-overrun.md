@@ -5,6 +5,9 @@ category: "Race Conditions"
 difficulty: "Apprentice"
 date: 2026-02-10
 techniques: ["TOCTOU", "Coupon Abuse", "Single-Packet Attack"]
+description: "Limit overrun race on coupon redemption — applying PROMO20 multiple times in parallel to take a $1,337 leather jacket for $30."
+lang: en
+translation_key: race-condition-limit-overrun
 ---
 
 ## Platform

@@ -5,11 +5,10 @@ category: "Reverse Engineering"
 difficulty: "Easy"
 date: 2025-07-12
 techniques: ["Static Analysis", "strings", "grep"]
+description: "Static analysis of a Tetris PE32 binary — extracting a plaintext flag with `strings` and `grep`, no obfuscation in sight."
+lang: en
+translation_key: the-game
 ---
-
-[← Back to all writeups](/)
-
-# The Game - TryHackMe
 
 | Info | Detail |
 |------|--------|

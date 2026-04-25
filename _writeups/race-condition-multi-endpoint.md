@@ -140,7 +140,7 @@ Race condition attack:
 | Connection Warming | Sending a preliminary request to reduce latency on the first real request |
 | Retry Strategy | Failed attempts can still be useful, gift cards purchased can be redeemed to fund retries |
 | Request Duplication | Duplicating the cart modification request increases chances of hitting the race window |
-| Negative Balance | Successful exploitation resulted in negative credit, demonstrating the severity of the financial impact |
+| Negative Balance | Successful exploitation drove the user's credit negative, showing the financial blast radius of this bug class |
 
 ---
 
@@ -194,4 +194,4 @@ To prevent multi-endpoint race conditions in checkout flows:
 
 ## Reflection
 
-This lab demonstrates a more sophisticated race condition than simple limit overruns. Instead of exploiting a single endpoint, the attack targets the gap between two different endpoints that share state. The checkout endpoint validates the balance based on current cart contents, but doesn't lock the cart, allowing parallel requests to modify it during processing. The key insight is that duplicating the attack request increases success probability, and failed attempts can be recycled through gift card redemption. The negative balance result (-$2,584.00) demonstrates the critical financial impact this class of vulnerability can have in real-world e-commerce applications.
+Gap between two endpoints that share state. Checkout validates the cart total but doesn't lock the cart, so parallel POSTs to /cart slip in after the balance check passed. Duplicating the modification request raised the hit rate. Failed attempts that bought gift cards funded the next round, ending at -$2,584 negative balance. The financial impact alone says everything about why e-commerce checkouts need atomic flows.

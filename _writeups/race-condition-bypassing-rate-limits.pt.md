@@ -196,4 +196,4 @@ Para prevenir essa race condition no rate limiting:
 
 ## Reflexão
 
-Esse lab demonstra como race conditions podem burlar controles de segurança, não só lógica de negócio. Rate limiting é uma defesa crítica contra ataques de brute force, mas quando o check-and-increment não é atômico, um atacante pode enviar todas as tentativas simultaneamente e burlar tudo. O Turbo Intruder com Engine.BURP2 tornou trivial, todas as 30 senhas testadas em um único pacote, e a correta identificada pelo status code único de 302. O problema do token CSRF foi uma complicação realista que também ocorre em testes do mundo real, sempre garanta tokens frescos antes de lançar ataques paralelos.
+Race conditions não quebram só lógica de negócio, quebram controle de segurança também. Quando o check-and-increment do rate limit não é atômico, as 30 tentativas passam pelo check antes do contador subir. Engine.BURP2 transforma o ataque em one-shot. Tokens CSRF estão atrelados à sessão; renove logo antes de disparar o batch paralelo.

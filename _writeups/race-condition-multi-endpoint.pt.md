@@ -141,7 +141,7 @@ Ataque de race condition:
 | Connection Warming | Enviar uma requisição preliminar para reduzir latência na primeira requisição real |
 | Estratégia de Retry | Tentativas falhadas ainda podem ser úteis, gift cards comprados podem ser resgatados pra fundar novas tentativas |
 | Duplicação de Requisição | Duplicar a requisição de modificação do carrinho aumenta as chances de pegar a janela de race |
-| Saldo Negativo | A exploração bem-sucedida resultou em crédito negativo, demonstrando a severidade do impacto financeiro |
+| Saldo Negativo | A exploração deixou o crédito do usuário negativo, mostrando o tamanho do estrago dessa classe de bug |
 
 ---
 
@@ -195,4 +195,4 @@ Para prevenir race conditions multi-endpoint em fluxos de checkout:
 
 ## Reflexão
 
-Esse lab demonstra uma race condition mais sofisticada do que limit overruns simples. Em vez de explorar um único endpoint, o ataque tem como alvo o gap entre dois endpoints diferentes que compartilham estado. O endpoint de checkout valida o saldo baseado no conteúdo atual do carrinho, mas não trava o carrinho, permitindo que requisições paralelas o modifiquem durante o processamento. O insight chave é que duplicar a requisição de ataque aumenta a probabilidade de sucesso, e tentativas falhadas podem ser recicladas via resgate de gift card. O resultado de saldo negativo (-$2.584,00) demonstra o impacto financeiro crítico que essa classe de vulnerabilidade pode ter em aplicações de e-commerce do mundo real.
+Gap entre dois endpoints que compartilham estado. O checkout valida o total do carrinho mas não trava o carrinho, então POSTs paralelos pra /cart entram depois do check de saldo. Duplicar a requisição de modificação aumentou a taxa de hit. Tentativas falhadas que compraram gift cards bancaram a próxima rodada, terminando em saldo negativo de -$2.584. O impacto financeiro sozinho já justifica por que checkout de e-commerce precisa de fluxo atômico.

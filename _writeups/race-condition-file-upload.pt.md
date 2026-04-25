@@ -198,4 +198,4 @@ Para prevenir race conditions em file upload:
 
 ## Reflexão
 
-Esse lab demonstra como race conditions podem escalar restrições de file upload pra Remote Code Execution completa. O padrão "salvar-depois-validar" do servidor é um anti-padrão comum, cria uma janela onde qualquer tipo de arquivo existe em disco e é acessível via web server. O ataque é direto uma vez que você entende o padrão: bombardear GETs em paralelo com o upload, e pelo menos um vai pegar o arquivo antes da deleção. Em contexto de bug bounty real, isso seria um achado de severidade Crítica (RCE) e provavelmente pagaria o bounty máximo. Esse lab também mostra a interseção de race conditions com outras classes de vulnerabilidade, a restrição de file upload é robusta quando testada sequencialmente, mas completamente burlada via acesso concorrente.
+Salvar antes de validar é o anti-padrão. Enquanto o arquivo fica no disco esperando o type check, GETs paralelos pegam ele e executam o PHP. RCE só com timing, sem precisar de truque de upload-bypass. A mesma restrição que segura em teste sequencial desmorona sob acesso concorrente. Classe de severidade Crítica em bug bounty.

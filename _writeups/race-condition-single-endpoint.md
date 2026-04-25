@@ -174,4 +174,4 @@ To prevent single-endpoint race conditions in email change:
 
 ## Reflection
 
-This lab demonstrates the most subtle class of race condition, hidden multi-step sequences within a single endpoint. Unlike limit overruns or multi-endpoint attacks, there's no obvious sign that the endpoint is vulnerable. The internal steps (generate token → associate email → send confirmation) happen invisibly, and the race window between them is extremely small. The attack required ~30 attempts to succeed, which highlights that single-endpoint race conditions need persistence. In a real bug bounty context, this would be a High to Critical finding because it enables account takeover, one of the most impactful vulnerability classes.
+Hardest class of race condition to spot: the multi-step sequence is hidden inside one handler. The endpoint generates a token, binds it to the email, then sends; the race between bind and send is what lets the victim's token land in the attacker's inbox. ~30 attempts to hit the window. Account takeover at High to Critical, one of the most impactful classes you'll find on a program.

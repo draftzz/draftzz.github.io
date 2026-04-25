@@ -175,4 +175,4 @@ Para prevenir race conditions single-endpoint na troca de email:
 
 ## Reflexão
 
-Esse lab demonstra a classe mais sutil de race condition, sequências multi-step escondidas dentro de um único endpoint. Diferente de limit overruns ou ataques multi-endpoint, não tem sinal óbvio de que o endpoint é vulnerável. Os passos internos (gerar token → associar email → enviar confirmação) acontecem invisivelmente, e a janela de race entre eles é extremamente pequena. O ataque exigiu ~30 tentativas pra dar certo, o que destaca que race conditions single-endpoint precisam de persistência. Em contexto de bug bounty real, isso seria um achado High a Critical porque permite account takeover, uma das classes de vulnerabilidade mais impactantes.
+Classe mais difícil de farejar: a sequência multi-step fica escondida dentro de um handler só. O endpoint gera um token, faz o bind com o email, depois envia; a race entre bind e envio é o que faz o token da vítima cair no inbox do atacante. ~30 tentativas pra pegar a janela. Account takeover em High a Critical, uma das classes mais impactantes que você acha num programa.

@@ -162,4 +162,4 @@ Para prevenir essa race condition, a aplicação deveria implementar uma das seg
 
 ## Reflexão
 
-Esse lab demonstra o padrão mais comum e lucrativo de race condition em bug bounty: limit overrun em redenção de cupom/desconto. O mesmo padrão de vulnerabilidade pagou $1.500 (Reverb.com), $216 (Dropbox) e $200 (Instacart) no HackerOne. O takeaway-chave é que qualquer endpoint com fluxo CHECK → ACTION → UPDATE sem locking adequado é potencialmente vulnerável. O recurso "Send group in parallel" do Burp Repeater torna a exploração trivial, sem precisar de Turbo Intruder ou scripts customizados pra essa classe de vulnerabilidade.
+A race condition mais comum e lucrativa em bug bounty: limit overrun em redenção de cupom/desconto. A mesma falha pagou $1.500 na Reverb, $216 na Dropbox, $200 na Instacart no HackerOne. Qualquer endpoint com CHECK → ACTION → UPDATE sem locking adequado é alvo. Burp Repeater com "Send group in parallel" basta; não precisa de script no Turbo Intruder.

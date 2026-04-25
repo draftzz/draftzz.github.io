@@ -197,4 +197,4 @@ To prevent file upload race conditions:
 
 ## Reflection
 
-This lab demonstrates how race conditions can escalate file upload restrictions into full Remote Code Execution. The server's "upload-then-validate" pattern is a common anti-pattern, it creates a window where any file type exists on disk and is accessible via the web server. The attack is straightforward once you understand the pattern: flood GET requests in parallel with the upload, and at least one will hit the file before deletion. In a real bug bounty context, this would be a Critical severity finding (RCE) and would likely pay maximum bounty. This lab also shows the intersection of race conditions with other vulnerability classes, the file upload restriction is robust when tested sequentially, but completely bypassed through concurrent access.
+Upload-then-validate is the anti-pattern. While the file sits on disk waiting for the type check, parallel GETs hit it and execute the PHP. RCE via timing alone, no upload-bypass tricks needed. The same restriction that holds up under sequential testing falls apart under concurrent access. Critical-severity bounty class.

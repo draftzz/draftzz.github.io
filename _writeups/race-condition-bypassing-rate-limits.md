@@ -195,4 +195,4 @@ To prevent this race condition in rate limiting:
 
 ## Reflection
 
-This lab demonstrates how race conditions can bypass security controls, not just business logic. Rate limiting is a critical defense against brute force attacks, but when the check-and-increment isn't atomic, an attacker can send all attempts simultaneously and bypass it entirely. The Turbo Intruder with Engine.BURP2 made this trivial, all 30 passwords were tested in a single packet, and the correct one was identified by its unique 302 status code. The CSRF token issue was a realistic complication that would also occur in real-world testing, always ensure fresh tokens before launching parallel attacks.
+Race conditions don't only break business logic, they break security controls too. When the rate limit's check-and-increment isn't atomic, all 30 attempts pass the check before any counter ticks. Engine.BURP2 turned this into a one-shot exploit. CSRF tokens are tied to the session; refresh them right before firing the parallel batch.

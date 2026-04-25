@@ -163,4 +163,4 @@ To prevent this race condition, the application should implement one of:
 
 ## Reflection
 
-This lab demonstrates the most common and profitable race condition pattern in bug bounty: limit overrun on coupon/discount redemption. The same vulnerability pattern has paid $1,500 (Reverb.com), $216 (Dropbox), and $200 (Instacart) on HackerOne. The key takeaway is that any endpoint with a CHECK → ACTION → UPDATE flow without proper locking is potentially vulnerable. The Burp Repeater's "Send group in parallel" feature makes exploitation trivial, no Turbo Intruder or custom scripts needed for this class of vulnerability.
+The most common and profitable race condition pattern in bug bounty: limit overrun on coupon/discount redemption. Same flaw paid $1,500 at Reverb, $216 at Dropbox, $200 at Instacart on HackerOne. Any endpoint with CHECK → ACTION → UPDATE and no proper locking is fair game. Burp Repeater's "Send group in parallel" is enough; no Turbo Intruder script needed.

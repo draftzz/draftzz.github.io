@@ -5,9 +5,10 @@ category: "Race Conditions"
 difficulty: "Expert"
 date: 2026-04-15
 techniques: ["Partial Construction", "Token Bypass", "PHP Type Juggling"]
+description: "Partial construction race in registration — `token[]=` matches NULL via PHP type juggling while the token is still being generated, bypassing email verification."
+lang: en
+translation_key: race-condition-partial-construction
 ---
-
-# Lab: Partial Construction Race Conditions
 
 ## Platform
 PortSwigger Web Security Academy

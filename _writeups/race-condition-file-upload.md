@@ -5,9 +5,10 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-04-15
 techniques: ["File Upload Race", "PHP Web Shell", "RCE"]
+description: "File upload race — the window between `move_uploaded_file()` and validation lets a PHP web shell execute before deletion, escalating to RCE."
+lang: en
+translation_key: race-condition-file-upload
 ---
-
-# Lab: Web Shell Upload via Race Condition
 
 ## Platform
 PortSwigger Web Security Academy

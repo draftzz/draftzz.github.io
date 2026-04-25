@@ -5,8 +5,10 @@ category: "Race Conditions"
 difficulty: "Practitioner"
 date: 2026-04-15
 techniques: ["Hidden Multi-Step", "Email Change Race", "Account Takeover"]
+description: "Single-endpoint race on email change — two parallel requests make the victim's confirmation token get sent to the attacker's inbox, leading to account takeover."
+lang: en
+translation_key: race-condition-single-endpoint
 ---
-# Lab: Single-Endpoint Race Conditions
 
 ## Platform
 PortSwigger Web Security Academy

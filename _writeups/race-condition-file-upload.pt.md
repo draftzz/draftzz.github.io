@@ -38,6 +38,7 @@ O lab tem uma função de upload de avatar que faz validação no servidor. O fl
 - **Password:** peter
 
 ### Endpoints Principais
+
 | Endpoint | Método | Propósito |
 |---|---|---|
 | `/my-account/avatar` | POST | Upload de avatar |

@@ -37,6 +37,7 @@ The lab has an avatar upload function that performs server-side validation on up
 - **Password:** peter
 
 ### Key Endpoints
+
 | Endpoint | Method | Purpose |
 |---|---|---|
 | `/my-account/avatar` | POST | Upload avatar file |

@@ -39,6 +39,7 @@ The lab has an email change feature that sends a confirmation link to the new em
 - **Target email:** carlos@ginandjuice.shop
 
 ### Key Endpoints
+
 | Endpoint | Method | Purpose |
 |---|---|---|
 | `/my-account/change-email` | POST | Request email change (sends confirmation link) |

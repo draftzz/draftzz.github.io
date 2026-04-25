@@ -39,6 +39,7 @@ O lab simula uma loja online onde o fluxo de compra valida o total do carrinho c
 - **Crédito inicial:** $100,00
 
 ### Endpoints Principais
+
 | Endpoint | Método | Propósito |
 |---|---|---|
 | `/cart` | POST | Adicionar item ao carrinho (productId, quantity) |
@@ -47,6 +48,7 @@ O lab simula uma loja online onde o fluxo de compra valida o total do carrinho c
 | `/my-account` | GET | Ver saldo de crédito e gift cards |
 
 ### Produtos
+
 | Produto | ID | Preço |
 |---|---|---|
 | Lightweight "l33t" Leather Jacket | 1 | $1.337,00 |

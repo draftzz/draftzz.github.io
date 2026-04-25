@@ -40,6 +40,7 @@ O item alvo custa $1.337,00 e o usuário tem apenas $50,00 em crédito da loja �
 - **Password:** peter
 
 ### Endpoints Principais Identificados
+
 | Endpoint | Método | Propósito |
 |---|---|---|
 | `/cart` | GET | Ver carrinho e total atual |

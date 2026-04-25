@@ -34,6 +34,7 @@ O lab tem um sistema de registro de usuário que requer verificação de email v
 ## Reconhecimento
 
 ### Endpoints Principais
+
 | Endpoint | Método | Propósito |
 |---|---|---|
 | `/register` | POST | Registrar nova conta |
@@ -61,6 +62,7 @@ const confirmEmail = () => {
 O endpoint de confirmação aceita um parâmetro token via query string e o submete como POST.
 
 ### Teste de Comportamento do Token
+
 | Requisição | Resposta |
 |---|---|
 | `POST /confirm?token=1` | 400 — "Incorrect token: 1" |

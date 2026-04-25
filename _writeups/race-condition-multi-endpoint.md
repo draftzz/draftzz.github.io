@@ -38,6 +38,7 @@ The lab simulates an online store where the purchasing flow validates the cart t
 - **Starting credit:** $100.00
 
 ### Key Endpoints
+
 | Endpoint | Method | Purpose |
 |---|---|---|
 | `/cart` | POST | Add item to cart (productId, quantity) |
@@ -46,6 +47,7 @@ The lab simulates an online store where the purchasing flow validates the cart t
 | `/my-account` | GET | View credit balance and gift cards |
 
 ### Products
+
 | Product | ID | Price |
 |---|---|---|
 | Lightweight "l33t" Leather Jacket | 1 | $1,337.00 |

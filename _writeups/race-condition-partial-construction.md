@@ -33,6 +33,7 @@ The lab has a user registration system that requires email verification via a co
 ## Reconnaissance
 
 ### Key Endpoints
+
 | Endpoint | Method | Purpose |
 |---|---|---|
 | `/register` | POST | Register new user account |
@@ -60,6 +61,7 @@ const confirmEmail = () => {
 The confirmation endpoint accepts a token parameter via query string and submits it as a POST request.
 
 ### Token Behavior Testing
+
 | Request | Response |
 |---|---|
 | `POST /confirm?token=1` | 400 — "Incorrect token: 1" |

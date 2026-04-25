@@ -37,6 +37,7 @@ The lab implements rate limiting on the login endpoint to prevent brute-force at
 - **Target account:** carlos (password unknown)
 
 ### Key Endpoints
+
 | Endpoint | Method | Purpose |
 |---|---|---|
 | `/login` | GET | Login page (contains CSRF token) |

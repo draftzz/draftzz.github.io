@@ -39,6 +39,7 @@ The target item costs $1,337.00 and the user has only $50.00 in store credit —
 - **Password:** peter
 
 ### Key Endpoints Identified
+
 | Endpoint | Method | Purpose |
 |---|---|---|
 | `/cart` | GET | View cart and current total |

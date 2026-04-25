@@ -38,6 +38,7 @@ O lab implementa rate limiting no endpoint de login pra prevenir ataques de brut
 - **Conta alvo:** carlos (senha desconhecida)
 
 ### Endpoints Principais
+
 | Endpoint | Método | Propósito |
 |---|---|---|
 | `/login` | GET | Página de login (contém token CSRF) |

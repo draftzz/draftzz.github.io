@@ -40,6 +40,7 @@ O lab tem um recurso de troca de email que envia um link de confirmação pro no
 - **Email alvo:** carlos@ginandjuice.shop
 
 ### Endpoints Principais
+
 | Endpoint | Método | Propósito |
 |---|---|---|
 | `/my-account/change-email` | POST | Solicitar troca de email (envia link de confirmação) |

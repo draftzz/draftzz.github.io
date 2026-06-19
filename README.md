@@ -1,7 +1,7 @@
-# draftzz // CyberSec Portfolio
+# Bruno Moreira // Applied Systems Portfolio
 
-Personal cybersecurity portfolio of **Bruno Antonio Moreira**. CSMS Coordinator @ Scania.
-CTF writeups, web exploitation, race conditions, and automotive security research.
+Personal portfolio of **Bruno Antonio Moreira**. Applied AI, industrial software,
+automotive systems, operational tooling, and cybersecurity research.
 
 🌐 **Live site:** https://draftzz.github.io
 
@@ -10,6 +10,7 @@ CTF writeups, web exploitation, race conditions, and automotive security researc
 - Jekyll (custom theme, dark / terminal aesthetic)
 - GitHub Pages
 - Plugins: `jekyll-feed`, `jekyll-seo-tag`, `jekyll-sitemap`
+- Featured projects from `_data/projects.yml`
 - Writeups as a Jekyll collection (`_writeups/`)
 - Bug bounty reports as a separate collection (`_bugbounty/`)
 - Bilingual: English (default) + Portuguese (pt-br)
@@ -106,7 +107,7 @@ bundle exec jekyll serve        # http://localhost:4000
 
 ## Layout features
 
-- **Home (`_layouts/home.html`):** filterable card grid (category + platform + lang), search, "new" badge for posts < 30 days, date and reading time on each card.
+- **Home (`_layouts/home.html`):** interactive portfolio experience, featured systems, capability range, filterable research/writeup grid, search, "new" badge for posts < 30 days, date and reading time on each card.
 - **Writeup (`_layouts/writeup.html`):** sticky TOC sidebar (auto-built from h2/h3 by `assets/js/toc.js`), anchor links on headings, related writeups (matched by shared techniques), language switch link to sister translation.
 - **SEO:** OG/Twitter meta, JSON-LD `TechArticle` schema, hreflang alternates between en/pt-br, sitemap, RSS feed.
 - **Language toggle:** EN/PT pills in the nav. Stores choice in `localStorage`; on writeup pages, switching lang navigates to the sister translation if it exists.

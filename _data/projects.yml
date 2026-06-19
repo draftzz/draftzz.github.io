@@ -1,0 +1,91 @@
+- slug: vesai
+  name: VESAI
+  type: "AI knowledge system"
+  summary: "Assistente técnico com RAG para transformar manuais, códigos de falha, conectores, procedimentos e conhecimento de especialista em respostas rastreáveis."
+  tags:
+    - "RAG"
+    - "LLM"
+    - "Busca híbrida"
+    - "Automotive"
+  flow:
+    - title: "Entrada controlada"
+      body: "O sistema recebe documentos técnicos permitidos: manuais, procedimentos, tabelas de DTC, conectores, notas de troubleshooting e bases internas aprovadas."
+    - title: "Normalização e metadados"
+      body: "Cada trecho ganha metadados de sistema, componente, código, modelo, versão, página e fonte para que a busca não dependa apenas de texto solto."
+    - title: "Chunking com overlap"
+      body: "Os documentos são quebrados em trechos com sobreposição. Isso preserva relação entre falha, causa, procedimento e conector mesmo quando o conteúdo cruza páginas."
+    - title: "Busca híbrida"
+      body: "DTCs, conectores e peças usam correspondência forte; sintomas em linguagem humana usam busca semântica. O resultado combina precisão técnica com flexibilidade."
+    - title: "Resposta com fonte"
+      body: "O modelo recebe apenas os trechos recuperados, responde em linguagem natural e aponta documento, seção ou página que sustentou a orientação."
+  architecture: "Pipeline de ingestão, índice vetorial, filtros por metadados, busca lexical para códigos exatos, busca semântica para sintomas, reranking e geração com citações."
+  impact: "Reduz dependência de memória tribal, acelera diagnóstico e torna a resposta auditável. Exemplo: uma pergunta sobre falha EBS com D10587 recupera o contexto do procedimento e do conector correto antes de gerar a orientação."
+
+- slug: ecoa
+  name: ECOA
+  type: "Operational control platform"
+  summary: "Cockpit de operação para tirar problemas do improviso: registra ocorrências, organiza prioridades, conecta áreas e transforma decisão em ação rastreável."
+  tags:
+    - "Workflow"
+    - "Operação"
+    - "Dashboard"
+    - "Decisão"
+  flow:
+    - title: "Captura do evento"
+      body: "Uma ocorrência entra com linha, departamento, categoria, severidade, dono, descrição e evidência. A entrada vira registro estruturado, não mensagem perdida."
+    - title: "Triagem e prioridade"
+      body: "O ECOA classifica impacto, urgência, status e bloqueios. A prioridade deixa de ser opinião solta e passa a seguir sinais visíveis para todo mundo."
+    - title: "Plano de ação"
+      body: "Cada problema recebe responsável, prazo, histórico, comentários e próximas etapas. O fluxo acompanha aberto, em andamento, bloqueado, validado e concluído."
+    - title: "Visão por contexto"
+      body: "A leitura muda por linha, área, departamento, usuário, status ou criticidade. Liderança enxerga carteira; executores enxergam fila de trabalho."
+    - title: "Memória operacional"
+      body: "Toda decisão importante fica registrada: quem assumiu, o que mudou, quando mudou e qual evidência sustentou a conclusão."
+  architecture: "Frontend de operação com filtros e edição rápida, API para validação e persistência, modelo de dados para usuários/áreas/linhas/ocorrências/ações e camada de métricas para SLA e tendência."
+  impact: "Cria um sistema nervoso para rotina operacional: menos follow-up manual, menos perda de contexto e mais clareza sobre onde agir primeiro."
+
+- slug: industrial-analytics
+  name: "Industrial Analytics"
+  type: "Vehicle data product"
+  summary: "Ferramentas para transformar dados de produção e diagnóstico em leitura operacional: chassis, área, execução, delta, status e recomendação prática."
+  tags:
+    - "SQL"
+    - "Analytics"
+    - "Data product"
+    - "Factory"
+  flow:
+    - title: "Busca por chassis"
+      body: "O usuário informa o chassis e o sistema consulta execuções recentes em áreas como produção, revisão e repair."
+    - title: "Extração dos sinais"
+      body: "Logs técnicos são filtrados para capturar charge, discharge e net discharge, sempre buscando a última leitura relevante por área."
+    - title: "Cálculo de delta"
+      body: "O sistema compara área atual com área anterior para descobrir onde a variação de bateria apareceu com mais força."
+    - title: "Classificação"
+      body: "Limites configuráveis separam normal, recarregar e trocar. O usuário não precisa interpretar tabela crua para decidir."
+    - title: "Visualização"
+      body: "Barras, métricas e timeline mostram o maior gasto, último valor e status por etapa do fluxo produtivo."
+  architecture: "Aplicação Python com SQL Server, consultas otimizadas por janela temporal, parse de logs de execução, API HTTP simples e UI responsiva para diagnóstico rápido."
+  impact: "Acelera análise de battery drain, ajuda a localizar área crítica e transforma log técnico em decisão operacional objetiva."
+
+- slug: security-lab
+  name: "Security Research Lab"
+  type: "Cybersecurity research"
+  summary: "Biblioteca de writeups e experimentos em web exploitation, race conditions, hardware, crypto e modelagem de mitigação."
+  tags:
+    - "Web security"
+    - "Race conditions"
+    - "Threat modeling"
+    - "Writeups"
+  flow:
+    - title: "Reconhecimento"
+      body: "Mapeio superfície, fluxo de dados, endpoints, assumptions e limites da aplicação ou laboratório."
+    - title: "Hipótese"
+      body: "Transformo observação técnica em uma tese testável: TOCTOU, parsing inseguro, validação tardia, trust boundary ou estado inconsistente."
+    - title: "Exploit controlado"
+      body: "Uso payloads, Burp, Turbo Intruder, scripts e repetição para provar o comportamento sem depender de sorte."
+    - title: "Remediação"
+      body: "Cada writeup fecha com causa raiz, mitigação e aprendizado reutilizável para design seguro."
+    - title: "Publicação"
+      body: "O resultado vira texto técnico bilíngue, pesquisável por tags e separado do portfolio principal."
+  architecture: "Jekyll collection bilíngue com filtros por plataforma/categoria, tags por técnica, TOC automático, schema TechArticle e links de tradução."
+  impact: "Mantém o lado cyber vivo como prova pública de raciocínio técnico, sem reduzir a marca pessoal apenas a CTF."

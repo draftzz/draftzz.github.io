@@ -17,15 +17,15 @@
   }
 
   // Preference order:
-  // 1. User-stored choice
-  // 2. Current page lang (writeup pages know their own lang via data-page-lang)
+  // 1. Current page lang when the page is language-specific
+  // 2. User-stored choice
   // 3. Browser language if pt
   // 4. Default (en)
   function detectInitial() {
-    const stored = getStored();
-    if (stored) return stored;
     const pageLang = document.body && document.body.dataset.pageLang;
     if (pageLang && ALLOWED.includes(pageLang)) return pageLang;
+    const stored = getStored();
+    if (stored) return stored;
     const nav = (navigator.language || 'en').toLowerCase();
     if (nav.startsWith('pt')) return 'pt-br';
     return DEFAULT;
@@ -44,9 +44,13 @@
     });
     document.querySelectorAll('.nav__lang-pill').forEach(b => {
       b.classList.toggle('is-active', b.dataset.lang === current);
+      b.setAttribute('aria-pressed', b.dataset.lang === current ? 'true' : 'false');
     });
     if (document.documentElement && document.documentElement.dataset) {
       document.documentElement.dataset.lang = current;
+    }
+    if (document.documentElement) {
+      document.documentElement.lang = current;
     }
   }
 

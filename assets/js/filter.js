@@ -1,5 +1,5 @@
 (function () {
-  const cards = Array.from(document.querySelectorAll('.card'));
+  const cards = Array.from(document.querySelectorAll('.writeup-card'));
   const filters = Array.from(document.querySelectorAll('.filter'));
   const search = document.getElementById('search');
   const noResults = document.getElementById('no-results');
@@ -35,6 +35,11 @@
         }
       });
       btn.classList.add('is-active');
+      filters.forEach(b => {
+        if ((b.dataset.filterType || 'category') === type) {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        }
+      });
       active[type] = btn.dataset.filter;
       apply();
     });

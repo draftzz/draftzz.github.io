@@ -1,4 +1,6 @@
 (function () {
+  document.documentElement.classList.add('js');
+
   const consoleLine = document.querySelector('[data-console-line]');
   const clock = document.querySelector('[data-live-clock]');
   const progress = document.querySelector('.scroll-progress');
@@ -31,6 +33,25 @@
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
     progress.style.width = pct + '%';
+  }
+
+  function initReveal() {
+    const items = Array.from(document.querySelectorAll('.reveal-on-scroll'));
+    if (!items.length) return;
+    if (!('IntersectionObserver' in window) || reduceMotion) {
+      items.forEach(item => item.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+
+    items.forEach(item => observer.observe(item));
   }
 
   function initPanelHover() {
@@ -114,6 +135,7 @@
   tickConsole();
   tickClock();
   updateProgress();
+  initReveal();
   initPanelHover();
   initCursorTrail();
   window.setInterval(tickConsole, 3800);

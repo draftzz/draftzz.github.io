@@ -1,5 +1,12 @@
 {% include head.html %}
 <body class="site-shell">
+  <div class="cursor-aura" aria-hidden="true"></div>
+  <div class="cursor-trail" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="scanline" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
+
   {% include nav.html %}
 
   {% assign all_writeups = site.writeups | sort: 'date' | reverse %}
@@ -7,296 +14,230 @@
   {% assign platforms = en_writeups | map: 'platform' | uniq | sort %}
   {% assign categories = en_writeups | map: 'category' | uniq | sort %}
 
-  <header class="hero" id="top">
-    <div class="hero__stage" aria-hidden="true">
-      <div class="system-map" data-system-map>
-        <div class="system-map__axis system-map__axis--x"></div>
-        <div class="system-map__axis system-map__axis--y"></div>
-        <div class="system-node system-node--core">Bruno</div>
-        <div class="system-node system-node--ai">AI</div>
-        <div class="system-node system-node--ops">Ops</div>
-        <div class="system-node system-node--auto">Auto</div>
-        <div class="system-node system-node--sec">Sec</div>
-        <div class="system-pulse system-pulse--one"></div>
-        <div class="system-pulse system-pulse--two"></div>
-        <div class="system-pulse system-pulse--three"></div>
-      </div>
-    </div>
-
-    <div class="hero__inner">
-      <p class="eyebrow">
-        <span class="eyebrow__dot"></span>
-        <span data-i18n="hero-kicker-en">AI systems, industrial software, automotive context</span>
-        <span data-i18n="hero-kicker-pt" hidden>IA aplicada, software industrial, contexto automotivo</span>
-      </p>
-
-      <h1 class="hero__name">Bruno Antonio Moreira</h1>
-
-      <p class="hero__headline" data-i18n="hero-headline-en">
-        I build practical systems that turn technical knowledge into decisions, workflows, and safer products.
-      </p>
-      <p class="hero__headline" data-i18n="hero-headline-pt" hidden>
-        Eu construo sistemas práticos que transformam conhecimento técnico em decisão, fluxo de trabalho e produto mais seguro.
-      </p>
-
-      <div class="hero__actions" aria-label="Primary navigation">
-        <a class="button button--primary" href="#projects">
-          <span data-i18n="hero-projects-en">View systems</span>
-          <span data-i18n="hero-projects-pt" hidden>Ver sistemas</span>
-        </a>
-        <a class="button" href="#writeups">
-          <span data-i18n="hero-research-en">Research notebook</span>
-          <span data-i18n="hero-research-pt" hidden>Notas de pesquisa</span>
-        </a>
-      </div>
-
-      <div class="hero__console" aria-label="Current focus">
-        <div class="console__bar">
-          <span class="console__light"></span>
-          <span class="console__light"></span>
-          <span class="console__light"></span>
-        </div>
-        <div class="console__body">
-          <span class="console__prompt">$</span>
-          <span id="console-line" data-console-line>loading portfolio runtime...</span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="section section--overview" id="overview">
-      <div class="container">
-        <div class="overview-grid">
-          <article class="metric-tile">
-            <span class="metric-tile__value">{{ site.data.projects | size }}</span>
-            <span class="metric-tile__label" data-i18n="metric-systems-en">systems featured</span>
-            <span class="metric-tile__label" data-i18n="metric-systems-pt" hidden>sistemas em destaque</span>
-          </article>
-          <article class="metric-tile">
-            <span class="metric-tile__value">{{ en_writeups | size }}</span>
-            <span class="metric-tile__label" data-i18n="metric-writeups-en">technical writeups</span>
-            <span class="metric-tile__label" data-i18n="metric-writeups-pt" hidden>writeups técnicos</span>
-          </article>
-          <article class="metric-tile">
-            <span class="metric-tile__value">{{ categories | size }}</span>
-            <span class="metric-tile__label" data-i18n="metric-domains-en">research domains</span>
-            <span class="metric-tile__label" data-i18n="metric-domains-pt" hidden>domínios de pesquisa</span>
-          </article>
-          <article class="metric-tile metric-tile--wide">
-            <span class="metric-tile__value" data-live-clock>--:--</span>
-            <span class="metric-tile__label" data-i18n="metric-mode-en">local runtime</span>
-            <span class="metric-tile__label" data-i18n="metric-mode-pt" hidden>runtime local</span>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="projects" class="section section--projects">
-      <div class="container">
-        <div class="section__header">
-          <div>
-            <p class="eyebrow">
-              <span class="eyebrow__dot"></span>
-              <span data-i18n="projects-kicker-en">Selected systems</span>
-              <span data-i18n="projects-kicker-pt" hidden>Sistemas selecionados</span>
-            </p>
-            <h2 class="section__title" data-i18n="projects-title-en">Projects that explain how I think</h2>
-            <h2 class="section__title" data-i18n="projects-title-pt" hidden>Projetos que explicam como eu penso</h2>
-          </div>
-          <p class="section__lede" data-i18n="projects-lede-en">
-            The portfolio is now led by AI, operations, and industrial tooling. Cybersecurity stays here as research depth, not the whole identity.
-          </p>
-          <p class="section__lede" data-i18n="projects-lede-pt" hidden>
-            O portfolio agora começa por IA, operação e ferramentas industriais. Cybersecurity continua aqui como profundidade de pesquisa, não como a identidade inteira.
-          </p>
-        </div>
-
-        <div class="project-switcher" role="tablist" aria-label="Featured projects">
-          {% for project in site.data.projects %}
-            <button
-              id="project-tab-{{ project.slug }}"
-              class="project-tab{% if forloop.first %} is-active{% endif %}"
-              type="button"
-              role="tab"
-              data-project-toggle="{{ project.slug }}"
-              aria-controls="project-{{ project.slug }}"
-              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
-              <span class="project-tab__index">0{{ forloop.index }}</span>
-              <span>{{ project.name }}</span>
-            </button>
-          {% endfor %}
-        </div>
-
-        <div class="project-stack">
-          {% for project in site.data.projects %}
-            <article
-              class="project-panel{% if forloop.first %} is-active{% endif %}"
-              id="project-{{ project.slug }}"
-              role="tabpanel"
-              aria-labelledby="project-tab-{{ project.slug }}"
-              data-project-panel="{{ project.slug }}"
-              {% unless forloop.first %}hidden{% endunless %}>
-              <div class="project-panel__main">
-                <p class="project-panel__type">{{ project.type }}</p>
-                <h3>{{ project.name }}</h3>
-                <p class="project-panel__summary">{{ project.summary }}</p>
-                <div class="project-panel__tags">
-                  {% for tag in project.tags %}
-                    <span class="tag">{{ tag }}</span>
-                  {% endfor %}
-                </div>
-              </div>
-
-              <div class="project-panel__flow">
-                <h4 data-i18n="flow-title-en">How it works</h4>
-                <h4 data-i18n="flow-title-pt" hidden>Como funciona</h4>
-                <ol class="flow-list">
-                  {% for step in project.flow %}
-                    <li>
-                      <span class="flow-list__num">{{ forloop.index }}</span>
-                      <div>
-                        <strong>{{ step.title }}</strong>
-                        <p>{{ step.body }}</p>
-                      </div>
-                    </li>
-                  {% endfor %}
-                </ol>
-              </div>
-
-              <div class="project-panel__evidence">
-                <div>
-                  <h4 data-i18n="architecture-title-en">Architecture</h4>
-                  <h4 data-i18n="architecture-title-pt" hidden>Arquitetura</h4>
-                  <p>{{ project.architecture }}</p>
-                </div>
-                <div>
-                  <h4 data-i18n="impact-title-en">Impact</h4>
-                  <h4 data-i18n="impact-title-pt" hidden>Impacto</h4>
-                  <p>{{ project.impact }}</p>
-                </div>
-              </div>
-            </article>
-          {% endfor %}
-        </div>
-      </div>
-    </section>
-
-    <section id="capabilities" class="section section--capabilities">
-      <div class="container">
-        <div class="section__header">
-          <div>
-            <p class="eyebrow">
-              <span class="eyebrow__dot"></span>
-              <span data-i18n="cap-kicker-en">Operating range</span>
-              <span data-i18n="cap-kicker-pt" hidden>Campo de atuação</span>
-            </p>
-            <h2 class="section__title" data-i18n="cap-title-en">From messy technical context to usable systems</h2>
-            <h2 class="section__title" data-i18n="cap-title-pt" hidden>Do contexto técnico confuso para sistemas usáveis</h2>
-          </div>
-        </div>
-
-        <div class="capability-grid">
-          <article class="capability">
-            <span class="capability__mark">AI</span>
-            <h3>Applied AI & RAG</h3>
-            <p data-i18n="cap-ai-en">Hybrid retrieval, source-grounded answers, metadata filters, evaluation loops, and human-in-the-loop review.</p>
-            <p data-i18n="cap-ai-pt" hidden>Busca híbrida, respostas com fonte, filtros por metadados, avaliação contínua e revisão humana no ciclo.</p>
-          </article>
-          <article class="capability">
-            <span class="capability__mark">OPS</span>
-            <h3>Operational Products</h3>
-            <p data-i18n="cap-ops-en">Dashboards, action tracking, triage flows, line/department views, SLA signals, and decision records.</p>
-            <p data-i18n="cap-ops-pt" hidden>Dashboards, rastreio de ações, triagem, visão por linha/departamento, sinais de SLA e registro de decisão.</p>
-          </article>
-          <article class="capability">
-            <span class="capability__mark">AUTO</span>
-            <h3>Automotive Systems</h3>
-            <p data-i18n="cap-auto-en">TARA, CSMS, ISO/SAE 21434, UN R155, diagnostic traces, vehicle data, and production context.</p>
-            <p data-i18n="cap-auto-pt" hidden>TARA, CSMS, ISO/SAE 21434, UN R155, rastros diagnósticos, dados veiculares e contexto produtivo.</p>
-          </article>
-          <article class="capability">
-            <span class="capability__mark">SEC</span>
-            <h3>Security Research</h3>
-            <p data-i18n="cap-sec-en">Web exploitation, race conditions, threat modeling, secure design, CTF labs, and clear technical writing.</p>
-            <p data-i18n="cap-sec-pt" hidden>Web exploitation, race conditions, modelagem de ameaça, design seguro, labs CTF e escrita técnica clara.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="writeups" class="section section--writeups">
-      <div class="container">
-        <div class="section__header">
-          <div>
-            <p class="eyebrow">
-              <span class="eyebrow__dot"></span>
-              <span data-i18n="writeups-kicker-en">Research notebook</span>
-              <span data-i18n="writeups-kicker-pt" hidden>Caderno de pesquisa</span>
-            </p>
-            <h2 class="section__title" data-i18n="writeups-title-en">Cybersecurity writeups, kept as proof of depth</h2>
-            <h2 class="section__title" data-i18n="writeups-title-pt" hidden>Writeups de cyber, agora como prova de profundidade</h2>
-          </div>
-          <input type="search" id="search" class="search" placeholder="grep -i ..." aria-label="Search writeups">
-        </div>
-
-        <div class="filters" role="group" aria-label="Filter by category">
-          <span class="filters__label">cat:</span>
-          <button class="filter is-active" type="button" data-filter-type="category" data-filter="all" aria-pressed="true">all</button>
-          {% for cat in categories %}
-            <button class="filter" type="button" data-filter-type="category" data-filter="{{ cat | slugify }}" aria-pressed="false">{{ cat }}</button>
-          {% endfor %}
-        </div>
-
-        <div class="filters" role="group" aria-label="Filter by platform">
-          <span class="filters__label">platform:</span>
-          <button class="filter is-active" type="button" data-filter-type="platform" data-filter="all" aria-pressed="true">all</button>
-          {% for plat in platforms %}
-            <button class="filter" type="button" data-filter-type="platform" data-filter="{{ plat | slugify }}" aria-pressed="false">{{ plat }}</button>
-          {% endfor %}
-        </div>
-
-        {% assign now_seconds = site.time | date: "%s" | plus: 0 %}
-        <div class="cards" id="cards">
-          {% for w in all_writeups %}
-            {% assign post_seconds = w.date | date: "%s" | plus: 0 %}
-            {% assign age_days = now_seconds | minus: post_seconds | divided_by: 86400 %}
-            {% assign words = w.content | strip_html | number_of_words %}
-            {% assign rt = words | divided_by: 220 | plus: 1 %}
-            <a class="card writeup-card"
-               href="{{ w.url | relative_url }}"
-               data-category="{{ w.category | slugify }}"
-               data-platform="{{ w.platform | slugify }}"
-               data-lang="{{ w.lang | default: 'en' }}"
-               data-search="{{ w.title | downcase | escape }} {{ w.platform | downcase | escape }} {{ w.category | downcase | escape }} {{ w.techniques | join: ' ' | downcase | escape }} {{ w.description | downcase | escape }}">
-              <div class="card__top">
-                <span class="badge badge--platform badge--{{ w.platform | slugify }}">{{ w.platform }}</span>
-                <span class="badge badge--diff badge--diff-{{ w.difficulty | slugify }}">{{ w.difficulty }}</span>
-                {% if age_days < 30 %}<span class="badge badge--new">new</span>{% endif %}
-              </div>
-              <h3 class="card__title">{{ w.title }}</h3>
-              <p class="card__category"><span class="card__hash">/</span> {{ w.category }}</p>
-              {% if w.description %}<p class="card__desc">{{ w.description | truncate: 140 }}</p>{% endif %}
-              {% if w.techniques %}
-              <ul class="card__tags">
-                {% for t in w.techniques limit:4 %}
-                  <li class="tag tag--small">{{ t }}</li>
-                {% endfor %}
-              </ul>
-              {% endif %}
-              <div class="card__footer">
-                <span class="card__date">{{ w.date | date: "%Y-%m-%d" }}</span>
-                <span class="card__rt">{{ rt }} min</span>
-              </div>
-            </a>
-          {% endfor %}
-        </div>
-
-        <p id="no-results" class="no-results" hidden>
-          <span class="console__prompt">$</span>
-          <span data-i18n="empty-en">grep: no matches found</span>
-          <span data-i18n="empty-pt" hidden>grep: nenhum resultado encontrado</span>
+  <main class="terminal-page">
+    <section class="hero-shell" id="hero">
+      <div class="hero-shell__copy">
+        <p class="terminal-command"><span>$</span> whoami</p>
+        <h1 class="glitch-title" data-text="draftzz">draftzz</h1>
+        <p class="hero-alias">Bruno Antonio Moreira</p>
+        <p class="hero-line" data-i18n="hero-line-en">
+          applied AI builder, industrial software maker, automotive systems thinker.
         </p>
+        <p class="hero-line" data-i18n="hero-line-pt" hidden>
+          construtor de IA aplicada, software industrial e sistemas automotivos.
+        </p>
+        <div class="hero-actions">
+          <a class="terminal-button" href="#projects">./projects</a>
+          <a class="terminal-button" href="#writeups">./research</a>
+          <a class="terminal-button" href="#contact">./contact</a>
+        </div>
+      </div>
+
+      <aside class="identity-panel interactive-panel" aria-label="Runtime identity">
+        <div class="panel-bar">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="identity-panel__body">
+          <p><span class="muted">user</span> draftzz</p>
+          <p><span class="muted">mode</span> applied-systems</p>
+          <p><span class="muted">stack</span> AI / Ops / Auto / Sec</p>
+          <p><span class="muted">now</span> <span data-live-clock>--:--</span></p>
+          <div class="runtime-line">
+            <span class="console__prompt">$</span>
+            <span data-console-line>booting portfolio shell...</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section-shell" id="about">
+      <div class="section-heading">
+        <div class="section-heading__title">
+          <span>01</span><span>//</span><h2>about</h2>
+        </div>
+        <p>cat about.md</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="prose-block">
+          <p data-i18n="about-main-en">
+            I build systems for technical environments where the answer is rarely in one place: manuals, logs, production context, diagnostic traces, people, and risk all collide.
+          </p>
+          <p data-i18n="about-main-pt" hidden>
+            Eu construo sistemas para ambientes técnicos onde a resposta quase nunca está em um lugar só: manuais, logs, contexto produtivo, rastros diagnósticos, pessoas e risco se misturam.
+          </p>
+          <p data-i18n="about-second-en">
+            Cybersecurity is still part of the base, but the center is bigger now: AI products, operational tooling, automotive systems, and software that helps people decide faster.
+          </p>
+          <p data-i18n="about-second-pt" hidden>
+            Cybersecurity continua na base, mas o centro ficou maior: produtos de IA, ferramentas operacionais, sistemas automotivos e software que ajuda gente real a decidir mais rápido.
+          </p>
+        </div>
+
+        <div class="focus-grid">
+          <article class="mini-stat">
+            <span>{{ site.data.projects | size }}</span>
+            <p>systems</p>
+          </article>
+          <article class="mini-stat">
+            <span>{{ en_writeups | size }}</span>
+            <p>writeups</p>
+          </article>
+          <article class="mini-stat">
+            <span>{{ categories | size }}</span>
+            <p>domains</p>
+          </article>
+          <article class="mini-stat">
+            <span>{{ platforms | size }}</span>
+            <p>platforms</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-shell" id="projects">
+      <div class="section-heading">
+        <div class="section-heading__title">
+          <span>02</span><span>//</span><h2>projects</h2>
+        </div>
+        <p>ls ./systems --explain</p>
+      </div>
+
+      <div class="project-grid">
+        {% for project in site.data.projects %}
+          <article class="project-card interactive-panel">
+            <div class="project-card__top">
+              <div>
+                <p class="project-index">0{{ forloop.index }}</p>
+                <h3>{{ project.name }}</h3>
+              </div>
+              <span class="terminal-chip">{{ project.type }}</span>
+            </div>
+            <p class="project-summary">{{ project.summary }}</p>
+            <div class="chip-row">
+              {% for tag in project.tags %}
+                <span class="terminal-chip terminal-chip--muted">{{ tag }}</span>
+              {% endfor %}
+            </div>
+            <div class="project-log">
+              <p class="terminal-command"><span>$</span> explain {{ project.slug }}</p>
+              <ol>
+                {% for step in project.flow %}
+                  <li>
+                    <strong>{{ step.title }}</strong>
+                    <p>{{ step.body }}</p>
+                  </li>
+                {% endfor %}
+              </ol>
+            </div>
+            <div class="project-card__meta">
+              <div>
+                <span>architecture</span>
+                <p>{{ project.architecture }}</p>
+              </div>
+              <div>
+                <span>impact</span>
+                <p>{{ project.impact }}</p>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section-shell" id="writeups">
+      <div class="section-heading">
+        <div class="section-heading__title">
+          <span>03</span><span>//</span><h2>research</h2>
+        </div>
+        <p>grep ./writeups</p>
+      </div>
+
+      <div class="writeup-tools">
+        <input type="search" id="search" class="search" placeholder="grep -i ..." aria-label="Search writeups">
+        <a href="{{ '/tags/' | relative_url }}" class="terminal-button">./tags</a>
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter by category">
+        <span class="filters__label">cat:</span>
+        <button class="filter is-active" type="button" data-filter-type="category" data-filter="all" aria-pressed="true">all</button>
+        {% for cat in categories %}
+          <button class="filter" type="button" data-filter-type="category" data-filter="{{ cat | slugify }}" aria-pressed="false">{{ cat }}</button>
+        {% endfor %}
+      </div>
+
+      <div class="filters" role="group" aria-label="Filter by platform">
+        <span class="filters__label">platform:</span>
+        <button class="filter is-active" type="button" data-filter-type="platform" data-filter="all" aria-pressed="true">all</button>
+        {% for plat in platforms %}
+          <button class="filter" type="button" data-filter-type="platform" data-filter="{{ plat | slugify }}" aria-pressed="false">{{ plat }}</button>
+        {% endfor %}
+      </div>
+
+      {% assign now_seconds = site.time | date: "%s" | plus: 0 %}
+      <div class="cards" id="cards">
+        {% for w in all_writeups %}
+          {% assign post_seconds = w.date | date: "%s" | plus: 0 %}
+          {% assign age_days = now_seconds | minus: post_seconds | divided_by: 86400 %}
+          {% assign words = w.content | strip_html | number_of_words %}
+          {% assign rt = words | divided_by: 220 | plus: 1 %}
+          <a class="card writeup-card interactive-panel"
+             href="{{ w.url | relative_url }}"
+             data-category="{{ w.category | slugify }}"
+             data-platform="{{ w.platform | slugify }}"
+             data-lang="{{ w.lang | default: 'en' }}"
+             data-search="{{ w.title | downcase | escape }} {{ w.platform | downcase | escape }} {{ w.category | downcase | escape }} {{ w.techniques | join: ' ' | downcase | escape }} {{ w.description | downcase | escape }}">
+            <div class="card__top">
+              <span class="badge badge--platform badge--{{ w.platform | slugify }}">{{ w.platform }}</span>
+              <span class="badge badge--diff badge--diff-{{ w.difficulty | slugify }}">{{ w.difficulty }}</span>
+              {% if age_days < 30 %}<span class="badge badge--new">new</span>{% endif %}
+            </div>
+            <h3 class="card__title">{{ w.title }}</h3>
+            <p class="card__category"><span class="card__hash">./</span>{{ w.category }}</p>
+            {% if w.description %}<p class="card__desc">{{ w.description | truncate: 140 }}</p>{% endif %}
+            {% if w.techniques %}
+            <ul class="card__tags">
+              {% for t in w.techniques limit:4 %}
+                <li class="tag tag--small">{{ t }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="card__footer">
+              <span>{{ w.date | date: "%Y-%m-%d" }}</span>
+              <span>{{ rt }} min</span>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+
+      <p id="no-results" class="no-results" hidden>
+        <span class="console__prompt">$</span>
+        <span data-i18n="empty-en">grep: no matches found</span>
+        <span data-i18n="empty-pt" hidden>grep: nenhum resultado encontrado</span>
+      </p>
+    </section>
+
+    <section class="section-shell" id="contact">
+      <div class="section-heading">
+        <div class="section-heading__title">
+          <span>04</span><span>//</span><h2>contact</h2>
+        </div>
+        <p>ssh draftzz@portfolio</p>
+      </div>
+
+      <div class="contact-grid">
+        <a class="contact-card interactive-panel" href="mailto:{{ site.email }}">
+          <span>email</span>
+          <strong>{{ site.email }}</strong>
+        </a>
+        <a class="contact-card interactive-panel" href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener">
+          <span>github</span>
+          <strong>@{{ site.github_username }}</strong>
+        </a>
+        <a class="contact-card interactive-panel" href="https://www.linkedin.com/in/{{ site.linkedin }}/" target="_blank" rel="noopener">
+          <span>linkedin</span>
+          <strong>/in/{{ site.linkedin }}</strong>
+        </a>
       </div>
     </section>
   </main>

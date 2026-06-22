@@ -1,60 +1,20 @@
 (function () {
-  const tabs = Array.from(document.querySelectorAll('[data-project-toggle]'));
-  const panels = Array.from(document.querySelectorAll('[data-project-panel]'));
   const consoleLine = document.querySelector('[data-console-line]');
   const clock = document.querySelector('[data-live-clock]');
-  const map = document.querySelector('[data-system-map]');
+  const aura = document.querySelector('.cursor-aura');
+  const trailDots = Array.from(document.querySelectorAll('.cursor-trail span'));
+  const progress = document.querySelector('.scroll-progress');
 
   const consoleLines = [
-    'vesai.rag -> hybrid retrieval + cited technical answer',
-    'ecoa.ops -> occurrence captured, owner assigned, action tracked',
-    'analytics.sql -> chassis timeline, delta calculated, status resolved',
-    'research.lab -> exploit hypothesis, proof, remediation notes'
+    'vesai.rag -> hybrid retrieval + cited answer',
+    'ecoa.ops -> occurrence captured + action tracked',
+    'analytics.sql -> chassis timeline + delta resolved',
+    'research.lab -> hypothesis + proof + remediation'
   ];
 
   let lineIndex = 0;
-
-  function activateProject(slug) {
-    tabs.forEach(tab => {
-      const active = tab.dataset.projectToggle === slug;
-      tab.classList.toggle('is-active', active);
-      tab.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-
-    panels.forEach(panel => {
-      const active = panel.dataset.projectPanel === slug;
-      panel.classList.toggle('is-active', active);
-      panel.hidden = !active;
-    });
-
-    if (map) {
-      map.dataset.activeProject = slug;
-    }
-
-    if (consoleLine) {
-      const tab = tabs.find(item => item.dataset.projectToggle === slug);
-      const label = tab ? tab.innerText.replace(/\s+/g, ' ').trim() : slug;
-      consoleLine.textContent = 'focus switched -> ' + label.toLowerCase();
-    }
-  }
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => activateProject(tab.dataset.projectToggle));
-    tab.addEventListener('keydown', event => {
-      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
-      event.preventDefault();
-      const currentIndex = tabs.indexOf(tab);
-      let nextIndex = currentIndex;
-
-      if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
-      if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-      if (event.key === 'Home') nextIndex = 0;
-      if (event.key === 'End') nextIndex = tabs.length - 1;
-
-      tabs[nextIndex].focus();
-      activateProject(tabs[nextIndex].dataset.projectToggle);
-    });
-  });
+  let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const dotState = trailDots.map(() => ({ x: pointer.x, y: pointer.y }));
 
   function tickConsole() {
     if (!consoleLine) return;
@@ -68,8 +28,40 @@
     clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
+  function updateProgress() {
+    if (!progress) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    progress.style.width = pct + '%';
+  }
+
+  function animateCursor() {
+    if (aura) {
+      aura.style.left = pointer.x + 'px';
+      aura.style.top = pointer.y + 'px';
+    }
+
+    trailDots.forEach((dot, index) => {
+      const previous = index === 0 ? pointer : dotState[index - 1];
+      dotState[index].x += (previous.x - dotState[index].x) * 0.28;
+      dotState[index].y += (previous.y - dotState[index].y) * 0.28;
+      dot.style.left = dotState[index].x + 'px';
+      dot.style.top = dotState[index].y + 'px';
+    });
+
+    window.requestAnimationFrame(animateCursor);
+  }
+
+  window.addEventListener('pointermove', event => {
+    pointer = { x: event.clientX, y: event.clientY };
+  }, { passive: true });
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
   tickConsole();
   tickClock();
+  updateProgress();
+  animateCursor();
   window.setInterval(tickConsole, 3800);
   window.setInterval(tickClock, 1000);
 })();

@@ -48,4 +48,40 @@
       <p data-i18n="project-impact-{{ project.slug }}-pt" hidden>{{ project.impact_pt }}</p>
     </div>
   </div>
+  {% if include.details %}
+    <div class="project-brief">
+      <div class="project-brief__block">
+        <span data-i18n="project-brief-problem-label-en">problem</span>
+        <span data-i18n="project-brief-problem-label-pt" hidden>problema</span>
+        <p data-i18n="project-problem-{{ project.slug }}-en">{{ project.problem_en }}</p>
+        <p data-i18n="project-problem-{{ project.slug }}-pt" hidden>{{ project.problem_pt }}</p>
+      </div>
+      <div class="project-brief__block">
+        <span data-i18n="project-brief-method-label-en">method</span>
+        <span data-i18n="project-brief-method-label-pt" hidden>método</span>
+        <p data-i18n="project-method-{{ project.slug }}-en">{{ project.method_en }}</p>
+        <p data-i18n="project-method-{{ project.slug }}-pt" hidden>{{ project.method_pt }}</p>
+      </div>
+      <div class="project-brief__block project-brief__block--wide">
+        <span data-i18n="project-brief-notes-label-en">technical notes</span>
+        <span data-i18n="project-brief-notes-label-pt" hidden>notas técnicas</span>
+        <ul data-i18n="project-notes-{{ project.slug }}-en">
+          {% for note in project.technical_notes_en %}
+            <li>{{ note }}</li>
+          {% endfor %}
+        </ul>
+        <ul data-i18n="project-notes-{{ project.slug }}-pt" hidden>
+          {% for note in project.technical_notes_pt %}
+            <li>{{ note }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="project-brief__block project-brief__block--wide project-brief__block--muted">
+        <span data-i18n="project-brief-boundaries-label-en">public boundary</span>
+        <span data-i18n="project-brief-boundaries-label-pt" hidden>limite público</span>
+        <p data-i18n="project-boundaries-{{ project.slug }}-en">{{ project.boundaries_en }}</p>
+        <p data-i18n="project-boundaries-{{ project.slug }}-pt" hidden>{{ project.boundaries_pt }}</p>
+      </div>
+    </div>
+  {% endif %}
 </article>

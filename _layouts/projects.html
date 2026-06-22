@@ -25,7 +25,7 @@
 
       <div class="project-grid project-grid--all">
         {% for project in site.data.projects %}
-          {% include project-card.html project=project index=forloop.index %}
+          {% include project-card.html project=project index=forloop.index details=true %}
         {% endfor %}
       </div>
     </section>

@@ -39,6 +39,20 @@
   architecture_pt: "Pipeline de ingestão, índice vetorial, filtros por metadados, busca lexical para códigos exatos, busca semântica para sintomas, reranking e geração com citações."
   impact_en: "Reduces tribal-memory dependency, accelerates diagnostics, and makes each answer auditable. Example: a question about an EBS failure with D10587 retrieves the right procedure and connector context before generating guidance."
   impact_pt: "Reduz dependência de memória tribal, acelera diagnóstico e torna a resposta auditável. Exemplo: uma pergunta sobre falha EBS com D10587 recupera o contexto do procedimento e do conector correto antes de gerar a orientação."
+  problem_en: "Technical teams lose time because answers live across PDFs, connector references, DTC tables, internal notes, and people who know where to look. Plain keyword search misses symptom language; pure semantic search can miss exact codes."
+  problem_pt: "Times técnicos perdem tempo porque as respostas ficam espalhadas entre PDFs, referências de conectores, tabelas de DTC, notas internas e pessoas que sabem onde procurar. Busca por palavra-chave falha em sintomas; busca semântica pura pode errar códigos exatos."
+  method_en: "I model the knowledge base as approved sources plus metadata, then combine lexical retrieval for exact identifiers with semantic retrieval for symptoms. The answer layer is constrained to retrieved context and designed to cite the source instead of inventing."
+  method_pt: "Modelo a base como fontes aprovadas com metadados e combino busca lexical para identificadores exatos com busca semântica para sintomas. A camada de resposta fica limitada ao contexto recuperado e precisa apontar a fonte em vez de inventar."
+  technical_notes_en:
+    - "Separates ingestion, indexing, retrieval, reranking, and response generation so each part can be tested independently."
+    - "Uses metadata such as component, model, version, page, code, and document type to reduce false positives."
+    - "Keeps sensitive source documents out of the portfolio; the public explanation focuses on architecture and reasoning."
+  technical_notes_pt:
+    - "Separa ingestão, indexação, recuperação, reranking e geração para que cada parte seja testável isoladamente."
+    - "Usa metadados como componente, modelo, versão, página, código e tipo de documento para reduzir falso positivo."
+    - "Mantém documentos sensíveis fora do portfolio; a explicação pública foca arquitetura e raciocínio."
+  boundaries_en: "No proprietary manuals, connector maps, internal prompts, credentials, embeddings, or production data are exposed here."
+  boundaries_pt: "Nenhum manual proprietário, mapa de conector, prompt interno, credencial, embedding ou dado produtivo é exposto aqui."
 
 - slug: ecoa
   name: ECOA
@@ -81,6 +95,20 @@
   architecture_pt: "Frontend de operação com filtros e edição rápida, API para validação e persistência, modelo de dados para usuários/áreas/linhas/ocorrências/ações e camada de métricas para SLA e tendência."
   impact_en: "Creates a nervous system for operational routine: less manual follow-up, less context loss, and more clarity on where to act first."
   impact_pt: "Cria um sistema nervoso para rotina operacional: menos follow-up manual, menos perda de contexto e mais clareza sobre onde agir primeiro."
+  problem_en: "Operational issues often start as messages, screenshots, calls, or spreadsheet rows. That makes ownership fuzzy, priority subjective, and decision history hard to audit after the fact."
+  problem_pt: "Problemas operacionais muitas vezes nascem como mensagens, prints, ligações ou linhas de planilha. Isso deixa dono difuso, prioridade subjetiva e histórico de decisão difícil de auditar depois."
+  method_en: "The system turns every occurrence into a structured object with severity, area, owner, status, evidence, and action history. Views are designed around the way different roles work: leadership sees portfolio risk, executors see the queue."
+  method_pt: "O sistema transforma cada ocorrência em um objeto estruturado com severidade, área, dono, status, evidência e histórico de ação. As visões seguem o trabalho de cada papel: liderança vê risco da carteira, executores veem fila."
+  technical_notes_en:
+    - "Models occurrences, actions, users, areas, and lines as separate entities instead of a single flat ticket."
+    - "Optimizes for fast triage: filtering, owner updates, status changes, comments, and evidence are first-class actions."
+    - "Metrics are designed for trend and SLA reading, not vanity dashboards."
+  technical_notes_pt:
+    - "Modela ocorrências, ações, usuários, áreas e linhas como entidades separadas, não como um ticket plano."
+    - "Otimiza triagem rápida: filtros, troca de dono, mudança de status, comentários e evidência são ações principais."
+    - "Métricas são pensadas para tendência e SLA, não para dashboard decorativo."
+  boundaries_en: "Internal process rules, real operational records, private user data, and company-specific escalation logic are intentionally abstracted."
+  boundaries_pt: "Regras internas de processo, registros reais de operação, dados privados de usuários e lógica específica de escalação ficam abstraídos de propósito."
 
 - slug: industrial-analytics
   name: "Industrial Analytics"
@@ -123,6 +151,20 @@
   architecture_pt: "Aplicação Python com SQL Server, consultas otimizadas por janela temporal, parse de logs de execução, API HTTP simples e UI responsiva para diagnóstico rápido."
   impact_en: "Accelerates battery-drain analysis, helps locate the critical area, and turns technical logs into objective operational decisions."
   impact_pt: "Acelera análise de battery drain, ajuda a localizar área crítica e transforma log técnico em decisão operacional objetiva."
+  problem_en: "Production and diagnostic data are useful, but raw logs force the user to know where to query, which execution matters, and how to compare one area with the previous one."
+  problem_pt: "Dados de produção e diagnóstico são úteis, mas logs crus exigem que o usuário saiba onde consultar, qual execução importa e como comparar uma área com a anterior."
+  method_en: "The tool starts from a chassis, retrieves recent executions, extracts the relevant battery signals, compares stages, and turns the result into a readable status with timeline and recommendation."
+  method_pt: "A ferramenta parte do chassis, busca execuções recentes, extrai sinais relevantes de bateria, compara etapas e transforma o resultado em status legível com timeline e recomendação."
+  technical_notes_en:
+    - "Uses time-window queries to avoid scanning unnecessary historical data during quick diagnostics."
+    - "Parses semi-structured execution logs into consistent signal names before calculating deltas."
+    - "Separates raw readings, derived metrics, and visual status so thresholds can evolve without rewriting the UI."
+  technical_notes_pt:
+    - "Usa consultas por janela temporal para evitar varrer histórico desnecessário durante diagnóstico rápido."
+    - "Faz parse de logs semiestruturados para sinais consistentes antes de calcular deltas."
+    - "Separa leitura crua, métrica derivada e status visual para evoluir thresholds sem reescrever a UI."
+  boundaries_en: "Database schema details, real chassis data, query credentials, hostnames, and exact production rules are not published."
+  boundaries_pt: "Detalhes de schema, chassis reais, credenciais de consulta, hostnames e regras exatas de produção não são publicados."
 
 - slug: security-lab
   name: "Security Research Lab"
@@ -165,3 +207,17 @@
   architecture_pt: "Jekyll collection bilíngue com filtros por plataforma/categoria, tags por técnica, TOC automático, schema TechArticle e links de tradução."
   impact_en: "Keeps the cyber side alive as public proof of technical reasoning without reducing the personal brand to CTF only."
   impact_pt: "Mantém o lado cyber vivo como prova pública de raciocínio técnico, sem reduzir a marca pessoal apenas a CTF."
+  problem_en: "Security writeups can become either too shallow to prove skill or too explicit to be useful responsibly. The goal is to show reasoning, not publish a copy-paste attack kit."
+  problem_pt: "Writeups de security podem ficar rasos demais para provar habilidade ou explícitos demais para serem responsáveis. O objetivo é mostrar raciocínio, não publicar um kit copiável."
+  method_en: "Each lab follows a controlled arc: map the surface, form a hypothesis, prove behavior in a safe environment, explain root cause, and close with remediation."
+  method_pt: "Cada laboratório segue um arco controlado: mapear superfície, formar hipótese, provar comportamento em ambiente seguro, explicar causa raiz e fechar com remediação."
+  technical_notes_en:
+    - "Content is bilingual and tagged by platform, category, difficulty, and technique for later filtering."
+    - "Writeups emphasize state transitions, trust boundaries, validation timing, and mitigation design."
+    - "Payloads and steps are framed for authorized labs and educational reproduction, not real targets."
+  technical_notes_pt:
+    - "Conteúdo bilíngue e marcado por plataforma, categoria, dificuldade e técnica para filtragem."
+    - "Writeups enfatizam transição de estado, trust boundaries, tempo de validação e desenho de mitigação."
+    - "Payloads e passos são enquadrados para labs autorizados e reprodução educacional, não alvos reais."
+  boundaries_en: "No real third-party targets, private reports, client data, exploit chains against live systems, or sensitive bypass details are included."
+  boundaries_pt: "Não inclui alvos reais de terceiros, relatórios privados, dados de cliente, cadeias contra sistemas vivos ou detalhes sensíveis de bypass."

@@ -1,8 +1,6 @@
 (function () {
   const consoleLine = document.querySelector('[data-console-line]');
   const clock = document.querySelector('[data-live-clock]');
-  const aura = document.querySelector('.cursor-aura');
-  const trailDots = Array.from(document.querySelectorAll('.cursor-trail span'));
   const progress = document.querySelector('.scroll-progress');
 
   const consoleLines = [
@@ -13,8 +11,6 @@
   ];
 
   let lineIndex = 0;
-  let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  const dotState = trailDots.map(() => ({ x: pointer.x, y: pointer.y }));
 
   function tickConsole() {
     if (!consoleLine) return;
@@ -35,33 +31,11 @@
     progress.style.width = pct + '%';
   }
 
-  function animateCursor() {
-    if (aura) {
-      aura.style.left = pointer.x + 'px';
-      aura.style.top = pointer.y + 'px';
-    }
-
-    trailDots.forEach((dot, index) => {
-      const previous = index === 0 ? pointer : dotState[index - 1];
-      dotState[index].x += (previous.x - dotState[index].x) * 0.28;
-      dotState[index].y += (previous.y - dotState[index].y) * 0.28;
-      dot.style.left = dotState[index].x + 'px';
-      dot.style.top = dotState[index].y + 'px';
-    });
-
-    window.requestAnimationFrame(animateCursor);
-  }
-
-  window.addEventListener('pointermove', event => {
-    pointer = { x: event.clientX, y: event.clientY };
-  }, { passive: true });
-
   window.addEventListener('scroll', updateProgress, { passive: true });
 
   tickConsole();
   tickClock();
   updateProgress();
-  animateCursor();
   window.setInterval(tickConsole, 3800);
   window.setInterval(tickClock, 1000);
 })();

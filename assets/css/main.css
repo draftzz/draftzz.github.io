@@ -31,15 +31,17 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 18px 32px, rgba(255,255,255,.68) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 90px 78px, rgba(255,255,255,.38) 0 1px, transparent 1.3px),
-    radial-gradient(circle at 154px 44px, rgba(98,231,255,.44) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 220px 136px, rgba(255,255,255,.3) 0 1px, transparent 1.2px),
-    linear-gradient(115deg, transparent 0 34%, rgba(98,231,255,.055) 45%, rgba(185,140,255,.04) 53%, transparent 66%),
+  background-color: #030611;
+  background-image:
+    radial-gradient(circle at 18px 32px, rgba(255,255,255,.55) 0, rgba(255,255,255,.55) 1px, transparent 1.4px),
+    radial-gradient(circle at 90px 78px, rgba(255,255,255,.28) 0, rgba(255,255,255,.28) 1px, transparent 1.3px),
+    radial-gradient(circle at 154px 44px, rgba(98,231,255,.34) 0, rgba(98,231,255,.34) 1px, transparent 1.5px),
+    radial-gradient(circle at 220px 136px, rgba(255,255,255,.22) 0, rgba(255,255,255,.22) 1px, transparent 1.2px),
+    radial-gradient(circle at 68% 18%, rgba(122,167,255,.11), transparent 28%),
+    radial-gradient(circle at 24% 76%, rgba(57,255,156,.07), transparent 26%),
     linear-gradient(180deg, #030611 0%, #05070a 44%, #070812 100%);
-  background-size: 240px 180px, 310px 230px, 420px 280px, 520px 360px, auto, auto;
-  background-position: 0 0, 38px 24px, 90px 52px, 150px 88px, center, center;
+  background-size: 260px 190px, 340px 250px, 480px 320px, 620px 430px, auto, auto, auto;
+  background-position: 0 0, 38px 24px, 90px 52px, 150px 88px, center, center, center;
   background-attachment: fixed;
   color: var(--text);
   font-family: var(--sans);
@@ -58,40 +60,13 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
 .container--narrow { max-width: 880px; }
-.terminal-page { width: min(var(--maxw), calc(100% - 2.5rem)); margin: 0 auto; }
+.terminal-page {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
 
-.cursor-aura {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(122,167,255,.09), transparent 64%);
-  mix-blend-mode: screen;
-  z-index: 60;
-  opacity: .42;
-}
-.cursor-trail {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 59;
-}
-.cursor-trail span {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.72);
-  opacity: .18;
-  transform: translate(-50%, -50%);
-}
-.scanline {
-  display: none;
-}
 .scroll-progress {
   position: fixed;
   left: 0;
@@ -147,11 +122,11 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 .hero-shell {
   min-height: calc(100vh - 73px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  gap: 3rem;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 3.5rem;
   align-items: center;
   border-bottom: 1px solid var(--border);
-  padding: 5rem 0;
+  padding: 5.5rem 0;
 }
 .terminal-command {
   margin: 0 0 1.4rem;
@@ -581,7 +556,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   .toc { position: sticky; top: 5rem; max-height: calc(100vh - 7rem); overflow-y: auto; }
 }
 @media (max-width: 980px) {
-  .terminal-page { width: min(100% - 2rem, var(--maxw)); }
+  .terminal-page { max-width: 760px; padding: 0 1.25rem; }
   .hero-shell { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 0; }
   .glitch-title { font-size: 4.4rem; }
   .identity-panel { max-width: 480px; }
@@ -591,11 +566,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 }
 @media (max-width: 640px) {
   body {
-    background-size: 210px 160px, 280px 210px, 360px 260px, 460px 330px, auto, auto;
+    background-size: 230px 170px, 300px 220px, 390px 280px, 520px 360px, auto, auto, auto;
     background-attachment: scroll;
   }
-  .cursor-aura,
-  .cursor-trail { display: none; }
   .nav { align-items: flex-start; flex-direction: column; padding: .75rem 1rem; }
   .nav__links { justify-content: flex-start; gap: .55rem; font-size: .78rem; }
   .hero-shell { min-height: auto; padding: 3.2rem 0; }

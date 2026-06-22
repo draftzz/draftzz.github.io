@@ -40,7 +40,9 @@
       const key = el.dataset.i18n;
       const langSuffix = key.endsWith('-pt') ? 'pt-br' : (key.endsWith('-en') ? 'en' : null);
       if (!langSuffix) return;
-      el.hidden = (langSuffix !== current);
+      const shouldHide = langSuffix !== current;
+      el.hidden = shouldHide;
+      el.setAttribute('aria-hidden', shouldHide ? 'true' : 'false');
     });
     document.querySelectorAll('.nav__lang-pill').forEach(b => {
       b.classList.toggle('is-active', b.dataset.lang === current);

@@ -115,24 +115,37 @@
 
     let frame = null;
     let idleTimer = null;
-    let active = false;
-    let visible = false;
+    let cursorVisible = false;
+    let trailActive = false;
 
     function move(event) {
       if (event.pointerType && event.pointerType !== 'mouse') return;
       pointer.x = event.clientX;
       pointer.y = event.clientY;
-      active = true;
-      visible = true;
+      cursorVisible = true;
+      trailActive = true;
+      document.documentElement.classList.add('custom-cursor');
+      trail.classList.add('is-visible');
       trail.classList.add('is-active');
       window.clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(hide, 180);
+      idleTimer = window.setTimeout(settle, 140);
+      start();
+    }
+
+    function settle() {
+      trailActive = false;
+      trail.classList.remove('is-active');
       start();
     }
 
     function hide() {
-      active = false;
+      cursorVisible = false;
+      trailActive = false;
+      window.clearTimeout(idleTimer);
+      document.documentElement.classList.remove('custom-cursor');
+      trail.classList.remove('is-visible');
       trail.classList.remove('is-active');
+      start();
     }
 
     function start() {
@@ -155,20 +168,18 @@
         if (Math.abs(dx) + Math.abs(dy) > 0.7) moving = true;
 
         dot.el.style.transform = `translate3d(${dot.x}px, ${dot.y}px, 0) translate(-50%, -50%)`;
-        dot.el.style.opacity = active ? dot.opacity.toFixed(2) : '0';
+        if (!cursorVisible) {
+          dot.el.style.opacity = '0';
+        } else if (index === 0) {
+          dot.el.style.opacity = '0.94';
+        } else {
+          dot.el.style.opacity = trailActive ? dot.opacity.toFixed(2) : '0';
+        }
       });
 
-      if (active || moving) {
+      if (trailActive || moving) {
         frame = window.requestAnimationFrame(animate);
         return;
-      }
-
-      if (visible) {
-        visible = false;
-        dots.forEach(dot => {
-          dot.x = pointer.x;
-          dot.y = pointer.y;
-        });
       }
     }
 

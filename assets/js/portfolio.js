@@ -57,15 +57,34 @@
   function initPanelHover() {
     if (!finePointer) return;
     document.querySelectorAll('.interactive-panel').forEach(panel => {
+      let rect = null;
+      let frame = null;
+      let latest = null;
+
+      panel.addEventListener('pointerenter', () => {
+        rect = panel.getBoundingClientRect();
+      });
+
       panel.addEventListener('pointermove', event => {
-        const rect = panel.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width) * 100;
-        const y = ((event.clientY - rect.top) / rect.height) * 100;
-        panel.style.setProperty('--mx', x.toFixed(2) + '%');
-        panel.style.setProperty('--my', y.toFixed(2) + '%');
+        latest = event;
+        if (frame) return;
+        frame = window.requestAnimationFrame(() => {
+          frame = null;
+          if (!rect || !latest) return;
+          const x = ((latest.clientX - rect.left) / rect.width) * 100;
+          const y = ((latest.clientY - rect.top) / rect.height) * 100;
+          panel.style.setProperty('--mx', x.toFixed(2) + '%');
+          panel.style.setProperty('--my', y.toFixed(2) + '%');
+        });
       }, { passive: true });
 
       panel.addEventListener('pointerleave', () => {
+        rect = null;
+        latest = null;
+        if (frame) {
+          window.cancelAnimationFrame(frame);
+          frame = null;
+        }
         panel.style.removeProperty('--mx');
         panel.style.removeProperty('--my');
       });
@@ -79,46 +98,41 @@
     trail.className = 'cursor-trail';
     trail.setAttribute('aria-hidden', 'true');
 
-    const dotCount = 12;
-    const pointer = { x: -100, y: -100 };
+    const dotCount = 5;
     const dots = Array.from({ length: dotCount }, (_, index) => {
       const dot = document.createElement('span');
       dot.className = 'cursor-trail__dot';
-      dot.style.setProperty('--trail-size', Math.max(3, 9 - index * 0.45) + 'px');
+      dot.style.setProperty('--trail-size', Math.max(3, 8 - index * 0.85) + 'px');
+      dot.style.setProperty('--trail-delay', (index * 18) + 'ms');
+      dot.style.setProperty('--trail-opacity', Math.max(0.08, 0.55 - index * 0.08).toFixed(2));
       trail.appendChild(dot);
-      return {
-        el: dot,
-        x: pointer.x,
-        y: pointer.y,
-        opacity: Math.max(0.08, 0.72 - index * 0.055)
-      };
+      return dot;
     });
 
-    let active = false;
+    let frame = null;
+    let idleTimer = null;
+    let latest = null;
 
     function move(event) {
       if (event.pointerType && event.pointerType !== 'mouse') return;
-      pointer.x = event.clientX;
-      pointer.y = event.clientY;
-      active = true;
+      latest = event;
       trail.classList.add('is-active');
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(hide, 180);
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = null;
+        if (!latest) return;
+        const transform = `translate3d(${latest.clientX}px, ${latest.clientY}px, 0) translate(-50%, -50%)`;
+        dots.forEach(dot => {
+          dot.style.transform = transform;
+        });
+      });
     }
 
     function hide() {
-      active = false;
+      latest = null;
       trail.classList.remove('is-active');
-    }
-
-    function animate() {
-      dots.forEach((dot, index) => {
-        const target = index === 0 ? pointer : dots[index - 1];
-        const speed = Math.max(0.12, 0.34 - index * 0.015);
-        dot.x += (target.x - dot.x) * speed;
-        dot.y += (target.y - dot.y) * speed;
-        dot.el.style.transform = `translate3d(${dot.x}px, ${dot.y}px, 0) translate(-50%, -50%)`;
-        dot.el.style.opacity = active ? dot.opacity.toFixed(2) : '0';
-      });
-      window.requestAnimationFrame(animate);
     }
 
     document.body.appendChild(trail);
@@ -127,7 +141,6 @@
     window.addEventListener('blur', hide);
     window.addEventListener('pointerdown', () => trail.classList.add('is-pressed'));
     window.addEventListener('pointerup', () => trail.classList.remove('is-pressed'));
-    animate();
   }
 
   window.addEventListener('scroll', updateProgress, { passive: true });

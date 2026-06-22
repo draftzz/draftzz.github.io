@@ -87,22 +87,24 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   inset: 0;
   z-index: 1000;
   pointer-events: none;
-  mix-blend-mode: difference;
 }
 .cursor-trail__dot {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: var(--trail-size, 8px);
   height: var(--trail-size, 8px);
   border-radius: 999px;
-  background: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.72);
   opacity: 0;
   transform: translate3d(-100px, -100px, 0);
-  transition: opacity .18s ease;
+  transition:
+    transform 120ms ease-out var(--trail-delay, 0ms),
+    opacity 120ms ease-out;
   will-change: transform, opacity;
 }
-.cursor-trail.is-pressed .cursor-trail__dot:first-child { width: 13px; height: 13px; }
+.cursor-trail.is-active .cursor-trail__dot { opacity: var(--trail-opacity, .35); }
+.cursor-trail.is-pressed .cursor-trail__dot:first-child { width: 11px; height: 11px; }
 
 .nav {
   position: sticky;

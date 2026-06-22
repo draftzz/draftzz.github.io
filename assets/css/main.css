@@ -98,12 +98,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   background: rgba(255,255,255,.72);
   opacity: 0;
   transform: translate3d(-100px, -100px, 0);
-  transition:
-    transform 120ms ease-out var(--trail-delay, 0ms),
-    opacity 120ms ease-out;
+  transition: opacity 120ms ease-out;
   will-change: transform, opacity;
 }
-.cursor-trail.is-active .cursor-trail__dot { opacity: var(--trail-opacity, .35); }
 .cursor-trail.is-pressed .cursor-trail__dot:first-child { width: 11px; height: 11px; }
 
 .nav {

@@ -98,41 +98,78 @@
     trail.className = 'cursor-trail';
     trail.setAttribute('aria-hidden', 'true');
 
-    const dotCount = 5;
+    const dotCount = 7;
+    const pointer = { x: -100, y: -100 };
     const dots = Array.from({ length: dotCount }, (_, index) => {
       const dot = document.createElement('span');
       dot.className = 'cursor-trail__dot';
-      dot.style.setProperty('--trail-size', Math.max(3, 8 - index * 0.85) + 'px');
-      dot.style.setProperty('--trail-delay', (index * 18) + 'ms');
-      dot.style.setProperty('--trail-opacity', Math.max(0.08, 0.55 - index * 0.08).toFixed(2));
+      dot.style.setProperty('--trail-size', Math.max(3, 9 - index * 0.75) + 'px');
       trail.appendChild(dot);
-      return dot;
+      return {
+        el: dot,
+        x: pointer.x,
+        y: pointer.y,
+        opacity: Math.max(0.07, 0.58 - index * 0.06)
+      };
     });
 
     let frame = null;
     let idleTimer = null;
-    let latest = null;
+    let active = false;
+    let visible = false;
 
     function move(event) {
       if (event.pointerType && event.pointerType !== 'mouse') return;
-      latest = event;
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      active = true;
+      visible = true;
       trail.classList.add('is-active');
       window.clearTimeout(idleTimer);
       idleTimer = window.setTimeout(hide, 180);
-      if (frame) return;
-      frame = window.requestAnimationFrame(() => {
-        frame = null;
-        if (!latest) return;
-        const transform = `translate3d(${latest.clientX}px, ${latest.clientY}px, 0) translate(-50%, -50%)`;
-        dots.forEach(dot => {
-          dot.style.transform = transform;
-        });
-      });
+      start();
     }
 
     function hide() {
-      latest = null;
+      active = false;
       trail.classList.remove('is-active');
+    }
+
+    function start() {
+      if (frame) return;
+      frame = window.requestAnimationFrame(animate);
+    }
+
+    function animate() {
+      frame = null;
+      let moving = false;
+
+      dots.forEach((dot, index) => {
+        const target = index === 0 ? pointer : dots[index - 1];
+        const speed = Math.max(0.18, 0.42 - index * 0.035);
+        const dx = target.x - dot.x;
+        const dy = target.y - dot.y;
+
+        dot.x += dx * speed;
+        dot.y += dy * speed;
+        if (Math.abs(dx) + Math.abs(dy) > 0.7) moving = true;
+
+        dot.el.style.transform = `translate3d(${dot.x}px, ${dot.y}px, 0) translate(-50%, -50%)`;
+        dot.el.style.opacity = active ? dot.opacity.toFixed(2) : '0';
+      });
+
+      if (active || moving) {
+        frame = window.requestAnimationFrame(animate);
+        return;
+      }
+
+      if (visible) {
+        visible = false;
+        dots.forEach(dot => {
+          dot.x = pointer.x;
+          dot.y = pointer.y;
+        });
+      }
     }
 
     document.body.appendChild(trail);

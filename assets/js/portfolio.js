@@ -2,6 +2,8 @@
   const consoleLine = document.querySelector('[data-console-line]');
   const clock = document.querySelector('[data-live-clock]');
   const progress = document.querySelector('.scroll-progress');
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const consoleLines = [
     'vesai.rag -> hybrid retrieval + cited answer',
@@ -31,11 +33,89 @@
     progress.style.width = pct + '%';
   }
 
+  function initPanelHover() {
+    if (!finePointer) return;
+    document.querySelectorAll('.interactive-panel').forEach(panel => {
+      panel.addEventListener('pointermove', event => {
+        const rect = panel.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        panel.style.setProperty('--mx', x.toFixed(2) + '%');
+        panel.style.setProperty('--my', y.toFixed(2) + '%');
+      }, { passive: true });
+
+      panel.addEventListener('pointerleave', () => {
+        panel.style.removeProperty('--mx');
+        panel.style.removeProperty('--my');
+      });
+    });
+  }
+
+  function initCursorTrail() {
+    if (!finePointer || reduceMotion) return;
+
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.setAttribute('aria-hidden', 'true');
+
+    const dotCount = 12;
+    const pointer = { x: -100, y: -100 };
+    const dots = Array.from({ length: dotCount }, (_, index) => {
+      const dot = document.createElement('span');
+      dot.className = 'cursor-trail__dot';
+      dot.style.setProperty('--trail-size', Math.max(3, 9 - index * 0.45) + 'px');
+      trail.appendChild(dot);
+      return {
+        el: dot,
+        x: pointer.x,
+        y: pointer.y,
+        opacity: Math.max(0.08, 0.72 - index * 0.055)
+      };
+    });
+
+    let active = false;
+
+    function move(event) {
+      if (event.pointerType && event.pointerType !== 'mouse') return;
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      active = true;
+      trail.classList.add('is-active');
+    }
+
+    function hide() {
+      active = false;
+      trail.classList.remove('is-active');
+    }
+
+    function animate() {
+      dots.forEach((dot, index) => {
+        const target = index === 0 ? pointer : dots[index - 1];
+        const speed = Math.max(0.12, 0.34 - index * 0.015);
+        dot.x += (target.x - dot.x) * speed;
+        dot.y += (target.y - dot.y) * speed;
+        dot.el.style.transform = `translate3d(${dot.x}px, ${dot.y}px, 0) translate(-50%, -50%)`;
+        dot.el.style.opacity = active ? dot.opacity.toFixed(2) : '0';
+      });
+      window.requestAnimationFrame(animate);
+    }
+
+    document.body.appendChild(trail);
+    window.addEventListener('pointermove', move, { passive: true });
+    document.addEventListener('pointerleave', hide);
+    window.addEventListener('blur', hide);
+    window.addEventListener('pointerdown', () => trail.classList.add('is-pressed'));
+    window.addEventListener('pointerup', () => trail.classList.remove('is-pressed'));
+    animate();
+  }
+
   window.addEventListener('scroll', updateProgress, { passive: true });
 
   tickConsole();
   tickClock();
   updateProgress();
+  initPanelHover();
+  initCursorTrail();
   window.setInterval(tickConsole, 3800);
   window.setInterval(tickClock, 1000);
 })();

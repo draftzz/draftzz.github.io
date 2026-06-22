@@ -1,0 +1,51 @@
+{% assign project = include.project %}
+{% assign project_index = include.index %}
+<article class="project-card interactive-panel">
+  <div class="project-card__top">
+    <div>
+      <p class="project-index">{% if project_index < 10 %}0{% endif %}{{ project_index }}</p>
+      <h3>{{ project.name }}</h3>
+    </div>
+    <span class="terminal-chip" data-i18n="project-type-{{ project.slug }}-en">{{ project.type_en }}</span>
+    <span class="terminal-chip" data-i18n="project-type-{{ project.slug }}-pt" hidden>{{ project.type_pt }}</span>
+  </div>
+  <p class="project-summary" data-i18n="project-summary-{{ project.slug }}-en">{{ project.summary_en }}</p>
+  <p class="project-summary" data-i18n="project-summary-{{ project.slug }}-pt" hidden>{{ project.summary_pt }}</p>
+  <div class="chip-row" data-i18n="project-tags-{{ project.slug }}-en">
+    {% for tag in project.tags_en %}
+      <span class="terminal-chip terminal-chip--muted">{{ tag }}</span>
+    {% endfor %}
+  </div>
+  <div class="chip-row" data-i18n="project-tags-{{ project.slug }}-pt" hidden>
+    {% for tag in project.tags_pt %}
+      <span class="terminal-chip terminal-chip--muted">{{ tag }}</span>
+    {% endfor %}
+  </div>
+  <div class="project-log">
+    <p class="terminal-command"><span>$</span> explain {{ project.slug }}</p>
+    <ol>
+      {% for step in project.flow %}
+        <li>
+          <strong data-i18n="project-step-title-{{ project.slug }}-{{ forloop.index }}-en">{{ step.title_en }}</strong>
+          <strong data-i18n="project-step-title-{{ project.slug }}-{{ forloop.index }}-pt" hidden>{{ step.title_pt }}</strong>
+          <p data-i18n="project-step-body-{{ project.slug }}-{{ forloop.index }}-en">{{ step.body_en }}</p>
+          <p data-i18n="project-step-body-{{ project.slug }}-{{ forloop.index }}-pt" hidden>{{ step.body_pt }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+  <div class="project-card__meta">
+    <div>
+      <span data-i18n="project-meta-architecture-en">architecture</span>
+      <span data-i18n="project-meta-architecture-pt" hidden>arquitetura</span>
+      <p data-i18n="project-architecture-{{ project.slug }}-en">{{ project.architecture_en }}</p>
+      <p data-i18n="project-architecture-{{ project.slug }}-pt" hidden>{{ project.architecture_pt }}</p>
+    </div>
+    <div>
+      <span data-i18n="project-meta-impact-en">impact</span>
+      <span data-i18n="project-meta-impact-pt" hidden>impacto</span>
+      <p data-i18n="project-impact-{{ project.slug }}-en">{{ project.impact_en }}</p>
+      <p data-i18n="project-impact-{{ project.slug }}-pt" hidden>{{ project.impact_pt }}</p>
+    </div>
+  </div>
+</article>

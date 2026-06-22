@@ -273,6 +273,16 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   font-size: .84rem;
 }
 .terminal-button:hover { color: var(--accent); border-color: rgba(57,255,156,.45); background: rgba(57,255,156,.08); }
+.terminal-button--strong {
+  border-color: rgba(255,255,255,.18);
+  color: var(--paper);
+  background: rgba(255,255,255,.07);
+}
+.terminal-button--strong:hover {
+  color: #020304;
+  border-color: var(--accent);
+  background: var(--accent);
+}
 .hero-manifest {
   display: flex;
   flex-wrap: wrap;
@@ -382,6 +392,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 .section-heading__title { display: flex; align-items: center; gap: .85rem; font-family: var(--mono); color: var(--muted); }
 .section-heading__title span:first-child { color: var(--accent); }
 .section-heading__title span:nth-child(2) { color: rgba(255,255,255,.28); }
+.section-heading h1,
 .section-heading h2 { margin: 0; color: var(--soft); font-size: 1.28rem; font-weight: 500; letter-spacing: 0; }
 .section-heading p { margin: 0; color: rgba(255,255,255,.32); font-family: var(--mono); font-size: .86rem; }
 
@@ -464,6 +475,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 }
 
 .project-grid { display: grid; gap: 1rem; }
+.project-grid--all { margin-top: 1rem; }
 .project-card { padding: 1.1rem; }
 .project-card__top {
   display: flex;
@@ -524,6 +536,23 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   letter-spacing: 0;
 }
 .project-card__meta p { margin: .45rem 0 0; color: var(--muted); font-size: .9rem; }
+.project-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.projects-hero { padding-top: 4rem; }
+.projects-intro {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.projects-intro p:last-child,
+.projects-intro p[data-i18n] {
+  max-width: 760px;
+  margin: 0;
+  color: var(--soft);
+  line-height: 1.75;
+}
 
 .writeup-tools {
   display: flex;
@@ -837,6 +866,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
   .hero-manifest { display: grid; grid-template-columns: 1fr; }
   .section-shell { padding: 3.5rem 0; }
   .section-heading { align-items: start; flex-direction: column; }
+  .section-heading h1,
   .section-heading h2 { font-size: 1.1rem; }
   .focus-grid { grid-template-columns: 1fr; }
   .writeup-tools { align-items: stretch; flex-direction: column; }

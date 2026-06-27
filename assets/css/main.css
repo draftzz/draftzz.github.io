@@ -74,22 +74,17 @@ pre,
 
 /* Light-mode fixes for the remaining hardcoded-dark spots. */
 [data-theme="light"] body {
-  background-color: #eef1f6;
-  background-image:
-    radial-gradient(rgba(22,32,48,.11) 1px, transparent 1.5px),
-    radial-gradient(rgba(11,126,150,.10) 1px, transparent 1.5px),
-    linear-gradient(180deg, #f3f6fa 0%, #e9eef5 52%, #eef2f8 100%);
-  background-size: 30px 30px, 30px 30px, auto;
-  background-position: 0 0, 15px 15px, center;
-  background-attachment: fixed;
+  background-color: #eaeef4;
+  background-image: linear-gradient(180deg, #eef2f8 0%, #e3e9f1 52%, #edf1f7 100%);
 }
 [data-theme="light"] body::before { display: none; }
 [data-theme="light"] body::after {
   background:
-    radial-gradient(36% 44% at 20% 26%, rgba(60,185,215,.26), transparent 70%),
-    radial-gradient(40% 48% at 80% 22%, rgba(110,150,255,.22), transparent 70%),
-    radial-gradient(44% 48% at 66% 82%, rgba(170,140,255,.20), transparent 70%),
-    radial-gradient(38% 44% at 30% 78%, rgba(60,185,215,.17), transparent 70%);
+    radial-gradient(38% 46% at 18% 24%, rgba(54,180,212,.38), transparent 68%),
+    radial-gradient(42% 50% at 82% 20%, rgba(104,144,255,.32), transparent 68%),
+    radial-gradient(46% 50% at 68% 84%, rgba(168,134,255,.30), transparent 68%),
+    radial-gradient(40% 46% at 28% 80%, rgba(54,180,212,.26), transparent 68%);
+  filter: blur(50px);
 }
 [data-theme="light"] .glitch-title { color: #0b1018; }
 [data-theme="light"] .footer { background: #e7ebf2; }

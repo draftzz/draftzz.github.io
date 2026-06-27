@@ -58,6 +58,7 @@ body {
   background-size: 260px 190px, 340px 250px, 480px 320px, 620px 430px, auto;
   background-position: 0 0, 38px 24px, 90px 52px, 150px 88px, center;
   background-attachment: fixed;
+  animation: star-drift 120s linear infinite;
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
@@ -65,39 +66,64 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* atmospheric aurora — slow drifting glow behind all content */
-body::before,
+/* twinkling sparkle stars — a brighter layer that pulses and drifts */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image:
+    radial-gradient(circle at 30% 22%, rgba(255,255,255,.95), transparent 1.7px),
+    radial-gradient(circle at 73% 36%, rgba(var(--accent-rgb),.9), transparent 1.9px),
+    radial-gradient(circle at 17% 64%, rgba(255,255,255,.8), transparent 1.6px),
+    radial-gradient(circle at 86% 72%, rgba(var(--accent-rgb),.8), transparent 1.7px),
+    radial-gradient(circle at 49% 84%, rgba(255,255,255,.85), transparent 1.5px),
+    radial-gradient(circle at 62% 14%, rgba(122,167,255,.85), transparent 1.6px);
+  animation: twinkle 4.6s ease-in-out infinite, sparkle-drift 90s linear infinite alternate;
+  will-change: opacity, transform;
+}
+
+/* atmospheric aurora — drifting + breathing glow behind all content */
 body::after {
   content: "";
   position: fixed;
-  inset: -25%;
+  inset: -30%;
   z-index: -1;
   pointer-events: none;
-  will-change: transform, opacity;
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  background-image:
+    radial-gradient(36% 44% at 20% 26%, rgba(var(--accent-rgb),.20), transparent 70%),
+    radial-gradient(40% 48% at 80% 22%, rgba(122,167,255,.17), transparent 70%),
+    radial-gradient(44% 48% at 66% 82%, rgba(185,140,255,.15), transparent 70%),
+    radial-gradient(38% 44% at 30% 78%, rgba(var(--accent-rgb),.13), transparent 70%);
+  filter: blur(44px);
+  animation: aurora-move 26s ease-in-out infinite alternate, aurora-breathe 16s ease-in-out infinite alternate;
+  will-change: transform, background-position, opacity;
 }
-body::before {
-  background:
-    radial-gradient(38% 48% at 22% 28%, rgba(var(--accent-rgb),.14), transparent 72%),
-    radial-gradient(42% 52% at 78% 22%, rgba(122,167,255,.12), transparent 72%);
-  filter: blur(42px);
-  animation: aurora-a 24s ease-in-out infinite alternate;
+
+@keyframes star-drift {
+  to {
+    background-position: 260px 190px, 378px 274px, 570px 372px, 770px 518px, center;
+  }
 }
-body::after {
-  background:
-    radial-gradient(46% 50% at 64% 80%, rgba(185,140,255,.10), transparent 72%),
-    radial-gradient(40% 46% at 28% 74%, rgba(var(--accent-rgb),.09), transparent 72%);
-  filter: blur(50px);
-  animation: aurora-b 32s ease-in-out infinite alternate;
+@keyframes twinkle {
+  0%, 100% { opacity: .35; }
+  50%      { opacity: 1; }
 }
-@keyframes aurora-a {
-  0%   { transform: translate3d(-4%, -2%, 0) scale(1);    opacity: .85; }
-  50%  { transform: translate3d(3%, 2%, 0)   scale(1.12); opacity: 1; }
-  100% { transform: translate3d(-2%, 4%, 0)  scale(1.05); opacity: .8; }
+@keyframes sparkle-drift {
+  to { transform: translate3d(2%, -2%, 0); }
 }
-@keyframes aurora-b {
-  0%   { transform: translate3d(3%, 2%, 0)    scale(1.05); opacity: .7; }
-  50%  { transform: translate3d(-3%, -3%, 0)  scale(1.15); opacity: .95; }
-  100% { transform: translate3d(2%, -1%, 0)   scale(1);    opacity: .75; }
+@keyframes aurora-move {
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 100%; }
+}
+@keyframes aurora-breathe {
+  0%   { transform: scale(1)    translate3d(-2%, -1%, 0); opacity: .9; }
+  50%  { transform: scale(1.14) translate3d(2%, 1%, 0);   opacity: 1; }
+  100% { transform: scale(1.06) translate3d(-1%, 2%, 0);  opacity: .85; }
 }
 
 a { color: var(--accent); text-decoration: none; transition: color .16s, border-color .16s, background .16s, transform .16s; }
@@ -1274,6 +1300,7 @@ p { text-wrap: pretty; }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
   .cursor-x { display: none; }
+  body,
   body::before,
   body::after { animation: none; }
   .signal-ticker__track { animation: none; }

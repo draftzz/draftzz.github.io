@@ -94,101 +94,70 @@
   function initCursorTrail() {
     if (!finePointer || reduceMotion) return;
 
-    const trail = document.createElement('div');
-    trail.className = 'cursor-trail';
-    trail.setAttribute('aria-hidden', 'true');
+    const cursor = document.createElement('div');
+    cursor.className = 'cursor-x';
+    cursor.setAttribute('aria-hidden', 'true');
+    cursor.innerHTML =
+      '<div class="cursor-x__reticle">' +
+        '<span class="cursor-x__tick cursor-x__tick--t"></span>' +
+        '<span class="cursor-x__tick cursor-x__tick--b"></span>' +
+        '<span class="cursor-x__tick cursor-x__tick--l"></span>' +
+        '<span class="cursor-x__tick cursor-x__tick--r"></span>' +
+        '<span class="cursor-x__dot"></span>' +
+        '<span class="cursor-x__corner cursor-x__corner--tl"></span>' +
+        '<span class="cursor-x__corner cursor-x__corner--tr"></span>' +
+        '<span class="cursor-x__corner cursor-x__corner--bl"></span>' +
+        '<span class="cursor-x__corner cursor-x__corner--br"></span>' +
+      '</div>';
+    document.body.appendChild(cursor);
 
-    const dotCount = 7;
+    const lockSelector = 'a, button, input, textarea, select, label, summary, ' +
+      '[role="button"], .filter, .nav__lang-pill, .term-launcher, .terminal__close, ' +
+      '.card, .project-card, .contact-card, .interactive-panel, .tag-cloud-link';
+
     const pointer = { x: -100, y: -100 };
-    const dots = Array.from({ length: dotCount }, (_, index) => {
-      const dot = document.createElement('span');
-      dot.className = 'cursor-trail__dot';
-      dot.style.setProperty('--trail-size', Math.max(3, 9 - index * 0.75) + 'px');
-      trail.appendChild(dot);
-      return {
-        el: dot,
-        x: pointer.x,
-        y: pointer.y,
-        opacity: Math.max(0.07, 0.58 - index * 0.06)
-      };
-    });
-
+    const pos = { x: -100, y: -100 };
     let frame = null;
-    let idleTimer = null;
-    let cursorVisible = false;
-    let trailActive = false;
+    let visible = false;
+
+    function start() {
+      if (!frame) frame = window.requestAnimationFrame(animate);
+    }
+
+    function animate() {
+      frame = null;
+      pos.x += (pointer.x - pos.x) * 0.4;
+      pos.y += (pointer.y - pos.y) * 0.4;
+      cursor.style.transform =
+        'translate3d(' + pos.x + 'px, ' + pos.y + 'px, 0) translate(-50%, -50%)';
+      if (Math.abs(pointer.x - pos.x) + Math.abs(pointer.y - pos.y) > 0.4) start();
+    }
 
     function move(event) {
       if (event.pointerType && event.pointerType !== 'mouse') return;
       pointer.x = event.clientX;
       pointer.y = event.clientY;
-      cursorVisible = true;
-      trailActive = true;
-      document.documentElement.classList.add('custom-cursor');
-      trail.classList.add('is-visible');
-      trail.classList.add('is-active');
-      window.clearTimeout(idleTimer);
-      idleTimer = window.setTimeout(settle, 140);
-      start();
-    }
-
-    function settle() {
-      trailActive = false;
-      trail.classList.remove('is-active');
+      if (!visible) {
+        visible = true;
+        cursor.classList.add('is-visible');
+        document.documentElement.classList.add('custom-cursor');
+      }
+      const locked = event.target && event.target.closest && event.target.closest(lockSelector);
+      cursor.classList.toggle('is-locked', !!locked);
       start();
     }
 
     function hide() {
-      cursorVisible = false;
-      trailActive = false;
-      window.clearTimeout(idleTimer);
+      visible = false;
+      cursor.classList.remove('is-visible');
       document.documentElement.classList.remove('custom-cursor');
-      trail.classList.remove('is-visible');
-      trail.classList.remove('is-active');
-      start();
     }
 
-    function start() {
-      if (frame) return;
-      frame = window.requestAnimationFrame(animate);
-    }
-
-    function animate() {
-      frame = null;
-      let moving = false;
-
-      dots.forEach((dot, index) => {
-        const target = index === 0 ? pointer : dots[index - 1];
-        const speed = Math.max(0.18, 0.42 - index * 0.035);
-        const dx = target.x - dot.x;
-        const dy = target.y - dot.y;
-
-        dot.x += dx * speed;
-        dot.y += dy * speed;
-        if (Math.abs(dx) + Math.abs(dy) > 0.7) moving = true;
-
-        dot.el.style.transform = `translate3d(${dot.x}px, ${dot.y}px, 0) translate(-50%, -50%)`;
-        if (!cursorVisible) {
-          dot.el.style.opacity = '0';
-        } else if (index === 0) {
-          dot.el.style.opacity = '0.94';
-        } else {
-          dot.el.style.opacity = trailActive ? dot.opacity.toFixed(2) : '0';
-        }
-      });
-
-      if (trailActive || moving) {
-        frame = window.requestAnimationFrame(animate);
-        return;
-      }
-    }
-
-    document.body.appendChild(trail);
     window.addEventListener('pointermove', move, { passive: true });
     document.addEventListener('pointerleave', hide);
     window.addEventListener('blur', hide);
-    window.addEventListener('pointerdown', () => trail.classList.add('is-pressed'));
-    window.addEventListener('pointerup', () => trail.classList.remove('is-pressed'));
+    window.addEventListener('pointerdown', () => cursor.classList.add('is-pressed'));
+    window.addEventListener('pointerup', () => cursor.classList.remove('is-pressed'));
   }
 
   window.addEventListener('scroll', updateProgress, { passive: true });

@@ -1409,6 +1409,41 @@ p { text-wrap: pretty; }
   letter-spacing: .05em;
   text-transform: uppercase;
 }
+.konami-matrix {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  pointer-events: none;
+  opacity: .9;
+  transition: opacity .5s ease;
+}
+.konami-matrix.is-out { opacity: 0; }
+.konami-toast {
+  position: fixed;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  z-index: 1600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  padding: 1rem 1.6rem;
+  border: 1px solid rgba(57,255,156,.5);
+  border-radius: var(--radius);
+  background: rgba(3,6,17,.92);
+  box-shadow: 0 20px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(57,255,156,.15);
+  font-family: var(--mono);
+  text-align: center;
+  pointer-events: none;
+  animation: konami-in .25s ease both;
+}
+.konami-toast.is-out { animation: konami-out .4s ease both; }
+.konami-toast__tag { color: #39ff9c; font-weight: 700; font-size: .92rem; letter-spacing: .04em; text-transform: uppercase; }
+.konami-toast__flag { color: #62e7ff; font-size: .82rem; }
+@keyframes konami-in { from { opacity: 0; transform: translate(-50%, -8px); } }
+@keyframes konami-out { to { opacity: 0; transform: translate(-50%, -8px); } }
+
 .term-caret {
   display: inline-block;
   width: .5ch;

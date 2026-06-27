@@ -56,39 +56,53 @@
 
   function initPanelHover() {
     if (!finePointer) return;
-    document.querySelectorAll('.interactive-panel').forEach(panel => {
-      let rect = null;
-      let frame = null;
-      let latest = null;
 
-      panel.addEventListener('pointerenter', () => {
-        rect = panel.getBoundingClientRect();
+    let active = null;   // panel currently under the pointer
+    let px = 0, py = 0;  // last known pointer position (viewport coords)
+    let frame = null;
+
+    function update() {
+      frame = null;
+      if (!active) return;
+      // Recompute the rect every frame so the glow stays correct while
+      // the panel moves under a stationary pointer (e.g. on scroll).
+      const rect = active.getBoundingClientRect();
+      const x = ((px - rect.left) / rect.width) * 100;
+      const y = ((py - rect.top) / rect.height) * 100;
+      active.style.setProperty('--mx', x.toFixed(2) + '%');
+      active.style.setProperty('--my', y.toFixed(2) + '%');
+    }
+
+    function schedule() {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    }
+
+    document.querySelectorAll('.interactive-panel').forEach(panel => {
+      panel.addEventListener('pointerenter', event => {
+        active = panel;
+        px = event.clientX;
+        py = event.clientY;
+        schedule();
       });
 
       panel.addEventListener('pointermove', event => {
-        latest = event;
-        if (frame) return;
-        frame = window.requestAnimationFrame(() => {
-          frame = null;
-          if (!rect || !latest) return;
-          const x = ((latest.clientX - rect.left) / rect.width) * 100;
-          const y = ((latest.clientY - rect.top) / rect.height) * 100;
-          panel.style.setProperty('--mx', x.toFixed(2) + '%');
-          panel.style.setProperty('--my', y.toFixed(2) + '%');
-        });
+        active = panel;
+        px = event.clientX;
+        py = event.clientY;
+        schedule();
       }, { passive: true });
 
       panel.addEventListener('pointerleave', () => {
-        rect = null;
-        latest = null;
-        if (frame) {
-          window.cancelAnimationFrame(frame);
-          frame = null;
-        }
+        if (active === panel) active = null;
         panel.style.removeProperty('--mx');
         panel.style.removeProperty('--my');
       });
     });
+
+    // Keep the glow under the pointer while the page scrolls.
+    window.addEventListener('scroll', () => {
+      if (active) schedule();
+    }, { passive: true });
   }
 
   function initCursorTrail() {

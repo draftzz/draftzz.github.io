@@ -1,11 +1,11 @@
 {% include head.html %}
-<body data-page-lang="{{ page.lang | default: 'en' }}">
+<body>
   {% include nav.html %}
 
   <main class="container container--narrow writeup-main">
     <article class="writeup">
       <a href="{{ '/' | relative_url }}#writeups" class="back">
-        {% if page.lang == 'pt-br' %}← todos os writeups{% else %}← all writeups{% endif %}
+        ← all writeups
       </a>
 
       <header class="writeup__header">
@@ -20,7 +20,7 @@
           {% if page.date %}<span><span class="hero__prompt">$</span> date {{ page.date | date: "%Y-%m-%d" }}</span>{% endif %}
           {% assign words = content | strip_html | number_of_words %}
           {% assign rt = words | divided_by: 220 | plus: 1 %}
-          <span><span class="hero__prompt">$</span> wc -w {{ words }} ({{ rt }} {% if page.lang == 'pt-br' %}min de leitura{% else %}min read{% endif %})</span>
+          <span><span class="hero__prompt">$</span> wc -w {{ words }} ({{ rt }} min read)</span>
         </div>
         {% if page.techniques %}
         <ul class="card__tags writeup__tags">
@@ -30,26 +30,12 @@
         </ul>
         {% endif %}
 
-        {% comment %} Sister translation link if exists {% endcomment %}
-        {% assign sister = nil %}
-        {% if page.translation_key %}
-          {% for w in site.writeups %}
-            {% if w.translation_key == page.translation_key and w.lang != page.lang %}
-              {% assign sister = w %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-        {% if sister %}
-          <a class="writeup__lang-switch" href="{{ sister.url | relative_url }}">
-            {% if page.lang == 'en' %}🇧🇷 ler em português{% else %}🇺🇸 read in english{% endif %}
-          </a>
-        {% endif %}
       </header>
 
       <div class="writeup__layout">
-        <aside class="toc" hidden aria-label="{% if page.lang == 'pt-br' %}Sumário{% else %}Table of contents{% endif %}">
-          <div class="toc__title">{% if page.lang == 'pt-br' %}# sumário{% else %}# contents{% endif %}</div>
-          <nav class="toc__nav" id="toc-nav" aria-label="{% if page.lang == 'pt-br' %}Sumário{% else %}Table of contents{% endif %}"></nav>
+        <aside class="toc" hidden aria-label="Table of contents">
+          <div class="toc__title"># contents</div>
+          <nav class="toc__nav" id="toc-nav" aria-label="Table of contents"></nav>
         </aside>
 
         <div class="writeup__body">
@@ -68,7 +54,7 @@
       {% endfor %}
       {% if related.size > 0 %}
       <section class="related">
-        <h3 class="related__title">{% if page.lang == 'pt-br' %}# writeups relacionados{% else %}# related writeups{% endif %}</h3>
+        <h3 class="related__title"># related writeups</h3>
         <div class="related__grid">
           {% for r in related limit:3 %}
             <a class="card card--small" href="{{ r.url | relative_url }}">
@@ -86,7 +72,7 @@
 
       <footer class="writeup__footer">
         <a href="{{ '/' | relative_url }}#writeups" class="back">
-          {% if page.lang == 'pt-br' %}← todos os writeups{% else %}← all writeups{% endif %}
+          ← all writeups
         </a>
       </footer>
     </article>
@@ -95,7 +81,6 @@
   {% include footer.html %}
   <script src="{{ '/assets/js/copy-code.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   <script src="{{ '/assets/js/toc.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
-  <script src="{{ '/assets/js/lang.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
   <script src="{{ '/assets/js/portfolio.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 </body>
 </html>

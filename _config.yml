@@ -11,10 +11,6 @@ linkedin: bruno-moreira-6250901b4
 baseurl: ""
 url: "https://draftzz.github.io"
 
-# Default language for the site (EN). pt-br versions live at /writeups/<slug>/pt/.
-default_lang: en
-languages: [en, pt-br]
-
 # === Custom theme (no `theme:` key — using local _layouts/_includes) ===
 
 plugins:

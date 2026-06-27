@@ -309,21 +309,6 @@ p { text-wrap: pretty; }
   color: var(--muted);
 }
 .nav__links a:hover { color: var(--text); background: rgba(var(--tint-rgb),.07); }
-.nav__lang { display: inline-flex; gap: 2px; padding: 2px; background: rgba(var(--tint-rgb),.04); border: 1px solid rgba(var(--tint-rgb),.09); border-radius: 999px; }
-.nav__lang-pill {
-  background: transparent;
-  color: var(--muted);
-  border: none;
-  padding: .2rem .62rem;
-  border-radius: 999px;
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: .72rem;
-  font-weight: 700;
-}
-.nav__lang-pill:hover,
-.nav__lang-pill:focus-visible { color: var(--text); outline: none; }
-.nav__lang-pill.is-active { background: var(--accent); color: var(--on-accent); }
 .nav__theme {
   display: inline-flex;
   align-items: center;
@@ -763,8 +748,7 @@ p { text-wrap: pretty; }
   padding: 1rem;
   margin-bottom: 1rem;
 }
-.projects-intro p:last-child,
-.projects-intro p[data-i18n] {
+.projects-intro p:last-child {
   max-width: 760px;
   margin: 0;
   color: var(--soft);
@@ -992,20 +976,6 @@ p { text-wrap: pretty; }
 .writeup__body th { background: var(--bg-elev); color: var(--accent); font-family: var(--mono); }
 .writeup__body blockquote { border-left: 3px solid var(--accent); padding: .5rem 1rem; color: var(--muted); margin: 1rem 0; background: var(--bg-card); border-radius: 0 var(--radius) var(--radius) 0; }
 .writeup__footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
-.writeup__lang-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: .4rem;
-  margin-top: .75rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  padding: .35rem .85rem;
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: .8rem;
-  color: var(--muted);
-}
-.writeup__lang-switch:hover { color: var(--accent); border-color: var(--accent); }
 .writeup-main { max-width: 1180px; }
 .writeup__layout { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
 
@@ -1136,7 +1106,6 @@ p { text-wrap: pretty; }
 .terminal-button:hover { transform: translateY(-1px); }
 .terminal-button:active,
 .filter:active,
-.nav__lang-pill:active,
 .term-launcher:active,
 .terminal__close:active,
 .nav__links a:active { transform: scale(.95); }

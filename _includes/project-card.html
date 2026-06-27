@@ -6,18 +6,11 @@
       <p class="project-index">{% if project_index < 10 %}0{% endif %}{{ project_index }}</p>
       <h3>{{ project.name }}</h3>
     </div>
-    <span class="terminal-chip" data-i18n="project-type-{{ project.slug }}-en">{{ project.type_en }}</span>
-    <span class="terminal-chip" data-i18n="project-type-{{ project.slug }}-pt" hidden>{{ project.type_pt }}</span>
+    <span class="terminal-chip">{{ project.type_en }}</span>
   </div>
-  <p class="project-summary" data-i18n="project-summary-{{ project.slug }}-en">{{ project.summary_en }}</p>
-  <p class="project-summary" data-i18n="project-summary-{{ project.slug }}-pt" hidden>{{ project.summary_pt }}</p>
-  <div class="chip-row" data-i18n="project-tags-{{ project.slug }}-en">
+  <p class="project-summary">{{ project.summary_en }}</p>
+  <div class="chip-row">
     {% for tag in project.tags_en %}
-      <span class="terminal-chip terminal-chip--muted">{{ tag }}</span>
-    {% endfor %}
-  </div>
-  <div class="chip-row" data-i18n="project-tags-{{ project.slug }}-pt" hidden>
-    {% for tag in project.tags_pt %}
       <span class="terminal-chip terminal-chip--muted">{{ tag }}</span>
     {% endfor %}
   </div>
@@ -26,61 +19,43 @@
     <ol>
       {% for step in project.flow %}
         <li>
-          <strong data-i18n="project-step-title-{{ project.slug }}-{{ forloop.index }}-en">{{ step.title_en }}</strong>
-          <strong data-i18n="project-step-title-{{ project.slug }}-{{ forloop.index }}-pt" hidden>{{ step.title_pt }}</strong>
-          <p data-i18n="project-step-body-{{ project.slug }}-{{ forloop.index }}-en">{{ step.body_en }}</p>
-          <p data-i18n="project-step-body-{{ project.slug }}-{{ forloop.index }}-pt" hidden>{{ step.body_pt }}</p>
+          <strong>{{ step.title_en }}</strong>
+          <p>{{ step.body_en }}</p>
         </li>
       {% endfor %}
     </ol>
   </div>
   <div class="project-card__meta">
     <div>
-      <span data-i18n="project-meta-architecture-en">architecture</span>
-      <span data-i18n="project-meta-architecture-pt" hidden>arquitetura</span>
-      <p data-i18n="project-architecture-{{ project.slug }}-en">{{ project.architecture_en }}</p>
-      <p data-i18n="project-architecture-{{ project.slug }}-pt" hidden>{{ project.architecture_pt }}</p>
+      <span>architecture</span>
+      <p>{{ project.architecture_en }}</p>
     </div>
     <div>
-      <span data-i18n="project-meta-impact-en">impact</span>
-      <span data-i18n="project-meta-impact-pt" hidden>impacto</span>
-      <p data-i18n="project-impact-{{ project.slug }}-en">{{ project.impact_en }}</p>
-      <p data-i18n="project-impact-{{ project.slug }}-pt" hidden>{{ project.impact_pt }}</p>
+      <span>impact</span>
+      <p>{{ project.impact_en }}</p>
     </div>
   </div>
   {% if include.details %}
     <div class="project-brief">
       <div class="project-brief__block">
-        <span data-i18n="project-brief-problem-label-en">problem</span>
-        <span data-i18n="project-brief-problem-label-pt" hidden>problema</span>
-        <p data-i18n="project-problem-{{ project.slug }}-en">{{ project.problem_en }}</p>
-        <p data-i18n="project-problem-{{ project.slug }}-pt" hidden>{{ project.problem_pt }}</p>
+        <span>problem</span>
+        <p>{{ project.problem_en }}</p>
       </div>
       <div class="project-brief__block">
-        <span data-i18n="project-brief-method-label-en">method</span>
-        <span data-i18n="project-brief-method-label-pt" hidden>método</span>
-        <p data-i18n="project-method-{{ project.slug }}-en">{{ project.method_en }}</p>
-        <p data-i18n="project-method-{{ project.slug }}-pt" hidden>{{ project.method_pt }}</p>
+        <span>method</span>
+        <p>{{ project.method_en }}</p>
       </div>
       <div class="project-brief__block project-brief__block--wide">
-        <span data-i18n="project-brief-notes-label-en">technical notes</span>
-        <span data-i18n="project-brief-notes-label-pt" hidden>notas técnicas</span>
-        <ul data-i18n="project-notes-{{ project.slug }}-en">
+        <span>technical notes</span>
+        <ul>
           {% for note in project.technical_notes_en %}
-            <li>{{ note }}</li>
-          {% endfor %}
-        </ul>
-        <ul data-i18n="project-notes-{{ project.slug }}-pt" hidden>
-          {% for note in project.technical_notes_pt %}
             <li>{{ note }}</li>
           {% endfor %}
         </ul>
       </div>
       <div class="project-brief__block project-brief__block--wide project-brief__block--muted">
-        <span data-i18n="project-brief-boundaries-label-en">public boundary</span>
-        <span data-i18n="project-brief-boundaries-label-pt" hidden>limite público</span>
-        <p data-i18n="project-boundaries-{{ project.slug }}-en">{{ project.boundaries_en }}</p>
-        <p data-i18n="project-boundaries-{{ project.slug }}-pt" hidden>{{ project.boundaries_pt }}</p>
+        <span>public boundary</span>
+        <p>{{ project.boundaries_en }}</p>
       </div>
     </div>
   {% endif %}

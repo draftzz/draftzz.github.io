@@ -207,7 +207,7 @@
     document.body.appendChild(cursor);
 
     const lockSelector = 'a, button, input, textarea, select, label, summary, ' +
-      '[role="button"], .filter, .nav__lang-pill, .term-launcher, .terminal__close, ' +
+      '[role="button"], .filter, .term-launcher, .terminal__close, ' +
       '.card, .project-card, .contact-card, .interactive-panel, .tag-cloud-link';
 
     const pointer = { x: -100, y: -100 };

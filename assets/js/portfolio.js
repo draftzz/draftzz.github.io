@@ -99,15 +99,8 @@
     cursor.setAttribute('aria-hidden', 'true');
     cursor.innerHTML =
       '<div class="cursor-x__reticle">' +
-        '<span class="cursor-x__tick cursor-x__tick--t"></span>' +
-        '<span class="cursor-x__tick cursor-x__tick--b"></span>' +
-        '<span class="cursor-x__tick cursor-x__tick--l"></span>' +
-        '<span class="cursor-x__tick cursor-x__tick--r"></span>' +
+        '<span class="cursor-x__ring"></span>' +
         '<span class="cursor-x__dot"></span>' +
-        '<span class="cursor-x__corner cursor-x__corner--tl"></span>' +
-        '<span class="cursor-x__corner cursor-x__corner--tr"></span>' +
-        '<span class="cursor-x__corner cursor-x__corner--bl"></span>' +
-        '<span class="cursor-x__corner cursor-x__corner--br"></span>' +
       '</div>';
     document.body.appendChild(cursor);
 

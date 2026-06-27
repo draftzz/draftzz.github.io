@@ -22,7 +22,7 @@
   --green: #39ff9c;
   --green-rgb: 57,255,156;
   --red: #ff6b6b;
-  --hot: #ff2f3d;
+  --hot: var(--accent);
   --paper: #f4f6f5;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -395,7 +395,7 @@ p { text-wrap: pretty; }
   letter-spacing: .12em;
   border-right: 1px solid rgba(255,255,255,.08);
 }
-.signal-ticker__track span:nth-child(3n) { color: rgba(255,47,61,.78); }
+.signal-ticker__track span:nth-child(3n) { color: rgba(var(--accent-rgb),.78); }
 @keyframes ticker {
   to { transform: translateX(-50%); }
 }

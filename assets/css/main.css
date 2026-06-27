@@ -995,9 +995,81 @@ p { text-wrap: pretty; }
   .cards, .related__grid { grid-template-columns: 1fr; }
 }
 
+/* --- cinematic boot screen --- */
+.boot-lock { overflow: hidden; }
+.boot-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background-color: #020409;
+  background-image:
+    radial-gradient(circle at 28% 22%, rgba(var(--accent-rgb),.09), transparent 42%),
+    linear-gradient(180deg, #020409, #04060d);
+  font-family: var(--mono);
+  opacity: 1;
+  transition: opacity .5s ease;
+}
+.boot-screen.is-hiding { opacity: 0; }
+.boot-screen__inner {
+  width: min(660px, 100%);
+  font-size: clamp(.8rem, 1.1vw + .55rem, .98rem);
+  line-height: 1.9;
+}
+.boot-screen__cmd { margin: 0 0 .85rem; color: var(--accent); }
+.boot-screen__cmd .dim { color: var(--soft); }
+.boot-line {
+  margin: 0;
+  color: var(--soft);
+  white-space: pre-wrap;
+  opacity: 0;
+  transform: translateY(4px);
+}
+.boot-line.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+.boot-line .ok { color: var(--accent); }
+.boot-line .ready { color: #fff; font-weight: 700; }
+.boot-cursor {
+  display: inline-block;
+  width: .6ch;
+  height: 1.05em;
+  margin-left: .2rem;
+  vertical-align: -2px;
+  background: var(--accent);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb),.6);
+  animation: blink 1s steps(1) infinite;
+}
+.boot-skip {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.1rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.term-caret {
+  display: inline-block;
+  width: .5ch;
+  height: 1em;
+  margin-left: .12rem;
+  vertical-align: -1px;
+  background: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {
   .cursor-trail { display: none; }
   .signal-ticker__track { animation: none; }
+  .term-caret,
+  .boot-cursor { animation: none; }
   .interactive-panel,
   .interactive-panel::before,
   .cursor-trail__dot { transition: none; }

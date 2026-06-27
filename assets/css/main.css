@@ -1254,6 +1254,14 @@ p { text-wrap: pretty; }
   padding: 1rem 1.1rem;
   outline: none;
 }
+.cmdk__status {
+  display: none;
+  padding: .55rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: .76rem;
+}
 .cmdk__list { list-style: none; margin: 0; padding: .4rem; max-height: 50vh; overflow-y: auto; }
 .cmdk__item {
   display: flex;

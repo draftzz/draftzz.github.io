@@ -58,7 +58,6 @@ body {
   background-size: 260px 190px, 340px 250px, 480px 320px, 620px 430px, auto;
   background-position: 0 0, 38px 24px, 90px 52px, 150px 88px, center;
   background-attachment: fixed;
-  animation: star-drift 120s linear infinite;
   color: var(--text);
   font-family: var(--sans);
   font-size: 16px;
@@ -89,36 +88,25 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  inset: -30%;
+  inset: -20%;
   z-index: -1;
   pointer-events: none;
-  background-size: 200% 200%;
-  background-position: 0% 0%;
-  background-image:
+  background:
     radial-gradient(36% 44% at 20% 26%, rgba(var(--accent-rgb),.20), transparent 70%),
     radial-gradient(40% 48% at 80% 22%, rgba(122,167,255,.17), transparent 70%),
     radial-gradient(44% 48% at 66% 82%, rgba(185,140,255,.15), transparent 70%),
     radial-gradient(38% 44% at 30% 78%, rgba(var(--accent-rgb),.13), transparent 70%);
-  filter: blur(44px);
-  animation: aurora-move 26s ease-in-out infinite alternate, aurora-breathe 16s ease-in-out infinite alternate;
-  will-change: transform, background-position, opacity;
+  filter: blur(38px);
+  animation: aurora-breathe 18s ease-in-out infinite alternate;
+  will-change: transform, opacity;
 }
 
-@keyframes star-drift {
-  to {
-    background-position: 260px 190px, 378px 274px, 570px 372px, 770px 518px, center;
-  }
-}
 @keyframes twinkle {
   0%, 100% { opacity: .35; }
   50%      { opacity: 1; }
 }
 @keyframes sparkle-drift {
   to { transform: translate3d(2%, -2%, 0); }
-}
-@keyframes aurora-move {
-  from { background-position: 0% 0%; }
-  to   { background-position: 100% 100%; }
 }
 @keyframes aurora-breathe {
   0%   { transform: scale(1)    translate3d(-2%, -1%, 0); opacity: .9; }

@@ -1002,6 +1002,23 @@ p { text-wrap: pretty; }
 }
 .contact-card.interactive-panel:hover strong { color: var(--accent); }
 
+/* --- micro-interactions --- */
+.terminal-button:hover { transform: translateY(-1px); }
+.terminal-button:active,
+.filter:active,
+.nav__lang-pill:active,
+.term-launcher:active,
+.terminal__close:active,
+.nav__links a:active { transform: scale(.95); }
+.filter { transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease; }
+.nav__links a { transition: color .16s ease, background .16s ease, transform .16s ease; }
+.mini-stat { transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.mini-stat:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--accent-rgb),.3);
+  box-shadow: 0 14px 36px rgba(0,0,0,.28);
+}
+
 @media (min-width: 1024px) {
   .writeup__layout { grid-template-columns: minmax(0, 1fr) 240px; gap: 3rem; }
   .writeup__layout > .writeup__body { grid-column: 1; grid-row: 1; min-width: 0; }

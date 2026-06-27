@@ -1,6 +1,6 @@
 {% assign project = include.project %}
 {% assign project_index = include.index %}
-<article class="project-card interactive-panel">
+<article class="project-card interactive-panel reveal-on-scroll" data-reveal-delay="{{ project_index | minus: 1 | modulo: 6 | times: 70 }}">
   <div class="project-card__top">
     <div>
       <p class="project-index">{% if project_index < 10 %}0{% endif %}{{ project_index }}</p>

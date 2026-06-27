@@ -46,12 +46,54 @@
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
+        const delay = +entry.target.dataset.revealDelay || 0;
+        if (delay) {
+          window.setTimeout(() => entry.target.classList.add('is-visible'), delay);
+        } else {
+          entry.target.classList.add('is-visible');
+        }
         observer.unobserve(entry.target);
       });
     }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
 
     items.forEach(item => observer.observe(item));
+  }
+
+  function animateCount(el) {
+    const target = parseInt(el.dataset.target, 10) || 0;
+    const duration = 900;
+    let started = null;
+    function step(ts) {
+      if (started === null) started = ts;
+      const p = Math.min((ts - started) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toString();
+      if (p < 1) window.requestAnimationFrame(step);
+      else el.textContent = target.toString();
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  function initCounters() {
+    const nums = Array.from(document.querySelectorAll('.mini-stat span'));
+    if (!nums.length) return;
+    if (!('IntersectionObserver' in window) || reduceMotion) return;
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        animateCount(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.6 });
+
+    nums.forEach(el => {
+      const target = parseInt(el.textContent.trim(), 10);
+      if (isNaN(target)) return;
+      el.dataset.target = target;
+      el.textContent = '0';
+      observer.observe(el);
+    });
   }
 
   function initPanelHover() {
@@ -173,6 +215,7 @@
   tickClock();
   updateProgress();
   initReveal();
+  initCounters();
   initPanelHover();
   initCursorTrail();
   window.setInterval(tickConsole, 3800);

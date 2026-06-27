@@ -71,17 +71,17 @@
       if (i >= lineEls.length) {
         window.clearInterval(revealTimer);
         revealTimer = null;
-        window.setTimeout(end, 560);
+        window.setTimeout(end, 1100);
         return;
       }
       lineEls[i].classList.add('is-in');
       i += 1;
-    }, 260);
+    }, 500);
 
     window.addEventListener('keydown', end);
     window.addEventListener('pointerdown', end);
     // Safety net: never trap the visitor behind the boot screen.
-    safetyTimer = window.setTimeout(end, 4600);
+    safetyTimer = window.setTimeout(end, 8000);
   }
 
   if (document.body) mount();

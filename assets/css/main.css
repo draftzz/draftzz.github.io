@@ -101,7 +101,7 @@ p { text-wrap: pretty; }
 .cursor-trail {
   position: fixed;
   inset: 0;
-  z-index: 1000;
+  z-index: 2000;
   pointer-events: none;
 }
 @media (pointer: fine) {
@@ -1121,6 +1121,7 @@ p { text-wrap: pretty; }
   border: none;
   background: transparent;
   color: var(--text);
+  caret-color: var(--accent);
   font-family: var(--mono);
   font-size: .86rem;
   outline: none;

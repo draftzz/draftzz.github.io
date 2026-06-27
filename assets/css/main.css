@@ -476,28 +476,8 @@ p { text-wrap: pretty; }
   text-transform: uppercase;
 }
 .hero-manifest strong { color: var(--hot); font-weight: 800; }
-
-/* hero dissolves on scroll (scroll-driven, progressive enhancement) */
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-shell__copy {
-      animation: hero-dissolve linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0 80vh;
-    }
-    .hero-shell .identity-panel {
-      animation: hero-dissolve-panel linear both;
-      animation-timeline: scroll(root block);
-      animation-range: 0 72vh;
-    }
-  }
-}
-@keyframes hero-dissolve {
-  to { opacity: 0; transform: translateY(-56px) scale(.975); filter: blur(5px); }
-}
-@keyframes hero-dissolve-panel {
-  to { opacity: 0; transform: translateY(-32px) scale(.97); filter: blur(5px); }
-}
+.hero-shell__copy,
+.hero-shell .identity-panel { will-change: transform, opacity; }
 
 .interactive-panel {
   position: relative;

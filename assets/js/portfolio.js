@@ -96,6 +96,48 @@
     });
   }
 
+  function initHeroDissolve() {
+    if (reduceMotion) return;
+    const copy = document.querySelector('.hero-shell__copy');
+    const panel = document.querySelector('.hero-shell .identity-panel');
+    if (!copy && !panel) return;
+
+    let ticking = false;
+    let last = -1;
+
+    function apply(el, lift, p) {
+      if (p <= 0) {
+        el.style.transform = '';
+        el.style.opacity = '';
+        el.style.filter = '';
+        return;
+      }
+      el.style.transform = 'translateY(' + (-lift * p).toFixed(1) + 'px) scale(' + (1 - 0.03 * p).toFixed(3) + ')';
+      el.style.opacity = (1 - p).toFixed(3);
+      el.style.filter = 'blur(' + (5 * p).toFixed(1) + 'px)';
+    }
+
+    function update() {
+      ticking = false;
+      const p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.8), 0), 1);
+      if (p === last) return;
+      last = p;
+      if (copy) apply(copy, 56, p);
+      if (panel) apply(panel, 32, p);
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+
   function initPanelHover() {
     if (!finePointer) return;
 
@@ -216,6 +258,7 @@
   updateProgress();
   initReveal();
   initCounters();
+  initHeroDissolve();
   initPanelHover();
   initCursorTrail();
   window.setInterval(tickConsole, 3800);

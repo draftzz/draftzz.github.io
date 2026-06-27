@@ -1,0 +1,31 @@
+<button type="button" class="term-launcher" data-term-open aria-label="Open interactive shell">
+  <span class="term-launcher__key">~</span>
+  <span class="term-launcher__label">shell</span>
+</button>
+
+<div class="terminal" id="terminal" hidden role="dialog" aria-modal="true" aria-label="Interactive shell">
+  <div class="terminal__backdrop" data-term-close></div>
+  <div class="terminal__window">
+    <div class="terminal__bar">
+      <span class="panel-bar__dots" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="terminal__title">draftzz@portfolio — shell</span>
+      <button type="button" class="terminal__close" data-term-close aria-label="Close shell">esc</button>
+    </div>
+    <div class="terminal__output" id="term-output" aria-live="polite"></div>
+    <form class="terminal__inputline" id="term-form" autocomplete="off">
+      <span class="terminal__prompt" aria-hidden="true">draftzz@portfolio:~$</span>
+      <input class="terminal__input" id="term-input" type="text" autocomplete="off"
+             autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Command input">
+    </form>
+  </div>
+</div>
+
+<script type="application/json" id="term-data">
+{
+  "email": {{ site.email | jsonify }},
+  "github": {{ site.github_username | jsonify }},
+  "linkedin": {{ site.linkedin | jsonify }},
+  "baseurl": {{ site.baseurl | default: "" | jsonify }},
+  "projects": [{% for p in site.data.projects %}{"name": {{ p.name | jsonify }}, "type": {{ p.type_en | jsonify }}, "slug": {{ p.slug | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+}
+</script>

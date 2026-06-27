@@ -26,6 +26,7 @@
   "github": {{ site.github_username | jsonify }},
   "linkedin": {{ site.linkedin | jsonify }},
   "baseurl": {{ site.baseurl | default: "" | jsonify }},
-  "projects": [{% for p in site.data.projects %}{"name": {{ p.name | jsonify }}, "type": {{ p.type_en | jsonify }}, "slug": {{ p.slug | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+  "projects": [{% for p in site.data.projects %}{"name": {{ p.name | jsonify }}, "type": {{ p.type_en | jsonify }}, "slug": {{ p.slug | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}],
+  "writeups": [{% assign ws = site.writeups | where: 'lang', 'en' | sort: 'date' | reverse %}{% for w in ws %}{"title": {{ w.title | jsonify }}, "url": {{ w.url | relative_url | jsonify }}, "cat": {{ w.category | jsonify }}, "platform": {{ w.platform | jsonify }}, "tags": {{ w.techniques | default: empty | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}]
 }
 </script>

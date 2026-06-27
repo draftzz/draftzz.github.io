@@ -60,7 +60,8 @@
 pre,
 .highlight,
 .terminal__window,
-.boot-screen {
+.boot-screen,
+.cmdk__panel {
   --tint-rgb: 255,255,255;
   --text-rgb: 244,247,251;
   --shell-rgb: 3,6,17;
@@ -1210,6 +1211,73 @@ p { text-wrap: pretty; }
   .nav__links a { padding: 0 .48rem; }
   .cards, .related__grid { grid-template-columns: 1fr; }
 }
+
+/* --- command palette (Cmd+K) --- */
+.cmdk {
+  position: fixed;
+  inset: 0;
+  z-index: 1150;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 1rem 1rem;
+}
+.cmdk[hidden] { display: none; }
+.cmdk__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2,4,9,.72);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: term-fade .18s ease;
+}
+.cmdk__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(620px, 100%);
+  border: 1px solid rgba(var(--accent-rgb),.28);
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(13,17,23,.98), rgba(6,9,16,.98));
+  box-shadow: 0 40px 120px rgba(0,0,0,.6);
+  animation: term-rise .2s ease;
+}
+.cmdk__input {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  caret-color: var(--accent);
+  font-family: var(--mono);
+  font-size: 1rem;
+  padding: 1rem 1.1rem;
+  outline: none;
+}
+.cmdk__list { list-style: none; margin: 0; padding: .4rem; max-height: 50vh; overflow-y: auto; }
+.cmdk__item {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .6rem .7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--soft);
+}
+.cmdk__item.is-active { background: rgba(var(--accent-rgb),.12); color: var(--text); }
+.cmdk__icon { flex-shrink: 0; width: 1.2em; text-align: center; color: var(--accent); font-family: var(--mono); }
+.cmdk__label { flex: 1; font-size: .92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmdk__sub { flex-shrink: 0; max-width: 42%; color: var(--muted); font-family: var(--mono); font-size: .72rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmdk__foot {
+  display: flex;
+  gap: 1rem;
+  padding: .55rem .9rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: .7rem;
+}
+.cmdk__foot b { color: var(--soft); font-weight: 700; }
 
 /* --- interactive shell --- */
 .term-launcher {

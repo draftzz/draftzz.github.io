@@ -12,7 +12,10 @@ permalink: /tags/
     padding: .4rem 1rem; font-family: var(--mono); font-size: .85rem;
     color: var(--text); transition: all .15s;
   }
-  .tag-cloud-link:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .tag-cloud-link:hover {
+    background: var(--accent); color: #020304; border-color: var(--accent);
+    transform: translateY(-1px); box-shadow: 0 8px 22px rgba(var(--accent-rgb),.22);
+  }
   .tag-cloud-link .count { color: var(--muted); margin-left: .35rem; font-size: .75rem; }
   .tag-cloud-link:hover .count { color: var(--bg); }
   .tag-section { margin-bottom: 3rem; }

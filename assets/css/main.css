@@ -499,7 +499,7 @@ p { text-wrap: pretty; }
 }
 
 .project-grid { display: grid; gap: 1rem; }
-.project-grid--all { margin-top: 1rem; }
+.project-grid--all { margin-top: 1rem; gap: 1.5rem; }
 .project-card { padding: 1.1rem; }
 .project-card__top {
   display: flex;
@@ -554,11 +554,11 @@ p { text-wrap: pretty; }
 .project-brief__block span,
 .contact-card span {
   display: block;
-  color: rgba(255,255,255,.35);
+  color: rgba(var(--accent-rgb),.62);
   font-family: var(--mono);
   font-size: .74rem;
   text-transform: uppercase;
-  letter-spacing: 0;
+  letter-spacing: .04em;
 }
 .project-card__meta p { margin: .45rem 0 0; color: var(--muted); font-size: .9rem; }
 .project-brief {
@@ -741,10 +741,11 @@ p { text-wrap: pretty; }
   background: rgba(0,0,0,.16);
 }
 .brief-panel__body span {
-  color: rgba(244,247,251,.38);
+  color: rgba(var(--accent-rgb),.6);
   font-family: var(--mono);
   font-size: .72rem;
   text-transform: uppercase;
+  letter-spacing: .04em;
 }
 .brief-panel__body strong {
   color: var(--paper);

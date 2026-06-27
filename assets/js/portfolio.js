@@ -112,18 +112,22 @@
         el.style.filter = '';
         return;
       }
-      el.style.transform = 'translateY(' + (-lift * p).toFixed(1) + 'px) scale(' + (1 - 0.03 * p).toFixed(3) + ')';
-      el.style.opacity = (1 - p).toFixed(3);
-      el.style.filter = 'blur(' + (5 * p).toFixed(1) + 'px)';
+      // Fade a touch faster than the motion so it visibly dissolves on screen.
+      const fade = Math.min(p * 1.25, 1);
+      el.style.transform = 'translateY(' + (-lift * p).toFixed(1) + 'px) scale(' + (1 - 0.1 * p).toFixed(3) + ')';
+      el.style.opacity = (1 - fade).toFixed(3);
+      el.style.filter = 'blur(' + (12 * p).toFixed(1) + 'px)';
     }
 
     function update() {
       ticking = false;
-      const p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.8), 0), 1);
+      // Complete the dissolve within ~45% of a viewport, while the hero
+      // is still on screen (its content is vertically centered).
+      const p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.45), 0), 1);
       if (p === last) return;
       last = p;
-      if (copy) apply(copy, 56, p);
-      if (panel) apply(panel, 32, p);
+      if (copy) apply(copy, 64, p);
+      if (panel) apply(panel, 44, p);
     }
 
     function onScroll() {

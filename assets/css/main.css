@@ -1024,7 +1024,15 @@ p { text-wrap: pretty; }
 .highlight .nv { color: var(--amber); }
 
 .toc { font-family: var(--mono); font-size: .82rem; }
-.toc__title { color: var(--accent); font-weight: 700; margin-bottom: .75rem; font-size: .82rem; }
+.toc__title {
+  margin: 0 0 .7rem;
+  padding-left: .78rem;
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
 .toc__list { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--border); }
 .toc__link {
   display: block;

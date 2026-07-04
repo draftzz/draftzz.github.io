@@ -112,22 +112,23 @@
         el.style.filter = '';
         return;
       }
-      // Fade a touch faster than the motion so it visibly dissolves on screen.
-      const fade = Math.min(p * 1.25, 1);
-      el.style.transform = 'translateY(' + (-lift * p).toFixed(1) + 'px) scale(' + (1 - 0.1 * p).toFixed(3) + ')';
-      el.style.opacity = (1 - fade).toFixed(3);
-      el.style.filter = 'blur(' + (12 * p).toFixed(1) + 'px)';
+      el.style.transform = 'translateY(' + (-lift * p).toFixed(1) + 'px) scale(' + (1 - 0.05 * p).toFixed(3) + ')';
+      el.style.opacity = (1 - p).toFixed(3);
+      el.style.filter = 'blur(' + (6 * p).toFixed(1) + 'px)';
     }
 
     function update() {
       ticking = false;
-      // Complete the dissolve within ~45% of a viewport, while the hero
-      // is still on screen (its content is vertically centered).
-      const p = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.45), 0), 1);
+      var vh = window.innerHeight;
+      // Dead zone: the first ~55% of a viewport scrolls with no effect, so
+      // the (tall) hero can be read in full first. Then dissolve gently.
+      var start = vh * 0.55;
+      var end = vh * 1.2;
+      const p = Math.min(Math.max((window.scrollY - start) / (end - start), 0), 1);
       if (p === last) return;
       last = p;
-      if (copy) apply(copy, 64, p);
-      if (panel) apply(panel, 44, p);
+      if (copy) apply(copy, 44, p);
+      if (panel) apply(panel, 30, p);
     }
 
     function onScroll() {

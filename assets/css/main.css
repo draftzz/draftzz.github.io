@@ -966,7 +966,8 @@ p { text-wrap: pretty; }
 .writeup__body h1 { font-size: 1.6rem; padding-bottom: .4rem; border-bottom: 1px solid var(--border); }
 .writeup__body h2 { font-size: 1.35rem; color: var(--accent); }
 .writeup__body h3 { font-size: 1.1rem; color: var(--cyan); }
-.writeup__body { overflow-wrap: break-word; }
+.writeup__body { min-width: 0; overflow-wrap: break-word; }
+.writeup__layout { min-width: 0; }
 .writeup__body p { color: var(--text); margin: 0 0 1.15rem; line-height: 1.75; }
 .writeup__body ul,
 .writeup__body ol { color: var(--text); margin: 0 0 1.15rem; padding-left: 1.4rem; line-height: 1.7; }

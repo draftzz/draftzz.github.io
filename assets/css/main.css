@@ -1189,6 +1189,12 @@ p { text-wrap: pretty; }
   .writeup__body .highlight { padding: .85rem .9rem; }
   .writeup__body table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: .82em; }
   .toc { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .toc__title { display: flex; align-items: center; justify-content: space-between; margin: 0; cursor: pointer; }
+  .toc__title::after { content: '▸'; color: var(--muted); font-weight: 400; transition: transform .18s ease; }
+  .toc.is-open .toc__title { margin-bottom: .8rem; }
+  .toc.is-open .toc__title::after { transform: rotate(90deg); }
+  .toc__nav { display: none; }
+  .toc.is-open .toc__nav { display: block; max-height: 45vh; overflow-y: auto; }
   .footer__inner { flex-direction: column; }
   .footer__col--right { align-items: flex-start; text-align: left; }
 }

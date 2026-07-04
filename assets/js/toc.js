@@ -11,6 +11,23 @@
   }
   if (aside) aside.hidden = false;
 
+  // On mobile the TOC is collapsed by default (see CSS); make the title a
+  // toggle so it doesn't wall off the article behind a long list.
+  const title = aside && aside.querySelector('.toc__title');
+  if (title) {
+    title.setAttribute('role', 'button');
+    title.setAttribute('tabindex', '0');
+    title.setAttribute('aria-expanded', 'false');
+    const toggle = () => {
+      const open = aside.classList.toggle('is-open');
+      title.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    title.addEventListener('click', toggle);
+    title.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  }
+
   // Add anchor link icon to each heading
   headings.forEach(h => {
     if (!h.id) return;

@@ -1,5 +1,8 @@
 (function () {
   document.querySelectorAll('.writeup__body pre, .writeup__body div.highlight').forEach(block => {
+    // Rouge wraps highlighted blocks as div.highlight > pre, so both selectors
+    // match the same block. Skip the inner <pre> so only one button is added.
+    if (block.tagName === 'PRE' && block.closest('div.highlight')) return;
     if (block.querySelector('.copy-btn')) return;
     const btn = document.createElement('button');
     btn.className = 'copy-btn';
